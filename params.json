@@ -1,0 +1,6 @@
+{
+  "name": "Samuel Scheiderich",
+  "tagline": "React, Javascript consultant and tutor.",
+  "body": "### Contact me\r\n- Email: [samuel.scheiderich@gmail.com](mailto:samuel.scheiderich@gmail.com)\r\n- LinkedIn: [Samuel Scheiderich](https://www.linkedin.com/in/samuel-scheiderich-a9a6b8122)\r\n\r\n## Development\r\nI build web apps, specializing in React and Redux.\r\n\r\n## Skills and Tools\r\nBeside the common web languages (HTML, CSS, Javascript), these are tools I regularly use:\r\n- React\r\n- Redux\r\n- Lodash\r\n- Babel\r\n- Webpack\r\n- Sass (SCSS)\r\n- Atom\r\n- ESLint\r\n- Symfony/PHP\r\n- SQL\r\n- NodeJS\r\n- Many others...\r\n\r\nI have several boilerplate or example projects on Github, which you can find from [my Github profile](https://github.com/samsch), using the name pattern `basic-*`, where \"*\" is something like \"react\", \"react-redux\". Most of these use Webpack and Babel, with very little project-specific details and configuration, but including basic production necessities.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
