@@ -1,2 +1,2 @@
 # samuelscheiderich.com
-Person website and public pages.
+Personal website and public pages.
