@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Samuel Scheiderich</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Samuel Scheiderich">
+<meta property="og:url" content="http://samuelscheiderich.com/blog/index.html">
+<meta property="og:site_name" content="Samuel Scheiderich">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Samuel Scheiderich">
+  
+    <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Samuel Scheiderich</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-blog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/09/19/blog/" class="article-date">
+  <time datetime="2016-09-19T23:58:27.000Z" itemprop="datePublished">2016-09-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/09/19/blog/">Getting a blog started</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This could just as well be titled <em>Trouble with blogging software</em>.</p>
+<p>If you’re reading this, then at some point I had success. Let me tell you about some of the trials along the way.</p>
+<p>My first taste of server-side programming was in PHP. At the same time, I was taking a basic theming course for <a href="https://wordpress.org" target="_blank" rel="external">Wordpress</a>. So setting up a Wordpress (.org or .com) site would be easy, and I could probably be done with it in less than an hour if I didn’t get distracted by theming.</p>
+<h2 id="Wordpress"><a href="#Wordpress" class="headerlink" title="Wordpress"></a>Wordpress</h2><p>I have worked with PHP and Wordpress though, and know that I want to be part of the movement away from them (find me in IRC sometime as samsch (newer) or samssh (older)). So I struck out on the journey to find an alternative. There are many, and I’ve tried a few. I’m actually writing this in Markdown as part of a <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> blog right now.</p>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>So, if I’m writing this is Hexo, why would I not just use it for my blog? Hexo has a distinct lack of a comment system. Hexo is very nice, works well, is documented well, but, is still a <em>static</em> blog framework. So no login, no comments, no true CMS.</p>
+<h2 id="Ghost"><a href="#Ghost" class="headerlink" title="Ghost"></a>Ghost</h2><p>The next step of the journey was a run at <a href="https://ghost.org" target="_blank" rel="external">Ghost</a>. I didn’t make it very far without the first snag. Ghost doesn’t currently support Node latest. Ghost as of right now (2016-09-19) “supports LTS Node versions: ~<strong>0.10.0</strong> || ~<strong>0.12.0</strong> || ^<strong>4.2.0</strong>“. Node latest is 6.6.0, and Node 6 will become LTS (planned) next month. Otherwise Ghost has looked very good so far: It’s based on Node, has a deployment system built out, uses stable (if not quite modern) tools (Ember.js and Handlebars), and is fully open source, and run by a company touting 100% transparency. So, not supporting the latest version of Node isn’t a huge issue, but coupled with Ember and Handlebars being a bit dated, I’ve decided to try other options before coming back.</p>
+<h2 id="Random-blogs-I-didn’t-try"><a href="#Random-blogs-I-didn’t-try" class="headerlink" title="Random blogs I didn’t try"></a>Random blogs I didn’t try</h2><ul>
+<li>[softare]<ul>
+<li>[Reasons I skipped it]</li>
+</ul>
+</li>
+<li><a href="https://anchorcms.com/" target="_blank" rel="external">Anchor</a><ul>
+<li>PHP*, GPL</li>
+</ul>
+</li>
+<li><a href="https://getnikola.com/" target="_blank" rel="external">Nikola</a><ul>
+<li>Python*</li>
+</ul>
+</li>
+<li><a href="https://bolt.cm/" target="_blank" rel="external">Bolt</a><ul>
+<li>PHP</li>
+</ul>
+</li>
+</ul>
+<h2 id="Bolt"><a href="#Bolt" class="headerlink" title="Bolt"></a>Bolt</h2><p>If Bolt was Node or another language which I want to learn and code in, then I would try it right now. However, since I don’t actually want to setup a PHP server, I’m going to put this off for later. Bolt is driven by Silex/Symfony, which is (in my opinion) the best way to build a site in PHP. But right now I’m still holding out hope for a blogging software based either on Node, or a language that I have interest in learning.</p>
+<p>It’s now getting late, time to go with Hexo for a little longer…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/blog/blog/2016/09/19/blog/" data-id="citauxc190000wldmayjvahr5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Getting-started-with-React" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/07/04/Getting-started-with-React/" class="article-date">
+  <time datetime="2016-07-04T19:10:16.000Z" itemprop="datePublished">2016-07-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/07/04/Getting-started-with-React/">Getting started with React</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js installed (as written, this is version 6.2.2, and this may work in versions 4 and 5).</p>
+<p>What this guide does not do is teach you Javascript or React. This just gets the environment in place.</p>
+<h2 id="Let’s-go"><a href="#Let’s-go" class="headerlink" title="Let’s go!"></a>Let’s go!</h2><p>First thing to do is create your new project folder (I’ll be using <code>react-project</code> in this guide), and run <code>npm init</code>. The requested information doesn’t directly impact what we are going to be doing, so use whatever values you want.</p>
+<p>We need some an html page to attach our app to, so create a <code>public/ folder</code>, and inside, create <code>index.html</code>. Paste this content into it:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Basic React App<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"bundle.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>If you are looking at this and saying, “man, that’s a pretty sparse web page”, well, you’re right. For a “real” app, you are going to want to put your extra meta tags in, maybe Google Analytics, a link to your favicon, and whatever else you need. We’ll get to the content next.</p>
+<h3 id="Application-source"><a href="#Application-source" class="headerlink" title="Application source"></a>Application source</h3><p>Create a <code>src/</code> folder in the root of your project. All of your project specific source will be in this folder. For now, just create a <code>main.js</code> file in <code>src/</code>, and copy these contents into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> React = <span class="built_in">require</span>(<span class="string">'react'</span>);</div><div class="line"><span class="keyword">const</span> ReactDOM = <span class="built_in">require</span>(<span class="string">'react-dom'</span>);</div><div class="line"></div><div class="line">ReactDOM.render(</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>So now your project folder should look like this:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- react-project</div><div class="line"> |- package.json</div><div class="line"> |- src/</div><div class="line"> | |- main.js</div><div class="line"> |- public/</div><div class="line">   |- index.html</div></pre></td></tr></table></figure></p>
+<p>Well, we can see from above that we need at least a few dependencies from NPM installed, so lets get started on those.</p>
+<p>Run <code>npm install --save react react-dom</code>.</p>
+<p>The <code>react</code> package is the ReactJS library, and <code>react-dom</code> is a sister library which lets you render a React virtual DOM to the real DOM.</p>
+<p>That actually covers the entire source of the application. Now all we need to do is build it.</p>
+<h3 id="Setting-up-Webpack"><a href="#Setting-up-Webpack" class="headerlink" title="Setting up Webpack"></a>Setting up Webpack</h3><p>So, we primarily need two tool for building a React application: Webpack (or Browserify), and Babel.</p>
+<p>Babel is a Javascript compiler (also called a transpiler). It takes ES2015 (also known as ES6) Javascript and JSX code, and compiles it to ES5 Javascript.</p>
+<p>Webpack is a module bundler. You give it an entry point file which uses CommonJS (which is the same syntax that Node uses for its modules), and it finds and “bundles” all the required files into a single file, which you can then include in your webpage.</p>
+<p>So, lets install Webpack and Babel. Run <code>npm install --save-dev webpack babel-loader</code>. Ok, but we didn’t install Babel right? Well, not directly, but babel-loader is a Webpack plugin which includes Babel as it’s own dependency. Since we rely on the plugin, it’s somewhat safer to allow the plugin to control the version of Babel installed.</p>
+<p>“That’s it right? now we just run <code>webpack</code> and we’re done, right?” Not quite.</p>
+<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    entry: APP_DIR + <span class="string">'/main.js'</span>,</div><div class="line">    output: &#123;</div><div class="line">        path: BUILD_DIR,</div><div class="line">        filename: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="built_in">module</span> : &#123;</div><div class="line">        loaders : [</div><div class="line">            &#123;</div><div class="line">                test : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                include : APP_DIR,</div><div class="line">                loader : <span class="string">'babel'</span></div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    plugins: [],</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(TARGET === <span class="string">'build'</span>) &#123;</div><div class="line">    config.plugins.push(</div><div class="line">        (<span class="keyword">new</span> webpack.DefinePlugin(&#123;</div><div class="line">            <span class="string">'process.env'</span>: &#123;</div><div class="line">              <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;))</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
+<p>Wow, that’s a lot of configuration for a simple app! Let’s take a closer look though. The first two lines are just requiring Webpack and the Node “path” module, and two the next three lines are just setting of some constants. This line:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div></pre></td></tr></table></figure></p>
+<p>Pulls in the name of the npm script command. I’ll get back to this, but for now, just remember something about “TARGET”.</p>
+<p>Next, we have the actual configuration for Webpack. One nice point to note is that Webpack’s configuration file is a Javascript file, not JSON like many others are. In our configuration we set the <code>entry</code> property, which is the file that Webpack starts at; the <code>output</code>, which is where Webpack saves the compiled code; the <code>modules</code> property, which I’ll get to next; and <code>plugins</code>, which defaults to empty.</p>
+<p>Our module property has a loader property, which is an array of the defined loaders. For now, we are just defining babel-loader. <code>test</code> is a regex to match against file extensions. I’m using pattern which matches <code>.js</code> and <code>.jsx</code> files. You could also choose to set it to only compile files with the JSX extension, by using <code>/\.jsx/</code>, or if you decide not to use .jsx at all, just use <code>/\.js/</code> to .js files. The <code>include</code> property tell Webpack that you only want to compile files in a specific folder. This is because you should never need to compile files from <code>node_modules</code>, since libraries should already be compiled with Babel (if they needed to be). This only stops Webpack from running Babel on files outside of APP_DIR, it doesn’t stop Webpack from bundling those files into the output. Our <code>loader</code> is Babel. Webpack knows that <code>babel</code> means it should use the loader from package <code>babel-loader</code>.</p>
+<p>The <code>plugins</code> property is an array of Webpack plugins and their own configuration. What we are doing is checking the value of TARGET for ‘build’, which is our production build command. If set, we setup one of the built-in Webpack plugins which defines an environment variable. This is the Webpack configuration method for setting an environment variable, the other common way to do this is by setting vars before <code>webpack</code> in the NPM script (or on the command line directly). In this case, both methods are viable, but I prefer to keep it in my config file.</p>
+<p>The last bit is simply exporting the configuration. By default, when Webpack runs, it looks for <code>webpack.config.js</code> and <code>include()</code>‘s it.</p>
+<p>And that’s it for our Webpack configuration. Now we just need to add our command to package.json:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  "scripts": &#123;</div><div class="line">    ...</div><div class="line">    "dev": "webpack -d --watch",</div><div class="line">    "build": "webpack -p"</div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>We add two npm scripts, “dev” and “build”. These are the command which will become the TARGET from earlier. “dev” will run Webpack with “-d –watch”, which sets webpack in debug mode (more verbose, and outputs code maps for the browser), and in watch mode, which means it continuously runs, re-compiling whenever a require()’d file changes. “build” runs Webpack with “-p”, which enables production mode. In production mode, the output is uglified (using Uglify). For us, with our bit of configuration that watches for the TARGET to be “build”, we also set the NODE_ENV variable to be “production”, which tells React not to include it’s debugging tools (which lets it run faster, and spill less in production if there is an error).</p>
+<h3 id="Setup-Babel"><a href="#Setup-Babel" class="headerlink" title="Setup Babel"></a>Setup Babel</h3><p>Ok, we’re almost there. We have everything in place except for a little bit of Babel configuration. This one is easy. Create <code>.babelrc</code> in your project root, and copy this into it:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"presets"</span> : [<span class="string">"es2015"</span>, <span class="string">"react"</span>]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>What this does is tell Babel to compile ES2015 and JSX to ES5 Javascript. This has only been necessary since the Babel maintainers decided to take a “batteries not included” approach with Babel 6v. These preset also don’t come with Babel, so install them with <code>npm install --save-dev babel-preset-es2015 babel-preset-react</code>.</p>
+<h3 id="Run"><a href="#Run" class="headerlink" title="Run!"></a>Run!</h3><p>That pretty much covers it. And now you know why the React workflow is notorious for being difficult to setup. While it’s not actually that complex, there are many steps to the process, at least the first time through.</p>
+<p>So, finally, to start your development environment, run <code>npm run dev</code>. You should see some output from Webpack, and two more files should appear in <code>public/</code>: <code>bundle.js</code> and <code>bundle.js.map</code>.</p>
+<p>Now you just need a server to get these files into your browser. My go-to mini-server is <code>http-server</code>, available with npm. I install very few npm packages globally, but this is one. Install it with <code>npm install -g http-server</code>, then run it from your project root with <code>http-server public</code>. Now you should be able to visit <code>localhost:8080</code> in your browser, and see the web app you just created!</p>
+<h2 id="Just-give-me-the-final-product-already"><a href="#Just-give-me-the-final-product-already" class="headerlink" title="Just give me the final product already"></a>Just give me the final product already</h2><p><a href="https://github.com/samsch/basic-react" target="_blank" rel="external">Here it is, the whole thing wrapped up in a Github Repository.</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/blog/blog/2016/07/04/Getting-started-with-React/" data-id="citauxc1r0003wldmqok91sd7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/js/">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/deployment/">deployment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/developer-experience/">developer experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ghost/">ghost</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/node/">node</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/React/" style="font-size: 10px;">React</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/blog/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/blog/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/blog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/blog/tags/js/" style="font-size: 10px;">js</a> <a href="/blog/tags/node/" style="font-size: 10px;">node</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2016/09/19/blog/">Getting a blog started</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/07/04/Getting-started-with-React/">Getting started with React</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Samuel Scheiderich<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+  </div>
+</body>
+</html>
