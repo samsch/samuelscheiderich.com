@@ -146,6 +146,10 @@ body {
   width: 98.33333333333333%;
   margin: 0 0.833333333333333%;
 }
+#header-inner {
+  background-color: rgba(0,0,0,0.8);
+  padding: 0 1rem;
+}
 .left,
 .alignleft {
   float: left;
@@ -459,7 +463,7 @@ body {
 }
 #search-form-wrap.on {
   opacity: 1;
-  right: 0;
+  right: 1rem;
 }
 @media screen and (max-width: 479px) {
   #search-form-wrap {
