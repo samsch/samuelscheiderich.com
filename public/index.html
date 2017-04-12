@@ -53,7 +53,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com"></form>
       </div>
     </div>
   </div>
@@ -61,6 +61,159 @@
 
       <div class="outer">
         <section id="main">
+  
+    <article id="post-getting-started-with-webpack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/08/getting-started-with-webpack/" class="article-date">
+  <time datetime="2017-04-08T14:49:29.000Z" itemprop="datePublished">2017-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice, we use a tool called a bundler, which parse modules and creates a single file containing the full source.</p>
+<p>There are a couple options for bundlers, but the popularity contest is largely being won by Webpack. There is some notoriety around Webpack, mostly due to the ability to create monstrous configurations for complex builds. However, Webpack itself is fairly straightforward, and this post will walk through the basic setup and configuration.</p>
+<blockquote>
+<p>In a hurry? The final product of this guide can be found in my <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders repository</a>.</p>
+</blockquote>
+<h2 id="Webpack-basics"><a href="#Webpack-basics" class="headerlink" title="Webpack basics"></a>Webpack basics</h2><p>The simplest usage of Webpack is very easy. Let’s get a basic project started.</p>
+<blockquote>
+<p>Don’t forget to reference the <a href="https://webpack.js.org/configuration/" target="_blank" rel="external">Webpack documentation</a> for more details, and to explore the options that Webpack provides!</p>
+</blockquote>
+<h3 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h3><p>You need to have Node.js installed.</p>
+<p>For Linux and MacOS, the easiest way to install and work with Node is using nvm. Instructions for installing are on the <a href="https://github.com/creationix/nvm#installation" target="_blank" rel="external">nvm project page</a>.</p>
+<blockquote>
+<p>If using Windows, you can download an installer from the <a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js website</a>.</p>
+<p>The instructions are the same for Webpack in Windows, except you may need to use backslashes instead of slashes for paths on the command line. For example, <code>webpack src/main.js public/bundle.js</code> might need to be <code>webpack src\main.js public\bundle.js</code> in Windows.</p>
+<p>You can of course use Yarn instead of npm for all the command below. Just remember to use <code>yarn add -D &lt;package&gt;</code> instead of <code>npm install -D &lt;package&gt;</code>.</p>
+</blockquote>
+<h3 id="Create-a-new-project"><a href="#Create-a-new-project" class="headerlink" title="Create a new project"></a>Create a new project</h3><p>Make a new folder for your project (I’m using <code>basic-webpack</code>). Then open this folder in a terminal.</p>
+<p>Run <code>npm init</code>. It will prompt you for project details, but you can just hit enter for each option to use the default. In a real project, you would probably want to fill in actual details.</p>
+<p>Next run <code>npm install -D webpack</code>. This will install Webpack as a development dependency.</p>
+<h3 id="Add-source-code"><a href="#Add-source-code" class="headerlink" title="Add source code"></a>Add source code</h3><p>Let’s add some source code modules that we want to bundle!</p>
+<p>Create a <code>src/</code> folder in your project, and then create a <code>src/foo.js</code> file. Add the following to the file:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Ran foo()!'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Then create a <code>src/main.js</code> file, with this content:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure></p>
+<p>Now we can see that main.js is reliant on foo.js. Now we need to create a <em>bundle</em>, which is a single file with all the code in it, neatly packaged to be used in the browser.</p>
+<h3 id="Use-Webpack"><a href="#Use-Webpack" class="headerlink" title="Use Webpack"></a>Use Webpack</h3><p>The simplest way to use Webpack is from the command line. Webpack, like most runnable npm modules, can be installed globally so that you could just run <code>webpack &lt;options&gt;</code> directly. However, the best practice is to install locally to the project. So then to run Webpack, we either need to use <code>./node_modules/.bin/webpack</code> OR we can setup an <strong>npm script</strong>. We will be doing the latter.</p>
+<p>In your <code>package.json</code> file (which was created by <code>npm init</code> above), add a line under the <strong>scripts</strong> property like this:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "webpack": "webpack"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now we can run Webpack with <code>npm run webpack -- &lt;options&gt;</code>.</p>
+<p>Webpack runs on the command line with the form <code>webpack &lt;entry&gt; &lt;output&gt;</code>. We want to output our bundle to <code>public/</code>, and <code>src/main.js</code> is our <em>entry</em> file.</p>
+<p>Run <code>npm run webpack -- src/main.js public/bundle.js</code>. (It will create the <code>public/</code> folder automatically if it doesn’t exist.)</p>
+<h3 id="Profit"><a href="#Profit" class="headerlink" title="Profit!"></a>Profit!</h3><p>That’s it! That’s all there is to running Webpack in it’s most basic form. You can change your <code>package.json</code> file to include the Weback command option so that you can just run <code>npm run webpack</code>. Change the line <code>&quot;webpack&quot;: &quot;webpack&quot;,</code> to be <code>&quot;webpack&quot;: &quot;webpack src/main.js public/bundle.js&quot;,</code>.</p>
+<h2 id="Actually…"><a href="#Actually…" class="headerlink" title="Actually…"></a>Actually…</h2><p>However, this isn’t the standard way to use Webpack. There are a couple missing features which we usually want. You can actually do most of this from the command line, but the recommended path is to use a Webpack config file.</p>
+<h3 id="Basic-config-driven-Webpack"><a href="#Basic-config-driven-Webpack" class="headerlink" title="Basic config-driven Webpack"></a>Basic config-driven Webpack</h3><p>If you changed your <code>package.json</code> file to include the paths in the Webpack script command, revert that change so that it’s just:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "webpack": "webpack"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now create a <code>webpack.config.js</code> file in the project root, with these contents:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>This is the bare basics to do the same thing as the command line. While it is a bit more verbose, it also is fairly clear.</p>
+<p>Now you can run <code>npm run webpack</code>, and it will automatically find the config file (we used the default name) and build the bundle.</p>
+<h3 id="Setup-basic-development-and-production-modes"><a href="#Setup-basic-development-and-production-modes" class="headerlink" title="Setup basic development and production modes"></a>Setup basic development and production modes</h3><p>Webpack comes with some built-in development and production tool which can be enabled with command line options. Edit scripts in <code>package.json</code> again to be like:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now we can do a production build with <code>npm run build</code>. For development, we can run <code>npm run dev</code>, and it will re-compile any time a file changes which will affect the bundle.</p>
+<p>The <code>-d</code> and <code>-p</code> are shortcut options. <code>-d</code> enables sourcemaps and turns on debug mode for <em>loaders</em> (more on loaders later). <code>-p</code> sets the <code>NODE_ENV</code> environment variable to “production” and replaces usages of process.env.NODE_ENV with ‘“production”‘ in your code. <code>-p</code> also turns on UglifyJSPlugin, which does minification and dead-code removal. With these two combined, code such as the following will be removed in production builds:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(process.env.NODE_ENV !== <span class="string">"production"</span>) &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Debug mode!'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>The sourcemaps are not generated as a separate file by default. You can choose a different sourcemap output with a setting in the webpack config file. <a href="https://webpack.js.org/configuration/devtool/" target="_blank" rel="external">Webpack devtool documentation</a>.</p>
+<h2 id="Using-the-bundle-and-automation"><a href="#Using-the-bundle-and-automation" class="headerlink" title="Using the bundle, and automation!"></a>Using the bundle, and automation!</h2><p>What we have now is all you need to bundle Javascript files in development and production. All that needed is a server to serve the Javascript bundle, and a page that includes it.</p>
+<p>In the <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders repo</a>, you can run <code>checkout basic-production-ready</code> to see the code as it should be if you followed along.</p>
+<p>A quick look at what we have:</p>
+<ul>
+<li>We can put ES module and CommonJS module source files in <code>src/</code>, and also include modules from <code>node_modules/</code> installed with npm or Yarn.</li>
+<li>We can do a development build on change with <code>npm run dev</code>, and we can create a production-ready bundle with <code>npm run build</code>.</li>
+</ul>
+<p>Our next step is to make the developer experience (DX) even better, by setting up webpack-dev-server.</p>
+<h3 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h3><p>Webpack-dev-server does two things: It acts as a static file server (by default), and it watches and bundles your source with some added code which will refresh your browser page when the source changes and the bundle is rebuilt.</p>
+<p>Install webpack-dev-server with <code>npm install webpack-dev-server</code>.</p>
+<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>If we had an <code>index.js</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">devServer</span>: &#123;</div><div class="line">    <span class="attr">contentBase</span>: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    <span class="attr">https</span>: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>The https setting is optional. These days HTTPS is strongly preferred for <em>all</em> websites. This option will set the dev server to automatically create a self-signed cert, and open the page via with https. You can also set a cert, key, and ca file. Check the <a href="https://webpack.js.org/configuration/dev-server/#devserver-https" target="_blank" rel="external">devServer documentation for instructions</a>.</p>
+</blockquote>
+<p>Next create <code>public/index.js</code>, and put this content in it:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Webpack bundle test page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/bundle.js"</span> <span class="attr">defer</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">id</span>=<span class="string">"app-body"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Waiting for Javascript...<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>That’s all we need, but to give us a slightly better first look, lets update <code>src/foo.js</code> to modify the html:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Ran foo()!'</span>);</div><div class="line">  <span class="keyword">const</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>().toDateString();</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>).innerHTML = <span class="string">`&lt;h1&gt;Hello, world!&lt;/h1&gt;&lt;p&gt;This is bundled Javascript! Today is: <span class="subst">$&#123;date&#125;</span>&lt;/p&gt;`</span>;</div><div class="line">  <span class="keyword">if</span>(process.env.NODE_ENV !== <span class="string">"production"</span>) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Debug mode!'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Now with these changes, run <code>npm start</code>. This should open a new page in your browser with the above html.</p>
+<blockquote>
+<p>Since it will be using a self-signed cert, you will need to click through the “Advanced” option to allow it. In Chrome, you click “Proceed to <hostname> (unsafe)”, and in Firefox you click “Add Exception…” and I recommend unchecking the permanent option (since the cert won’t last very long anyway).</hostname></p>
+</blockquote>
+<p>Congratulations! You now have webpack-dev-server running! You can test it out by changing <code>src/main.js</code> or <code>src/foo.js</code>. When you save changes to either file, the webpage in your browser will refresh with the new bundle.</p>
+<p>The final product is available to clone in <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders</a>.</p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>What we have now is a production ready Javascript build system. To make it your own, you can replace, change, and remove the files in <code>src/</code>, just make sure that the <code>entry</code> property in <code>webpack.config.js</code> points to your entry file (some common files are <code>src/main.js</code>, <code>src/index.js</code>, and <code>lib/index.js</code>).</p>
+<p>The most common extra configuration for Webpack is to include babel-loader with preset to compile modern Javascript to ES5 Javascript for browser compatibility. That will be explored in the next post.</p>
+<p>Happy coding!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1eb8vtu0005q8dmqay4si1k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-First-Time-Setting-Up-Caddy-in-a-Container" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/" class="article-date">
+  <time datetime="2016-11-15T22:33:10.000Z" itemprop="datePublished">2016-11-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Primary Goal: Setup Caddy as a static web server with a self-signed cert, in a LXD container.<br>Secondary Goal: Setup proxy server to Node.js for dynamic content.<br>Tertiary Goal: Setup FastCGI proxy for PHP.</p>
+<h1 id="Article-OS-assumption"><a href="#Article-OS-assumption" class="headerlink" title="Article OS assumption"></a>Article OS assumption</h1><p>My base OS is Xubuntu 16.10. While technically LXD is not a Ubuntu-specific technology, I’m not as familiar with other distros, and won’t be providing instructions for other platforms.</p>
+<h1 id="Do-basic-startup-of-container-image"><a href="#Do-basic-startup-of-container-image" class="headerlink" title="Do basic startup of container image"></a>Do basic startup of container image</h1><p>For starters, if you don’t have LXD/LXC (pronounced Lex-D and Lex-C), check out the <a href="https://linuxcontainers.org/lxd/getting-started-cli/" target="_blank" rel="external">installation instructions.</a> Don’t run <code>newgrp lxd</code> with sudo. I’m not sure why I thought that made sense, but no, that just adds the group to root, and drops you to the root terminal.</p>
+<p>Create a new container with <code>lxc launch ubuntu:16.10 my-ubuntu</code>. I’m going to hazard a guess that everything will work on 16.04 as well, which is an LTS release.</p>
+<p>If you aren’t familiar with LXD, we just created a running container based on a generic Ubuntu image. You can stop the container with <code>lxc stop my-ubuntu</code>. (The container is named ‘my-ubuntu’. You can name yours whatever you want.) To start your container back up, use <code>lxc start my-ubuntu</code>. To get a bash console in the container, run <code>lxc exec my-ubuntu bash</code>.</p>
+<h1 id="Downloading-Caddy"><a href="#Downloading-Caddy" class="headerlink" title="Downloading Caddy"></a>Downloading Caddy</h1><p>The preferred method of downloading Caddy seems to be as a configurable <a href="https://caddyserver.com/download" target="_blank" rel="external">tar.gz download</a>. So I’ll do that and push it into the container manually. I chose the default HTTP core, ‘expires’ and ‘git’ directives/middleware, and no DNS providers (since this is a local-only instance). Make sure you know where you download the server to.</p>
+<p>Push the file into the container with <code>lxc file push -p Downloads/caddy_linux_amd64_custom.tar.gz my-ubuntu/home/ubuntu/</code>. The <code>-p</code> flag tells <code>lxc file push</code> to create any folders which don’t already exist. If you get an error that the flag does exist, you are probably using lxd on 16.04 or older, which don’t have the flag. You can manually create any folder needed.</p>
+<p>Enter bash into the container (<code>lxc exec my-ubuntu bash</code>), cd to where you pushed the file (<code>cd /home/ubuntu</code>), and run <code>tar -xzf caddy_linux_amd64_custom.tar.gz</code> to unpack.</p>
+<p>Move caddy to <code>/usr/local/bin</code> with <code>mv caddy /usr/local/bin/</code>, and set ownership and permissions <code>chown root:root /usr/local/bin/caddy</code>, <code>chmod 755 /usr/local/bin/caddy</code>.</p>
+<h1 id="Setup-daemon"><a href="#Setup-daemon" class="headerlink" title="Setup daemon"></a>Setup daemon</h1><p>We want Caddy to start up with the container. Fortunately, Caddy comes with some unofficial, unsupported scripts for setting this up. Recent Ubuntu uses systemd, so that’s the instruction set we’ll follow. The scripts are contained in the <code>init/</code> folder unpacked from the tar.gz, but you can also read the <a href="https://github.com/mholt/caddy/tree/master/dist/init/linux-systemd" target="_blank" rel="external">readme on github</a>.</p>
+<p>We can skip the groupadd and useradd commands, as the Ubuntu container already has the appropriate ‘www-data’ user setup.</p>
+<p>We need some folders setup:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># - From the readme</span></div><div class="line">sudo mkdir /etc/caddy</div><div class="line">sudo chown -R root:www-data /etc/caddy</div><div class="line">sudo mkdir /etc/ssl/caddy</div><div class="line">sudo chown -R www-data:root /etc/ssl/caddy</div><div class="line">sudo chmod 0770 /etc/ssl/caddy</div></pre></td></tr></table></figure></p>
+<p>The next step requires that we have a Caddyfile setup.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/" data-id="cj1eb8vtp0002q8dmjup5i79i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Caddy/">Caddy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-blog" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -114,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="ciu4plbv60002lndm2zpnfzvc" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj1eb8vtm0001q8dmqnmoblry" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -164,7 +317,7 @@
 <p>Webpack is a module bundler. You give it an entry point file which uses CommonJS (which is the same syntax that Node uses for its modules), and it finds and “bundles” all the required files into a single file, which you can then include in your webpage.</p>
 <p>So, lets install Webpack and Babel. Run <code>npm install --save-dev webpack babel-core babel-loader babel-polyfill</code>. Wait, what is babel-loader? Webpack plugins are called loaders. babel-loader is then the Webpack plugin which allows Babel to be run against the files to be bundled. And babel-polyfill? That’s to fill in additions to Javascript in ES2015+ that do not require new syntax, such as methods like <code>Object.assign</code> and objects like <code>Promise</code>.</p>
 <p>“That’s it right? now we just run <code>webpack</code> and we’re done, right?” Not quite.</p>
-<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    entry: [<span class="string">'babel-polyfill'</span>, APP_DIR + <span class="string">'/main.js'</span>],</div><div class="line">    output: &#123;</div><div class="line">        path: BUILD_DIR,</div><div class="line">        filename: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="built_in">module</span> : &#123;</div><div class="line">        loaders : [</div><div class="line">            &#123;</div><div class="line">                test : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                include : APP_DIR,</div><div class="line">                loader : <span class="string">'babel'</span></div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    plugins: [],</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(TARGET === <span class="string">'build'</span>) &#123;</div><div class="line">    config.plugins.push(</div><div class="line">        (<span class="keyword">new</span> webpack.DefinePlugin(&#123;</div><div class="line">            <span class="string">'process.env'</span>: &#123;</div><div class="line">              <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;))</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
+<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    <span class="attr">entry</span>: [<span class="string">'babel-polyfill'</span>, APP_DIR + <span class="string">'/main.js'</span>],</div><div class="line">    <span class="attr">output</span>: &#123;</div><div class="line">        <span class="attr">path</span>: BUILD_DIR,</div><div class="line">        <span class="attr">filename</span>: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">module</span> : &#123;</div><div class="line">        <span class="attr">loaders</span> : [</div><div class="line">            &#123;</div><div class="line">                <span class="attr">test</span> : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                <span class="attr">include</span> : APP_DIR,</div><div class="line">                <span class="attr">loader</span> : <span class="string">'babel'</span></div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">plugins</span>: [],</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(TARGET === <span class="string">'build'</span>) &#123;</div><div class="line">    config.plugins.push(</div><div class="line">        (<span class="keyword">new</span> webpack.DefinePlugin(&#123;</div><div class="line">            <span class="string">'process.env'</span>: &#123;</div><div class="line">              <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;))</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
 <p>Wow, that’s a lot of configuration for a simple app! Let’s take a closer look though. The first two lines are just requiring Webpack and the Node “path” module, and two the next three lines are just setting of some constants. This line:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div></pre></td></tr></table></figure></p>
 <p>Pulls in the name of the npm script command. I’ll get back to this, but for now, just remember something about “TARGET”.</p>
 <p>Next, we have the actual configuration for Webpack. One nice point to note is that Webpack’s configuration file is a Javascript file, not JSON like many others are. In our configuration we set the <code>entry</code> property, which is the file that Webpack starts at (more on that in a moment); the <code>output</code>, which is where Webpack saves the compiled code; the <code>modules</code> property, which I’ll get to next; and <code>plugins</code>, which defaults to empty.</p>
@@ -184,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="ciu4plbux0000lndm09v3dbr8" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj1eb8vtt0004q8dmqevj8hkg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -210,7 +363,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a>
+      <a href="/tags/Caddy/" style="font-size: 10px;">Caddy</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 15px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 15px;">node</a>
     </div>
   </div>
 
@@ -219,7 +372,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -230,6 +383,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
+          </li>
         
           <li>
             <a href="/2016/09/19/blog/">Getting a blog started</a>
@@ -251,7 +412,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 Samuel Scheiderich<br>
+      &copy; 2017 Samuel Scheiderich<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

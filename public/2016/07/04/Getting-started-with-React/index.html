@@ -6,6 +6,7 @@
   <title>Getting started with React | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js ins">
+<meta name="keywords" content="developer experience,React,Webpack,js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Getting started with React">
 <meta property="og:url" content="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/index.html">
@@ -57,7 +58,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com"></form>
       </div>
     </div>
   </div>
@@ -102,7 +103,7 @@
 <p>Webpack is a module bundler. You give it an entry point file which uses CommonJS (which is the same syntax that Node uses for its modules), and it finds and “bundles” all the required files into a single file, which you can then include in your webpage.</p>
 <p>So, lets install Webpack and Babel. Run <code>npm install --save-dev webpack babel-core babel-loader babel-polyfill</code>. Wait, what is babel-loader? Webpack plugins are called loaders. babel-loader is then the Webpack plugin which allows Babel to be run against the files to be bundled. And babel-polyfill? That’s to fill in additions to Javascript in ES2015+ that do not require new syntax, such as methods like <code>Object.assign</code> and objects like <code>Promise</code>.</p>
 <p>“That’s it right? now we just run <code>webpack</code> and we’re done, right?” Not quite.</p>
-<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    entry: [<span class="string">'babel-polyfill'</span>, APP_DIR + <span class="string">'/main.js'</span>],</div><div class="line">    output: &#123;</div><div class="line">        path: BUILD_DIR,</div><div class="line">        filename: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="built_in">module</span> : &#123;</div><div class="line">        loaders : [</div><div class="line">            &#123;</div><div class="line">                test : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                include : APP_DIR,</div><div class="line">                loader : <span class="string">'babel'</span></div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    plugins: [],</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(TARGET === <span class="string">'build'</span>) &#123;</div><div class="line">    config.plugins.push(</div><div class="line">        (<span class="keyword">new</span> webpack.DefinePlugin(&#123;</div><div class="line">            <span class="string">'process.env'</span>: &#123;</div><div class="line">              <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;))</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
+<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    <span class="attr">entry</span>: [<span class="string">'babel-polyfill'</span>, APP_DIR + <span class="string">'/main.js'</span>],</div><div class="line">    <span class="attr">output</span>: &#123;</div><div class="line">        <span class="attr">path</span>: BUILD_DIR,</div><div class="line">        <span class="attr">filename</span>: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">module</span> : &#123;</div><div class="line">        <span class="attr">loaders</span> : [</div><div class="line">            &#123;</div><div class="line">                <span class="attr">test</span> : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                <span class="attr">include</span> : APP_DIR,</div><div class="line">                <span class="attr">loader</span> : <span class="string">'babel'</span></div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">plugins</span>: [],</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(TARGET === <span class="string">'build'</span>) &#123;</div><div class="line">    config.plugins.push(</div><div class="line">        (<span class="keyword">new</span> webpack.DefinePlugin(&#123;</div><div class="line">            <span class="string">'process.env'</span>: &#123;</div><div class="line">              <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;))</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
 <p>Wow, that’s a lot of configuration for a simple app! Let’s take a closer look though. The first two lines are just requiring Webpack and the Node “path” module, and two the next three lines are just setting of some constants. This line:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> TARGET = process.env.npm_lifecycle_event;</div></pre></td></tr></table></figure></p>
 <p>Pulls in the name of the npm script command. I’ll get back to this, but for now, just remember something about “TARGET”.</p>
 <p>Next, we have the actual configuration for Webpack. One nice point to note is that Webpack’s configuration file is a Javascript file, not JSON like many others are. In our configuration we set the <code>entry</code> property, which is the file that Webpack starts at (more on that in a moment); the <code>output</code>, which is where Webpack saves the compiled code; the <code>modules</code> property, which I’ll get to next; and <code>plugins</code>, which defaults to empty.</p>
@@ -122,7 +123,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="ciu4plbux0000lndm09v3dbr8" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj1eb8vtt0004q8dmqevj8hkg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -133,15 +134,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/09/19/blog/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Getting a blog started
-        
-      </div>
-    </a>
   
+    <a href="/2016/09/19/blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Getting a blog started</div>
+    </a>
   
 </nav>
 
@@ -161,7 +158,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a>
+      <a href="/tags/Caddy/" style="font-size: 10px;">Caddy</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 15px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 15px;">node</a>
     </div>
   </div>
 
@@ -170,7 +167,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -181,6 +178,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
+          </li>
         
           <li>
             <a href="/2016/09/19/blog/">Getting a blog started</a>
@@ -202,7 +207,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 Samuel Scheiderich<br>
+      &copy; 2017 Samuel Scheiderich<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
