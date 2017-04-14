@@ -62,6 +62,84 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-getting-started-with-webpack-part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/14/getting-started-with-webpack-part-2/" class="article-date">
+  <time datetime="2017-04-14T14:45:02.000Z" itemprop="datePublished">2017-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>In <a href="https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/">Part 1</a>, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.</p>
+<p>Our next step is to have our build system compile modern Javascript (ES2015, ES2016, ES2017) into code which can be run in current browsers (ES5). We also need to add in polyfills for some of the additional non-syntax language features.</p>
+<p>We also will enable JSX compilation for use with React.</p>
+<h2 id="Loaders-and-our-starting-point"><a href="#Loaders-and-our-starting-point" class="headerlink" title="Loaders and our starting point"></a>Loaders and our starting point</h2><p>Webpack has a couple ways to extend its functionality. There is a <a href="https://webpack.js.org/plugins/" target="_blank" rel="external">plugin system</a>, which used for tools such as UglifyJS for code minification, and there is the <a href="https://webpack.js.org/loaders/" target="_blank" rel="external">loader system</a>. Loaders allow you to pre-process files before they are added to the bundle.</p>
+<p>We will use the final product of Part 1 as our starting point. You can clone the <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders</a> repo to follow along, or if you followed Part 1, the project you ended up with.</p>
+<h2 id="Final-result"><a href="#Final-result" class="headerlink" title="Final result"></a>Final result</h2><p>If you don’t want to build the whole thing, or want to look ahead, the final result is in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
+<h2 id="Adding-Babel"><a href="#Adding-Babel" class="headerlink" title="Adding Babel"></a>Adding Babel</h2><p>Our first step is to add and configure Babel. Babel is a Javascript and near-Javascript compiler. The Webpack loader is called babel-loader, and depends on babel-core as a peer dependency. Install both with <code>npm install -D babel-core babel-loader</code>.</p>
+<p>Next we need to setup a babelrc file in the project root. This file configures the Babel plugins we need.</p>
+<p>To setup this file, I used <a href="https://github.com/brigand" target="_blank" rel="external">@brigand</a>‘s <a href="https://brigand.github.io/config-wizard/?babelrc" target="_blank" rel="external">config-wizard</a>, with options “Play it safe”, “None/Other”, [“IE11”, “iOS”, “Chrome”, “Firefox”]. This instructs us to install babel-preset-env with <code>npm install -D babel-preset-env</code>, and gives us our file content for <code>.babelrc</code>:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"presets"</span>: [</div><div class="line">    [</div><div class="line">      <span class="string">"env"</span>,</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"targets"</span>: &#123;</div><div class="line">          <span class="attr">"browsers"</span>: [</div><div class="line">            <span class="string">"ie 11"</span>,</div><div class="line">            <span class="string">"last 2 Chrome versions"</span>,</div><div class="line">            <span class="string">"last 2 Firefox versions"</span>,</div><div class="line">            <span class="string">"last 2 iOS versions"</span></div><div class="line">          ]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Now we need to add babel-loader to <code>webpack.config.js</code>. We’re adding a <code>modules</code> property with some options:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>: &#123;</div><div class="line">  <span class="attr">rules</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">test</span> : <span class="regexp">/\.js/</span>,</div><div class="line">      <span class="attr">include</span>: path.resolve(__dirname, <span class="string">'src/'</span>),</div><div class="line">      <span class="attr">use</span>: [<span class="string">'babel-loader'</span>],</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/15a058bd059b1bfe57d2400003348736" target="_blank" rel="external">View diff of file change</a></p>
+</blockquote>
+<p>With these changes, we can now use the same commands as before (<code>npm start</code>, <code>npm run dev</code>, <code>npm run build</code>), and it will work just the same, except that now if we use ES2015/16/17 code, it will be compiled to ES5 Javascript.</p>
+<h3 id="Polyfills"><a href="#Polyfills" class="headerlink" title="Polyfills"></a>Polyfills</h3><p>Now we need to add the Babel polyfill (which is actually core-js and regenerator). Install it with <code>npm install -D babel-polyfill</code>. There are a couple ways to include polyfills in your code. The simplest is to just add <code>import &#39;babel-polyfill&#39;;</code> to the top of your entry file (<code>src/main.js</code>). A slightly cleaner approach is to include them via webpack config, which also makes the polyfills part of the build, rather than part of your code. We need to change the <code>entry</code> property in <code>webpack.config.js</code> to be <code>entry: [&#39;babel-polyfill&#39;, &#39;./src/main.js&#39;],</code>.</p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/0df1433b029dda87d73f092cf119d837" target="_blank" rel="external">webpack.config.js diff</a></p>
+</blockquote>
+<h2 id="Test-modern-to-ES5-compilation"><a href="#Test-modern-to-ES5-compilation" class="headerlink" title="Test modern to ES5 compilation"></a>Test modern to ES5 compilation</h2><p>Let’s show that our code is being compiled properly. Change <code>srv/main.js</code> to be:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line">foo();</div><div class="line"></div><div class="line"><span class="keyword">const</span> j = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Babel compilation is working!'</span>);</div><div class="line"></div><div class="line">j();</div></pre></td></tr></table></figure></p>
+<p>If we compile with <code>npm run build</code>, and search in the (minified) <code>public/bundle.js</code> for “Babel compilation is working!”, we find <code>function(){console.log(&quot;Babel compilation is working!&quot;)}</code>, which is using the <code>function</code> keyword rather than using an arrow function like our source.</p>
+<h2 id="React…-and-more"><a href="#React…-and-more" class="headerlink" title="React… and more!"></a>React… and more!</h2><p>What we have now gives us great modern Javascript workflow, while supporting common browsers. Our next step takes us to features outside of Javascript. To work with React, most developers use JSX, which is an HTML-like language that compiles to Javascript. To add JSX support, all we need to do is install babel-preset-react, add it to <code>.babelrc</code>, and possibly make a minor change to our webpack config.</p>
+<p>First add babel-preset-react with <code>npm install -D babel-preset-react</code>. Then change <code>.babelrc</code> to be:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"presets"</span>: [</div><div class="line">    [</div><div class="line">      <span class="string">"env"</span>,</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"targets"</span>: &#123;</div><div class="line">          <span class="attr">"browsers"</span>: [</div><div class="line">            <span class="string">"last 2 Chrome versions"</span>,</div><div class="line">            <span class="string">"last 2 Firefox versions"</span>,</div><div class="line">            <span class="string">"last 2 iOS versions"</span>,</div><div class="line">            <span class="string">"ie 11"</span></div><div class="line">          ]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ],</div><div class="line">    <span class="string">"react"</span></div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Generated with config-wizard similar to before, this time replacing “None/Other” with “React”.</p>
+</blockquote>
+<p>With just those changes, we can now compile JSX in our js files. Some developers prefer to use a different file extension for React components though: <code>.jsx</code>. We can support this by making a small change to our <code>test</code> line in <code>webpack.config.js</code>. Replace <code>test : /\.js/,</code> with <code>test : /\.jsx?/,</code>. Now Wepack will use babel-loader for <code>.js</code> and <code>.jsx</code> files.</p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/54abd031b6ca088abe652371c8dd8754" target="_blank" rel="external">webpack config diff</a></p>
+</blockquote>
+<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></div><div class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>This was rendered with React.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Since we’re importing React and ReactDOM, we also need to install them, so run <code>npm install -D react react-dom</code>.</p>
+<p>Now we can run <code>npm start</code>, and we should see our “Hello, world!” and the rendered by React message.</p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>We have a fully functional Webpack and Babel workflow now, which supports modern Javascript and React. The final product can be found in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
+<p>For moving beyond what’s here, there are many Webpack loaders, and more features which can’t be covered in a basic guide. Some popular topics:</p>
+<ul>
+<li><a href="https://webpack.js.org/loaders/#styling" target="_blank" rel="external">Loading styles</a></li>
+<li><a href="https://webpack.js.org/guides/code-splitting-import/" target="_blank" rel="external">Code splitting</a></li>
+<li><a href="https://webpack.js.org/guides/hmr-react/" target="_blank" rel="external">Hot modules replacement (HMR)</a></li>
+</ul>
+<p>Happy coding!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj1i9fxpi00072cdm9vk76jao" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-getting-started-with-webpack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/08/getting-started-with-webpack/" class="article-date">
@@ -132,7 +210,7 @@
 <p>Our next step is to make the developer experience (DX) even better, by setting up webpack-dev-server.</p>
 <h3 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h3><p>Webpack-dev-server does two things: It acts as a static file server (by default), and it watches and bundles your source with some added code which will refresh your browser page when the source changes and the bundle is rebuilt.</p>
 <p>Install webpack-dev-server with <code>npm install webpack-dev-server</code>.</p>
-<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server -d --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
 <p>If we had an <code>index.js</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">devServer</span>: &#123;</div><div class="line">    <span class="attr">contentBase</span>: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    <span class="attr">https</span>: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>The https setting is optional. These days HTTPS is strongly preferred for <em>all</em> websites. This option will set the dev server to automatically create a self-signed cert, and open the page via with https. You can also set a cert, key, and ca file. Check the <a href="https://webpack.js.org/configuration/dev-server/#devserver-https" target="_blank" rel="external">devServer documentation for instructions</a>.</p>
@@ -152,61 +230,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1eb8vtu0005q8dmqay4si1k" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1i9fxpf00052cdmzwpqbnor" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-First-Time-Setting-Up-Caddy-in-a-Container" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/" class="article-date">
-  <time datetime="2016-11-15T22:33:10.000Z" itemprop="datePublished">2016-11-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Primary Goal: Setup Caddy as a static web server with a self-signed cert, in a LXD container.<br>Secondary Goal: Setup proxy server to Node.js for dynamic content.<br>Tertiary Goal: Setup FastCGI proxy for PHP.</p>
-<h1 id="Article-OS-assumption"><a href="#Article-OS-assumption" class="headerlink" title="Article OS assumption"></a>Article OS assumption</h1><p>My base OS is Xubuntu 16.10. While technically LXD is not a Ubuntu-specific technology, I’m not as familiar with other distros, and won’t be providing instructions for other platforms.</p>
-<h1 id="Do-basic-startup-of-container-image"><a href="#Do-basic-startup-of-container-image" class="headerlink" title="Do basic startup of container image"></a>Do basic startup of container image</h1><p>For starters, if you don’t have LXD/LXC (pronounced Lex-D and Lex-C), check out the <a href="https://linuxcontainers.org/lxd/getting-started-cli/" target="_blank" rel="external">installation instructions.</a> Don’t run <code>newgrp lxd</code> with sudo. I’m not sure why I thought that made sense, but no, that just adds the group to root, and drops you to the root terminal.</p>
-<p>Create a new container with <code>lxc launch ubuntu:16.10 my-ubuntu</code>. I’m going to hazard a guess that everything will work on 16.04 as well, which is an LTS release.</p>
-<p>If you aren’t familiar with LXD, we just created a running container based on a generic Ubuntu image. You can stop the container with <code>lxc stop my-ubuntu</code>. (The container is named ‘my-ubuntu’. You can name yours whatever you want.) To start your container back up, use <code>lxc start my-ubuntu</code>. To get a bash console in the container, run <code>lxc exec my-ubuntu bash</code>.</p>
-<h1 id="Downloading-Caddy"><a href="#Downloading-Caddy" class="headerlink" title="Downloading Caddy"></a>Downloading Caddy</h1><p>The preferred method of downloading Caddy seems to be as a configurable <a href="https://caddyserver.com/download" target="_blank" rel="external">tar.gz download</a>. So I’ll do that and push it into the container manually. I chose the default HTTP core, ‘expires’ and ‘git’ directives/middleware, and no DNS providers (since this is a local-only instance). Make sure you know where you download the server to.</p>
-<p>Push the file into the container with <code>lxc file push -p Downloads/caddy_linux_amd64_custom.tar.gz my-ubuntu/home/ubuntu/</code>. The <code>-p</code> flag tells <code>lxc file push</code> to create any folders which don’t already exist. If you get an error that the flag does exist, you are probably using lxd on 16.04 or older, which don’t have the flag. You can manually create any folder needed.</p>
-<p>Enter bash into the container (<code>lxc exec my-ubuntu bash</code>), cd to where you pushed the file (<code>cd /home/ubuntu</code>), and run <code>tar -xzf caddy_linux_amd64_custom.tar.gz</code> to unpack.</p>
-<p>Move caddy to <code>/usr/local/bin</code> with <code>mv caddy /usr/local/bin/</code>, and set ownership and permissions <code>chown root:root /usr/local/bin/caddy</code>, <code>chmod 755 /usr/local/bin/caddy</code>.</p>
-<h1 id="Setup-daemon"><a href="#Setup-daemon" class="headerlink" title="Setup daemon"></a>Setup daemon</h1><p>We want Caddy to start up with the container. Fortunately, Caddy comes with some unofficial, unsupported scripts for setting this up. Recent Ubuntu uses systemd, so that’s the instruction set we’ll follow. The scripts are contained in the <code>init/</code> folder unpacked from the tar.gz, but you can also read the <a href="https://github.com/mholt/caddy/tree/master/dist/init/linux-systemd" target="_blank" rel="external">readme on github</a>.</p>
-<p>We can skip the groupadd and useradd commands, as the Ubuntu container already has the appropriate ‘www-data’ user setup.</p>
-<p>We need some folders setup:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># - From the readme</span></div><div class="line">sudo mkdir /etc/caddy</div><div class="line">sudo chown -R root:www-data /etc/caddy</div><div class="line">sudo mkdir /etc/ssl/caddy</div><div class="line">sudo chown -R www-data:root /etc/ssl/caddy</div><div class="line">sudo chmod 0770 /etc/ssl/caddy</div></pre></td></tr></table></figure></p>
-<p>The next step requires that we have a Caddyfile setup.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/" data-id="cj1eb8vtp0002q8dmjup5i79i" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Caddy/">Caddy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
 
     </footer>
   </div>
@@ -267,7 +294,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj1eb8vtm0001q8dmqnmoblry" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj1i9fxpa00022cdmyyhg4zkj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -337,7 +364,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj1eb8vtt0004q8dmqevj8hkg" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj1i9fxpe00042cdm65af15af" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -363,7 +390,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Caddy/" style="font-size: 10px;">Caddy</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 15px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 15px;">node</a>
+      <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a>
     </div>
   </div>
 
@@ -372,7 +399,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -385,11 +412,11 @@
       <ul>
         
           <li>
-            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
           </li>
         
           <li>
-            <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
           </li>
         
           <li>

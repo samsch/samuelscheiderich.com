@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/index.html">
 <meta property="og:site_name" content="Samuel Scheiderich">
 <meta property="og:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice,">
-<meta property="og:updated_time" content="2017-04-12T02:14:55.697Z">
+<meta property="og:updated_time" content="2017-04-14T17:26:34.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Getting Started with Webpack">
 <meta name="twitter:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice,">
@@ -135,7 +135,7 @@
 <p>Our next step is to make the developer experience (DX) even better, by setting up webpack-dev-server.</p>
 <h3 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h3><p>Webpack-dev-server does two things: It acts as a static file server (by default), and it watches and bundles your source with some added code which will refresh your browser page when the source changes and the bundle is rebuilt.</p>
 <p>Install webpack-dev-server with <code>npm install webpack-dev-server</code>.</p>
-<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server -d --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
 <p>If we had an <code>index.js</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">devServer</span>: &#123;</div><div class="line">    <span class="attr">contentBase</span>: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    <span class="attr">https</span>: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>The https setting is optional. These days HTTPS is strongly preferred for <em>all</em> websites. This option will set the dev server to automatically create a self-signed cert, and open the page via with https. You can also set a cert, key, and ca file. Check the <a href="https://webpack.js.org/configuration/dev-server/#devserver-https" target="_blank" rel="external">devServer documentation for instructions</a>.</p>
@@ -155,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1eb8vtu0005q8dmqay4si1k" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1i9fxpf00052cdmzwpqbnor" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -166,15 +166,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/09/19/blog/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          First Time Setting Up Caddy in a Container
+          Getting a blog started
         
       </div>
     </a>
   
+  
+    <a href="/2017/04/14/getting-started-with-webpack-part-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Getting Started with Webpack - Part 2</div>
+    </a>
   
 </nav>
 
@@ -194,7 +199,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Caddy/" style="font-size: 10px;">Caddy</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 15px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 15px;">node</a>
+      <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a>
     </div>
   </div>
 
@@ -203,7 +208,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -216,11 +221,11 @@
       <ul>
         
           <li>
-            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
           </li>
         
           <li>
-            <a href="/2016/11/15/First-Time-Setting-Up-Caddy-in-a-Container/">First Time Setting Up Caddy in a Container</a>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
           </li>
         
           <li>
