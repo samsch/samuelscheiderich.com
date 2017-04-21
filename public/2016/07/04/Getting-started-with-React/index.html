@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Getting started with React | Samuel Scheiderich</title>
+  <title>Getting Started with React (Webpack v1) | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js ins">
+  <meta name="description" content="Newer version available!Since originally written, Webpack released version 2. There are some changes to the configuration, and we no longer need to setup the define plugin ourselves for production mod">
 <meta name="keywords" content="developer experience,React,Webpack,js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Getting started with React">
+<meta property="og:title" content="Getting Started with React (Webpack v1)">
 <meta property="og:url" content="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/index.html">
 <meta property="og:site_name" content="Samuel Scheiderich">
-<meta property="og:description" content="This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js ins">
-<meta property="og:updated_time" content="2016-10-29T13:14:13.530Z">
+<meta property="og:description" content="Newer version available!Since originally written, Webpack released version 2. There are some changes to the configuration, and we no longer need to setup the define plugin ourselves for production mod">
+<meta property="og:updated_time" content="2017-04-21T22:40:32.512Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Getting started with React">
-<meta name="twitter:description" content="This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js ins">
+<meta name="twitter:title" content="Getting Started with React (Webpack v1)">
+<meta name="twitter:description" content="Newer version available!Since originally written, Webpack released version 2. There are some changes to the configuration, and we no longer need to setup the define plugin ourselves for production mod">
   
     <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
   
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Getting started with React
+      Getting Started with React (Webpack v1)
     </h1>
   
 
@@ -87,7 +87,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js installed (as written, this is version 6.2.2, and this may work in versions 4 and 5).</p>
+        <h1 id="Newer-version-available"><a href="#Newer-version-available" class="headerlink" title="Newer version available!"></a>Newer version available!</h1><p>Since originally written, Webpack released version 2. There are some changes to the configuration, and we no longer need to setup the define plugin ourselves for production mode.</p>
+<p>I’ve updated the guide, but I’m leaving this version here for historical purposes. All new projects should follow along with the new <a href="https://samuelscheiderich.com/2017/04/21/getting-started-with-react/">Getting Started with React</a>.</p>
+<p>The original Githup repo is also updated for the new guide. You can view the final result as it was for this version of the guide in the <a href="https://github.com/samsch/basic-react/tree/034c6eb9df309afd03806978c1326545ef64bc0d" target="_blank" rel="external">git history</a>.</p>
+<h1 id="Original-guide-for-Webpack-v1"><a href="#Original-guide-for-Webpack-v1" class="headerlink" title="Original guide for Webpack v1"></a>Original guide for Webpack v1</h1><p>This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js installed (as written, this is version 6.2.2, and this may work in versions 4 and 5).</p>
 <p>What this guide does not do is teach you Javascript or React. This just gets the environment in place.</p>
 <h2 id="Let’s-go"><a href="#Let’s-go" class="headerlink" title="Let’s go!"></a>Let’s go!</h2><p>First thing to do is create your new project folder (I’ll be using <code>react-project</code> in this guide), and run <code>npm init</code>. The requested information doesn’t directly impact what we are going to be doing, so use whatever values you want.</p>
 <p>We need some an html page to attach our app to, so create a <code>public/ folder</code>, and inside, create <code>index.html</code>. Paste this content into it:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Basic React App<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"bundle.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -180,6 +183,10 @@
       <ul>
         
           <li>
+            <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+          </li>
+        
+          <li>
             <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
           </li>
         
@@ -192,7 +199,7 @@
           </li>
         
           <li>
-            <a href="/2016/07/04/Getting-started-with-React/">Getting started with React</a>
+            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
           </li>
         
       </ul>
