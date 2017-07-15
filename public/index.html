@@ -62,6 +62,80 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-how-to-add-css-loader-to-webpack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/14/how-to-add-css-loader-to-webpack/" class="article-date">
+  <time datetime="2017-07-15T01:16:00.000Z" itemprop="datePublished">2017-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>One of the benefits of using Webpack is that is allows you to load non-JavaScript files using the standard JavaScript import statements. Specifically, this is regularly used to load stylesheets on a per-module basis.</p>
+<blockquote>
+<p>The final results can be found in a <a href="https://github.com/samsch/basic-webpack-react/tree/css-loader-extract-text-plugin" target="_blank" rel="external">branch from the base repo</a>.</p>
+</blockquote>
+<h1 id="What-we-need-to-get-started"><a href="#What-we-need-to-get-started" class="headerlink" title="What we need to get started"></a>What we need to get started</h1><p>Our baseline is a working Webpack project. A good starting point is my <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react tutorial results</a>. Run <code>git clone https://github.com/samsch/basic-webpack-react.git</code>, <code>cd basic-webpack-react</code>, and <code>npm install</code>.</p>
+<h1 id="Loaders-for-styles"><a href="#Loaders-for-styles" class="headerlink" title="Loaders for styles"></a>Loaders for styles</h1><p>Loading css in a useful way requires either two Webpack loaders, or a loader and a plugin. The easier setup to get started with is using <code>style-loader</code> and <code>css-loader</code>.</p>
+<ul>
+<li><a href="https://webpack.js.org/loaders/style-loader/" target="_blank" rel="external">style-loader</a> takes an imported css file, and makes it output as a <code>&lt;style&gt;</code> element with the css from the file.</li>
+<li><a href="https://webpack.js.org/loaders/css-loader/" target="_blank" rel="external">css-loader</a> parses a css file for <code>@import</code>, <code>url()</code>, and translates those into something Webpack can understand to import.</li>
+</ul>
+<p>With these, you can have imports in your JavaScript modules like:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'./style.css'</span>;</div></pre></td></tr></table></figure></p>
+<p>Webpack will take that stylesheet – and anything it <code>@import</code>s – and include JavaScript in your bundle to put it in <code>&lt;style&gt;</code> tags in the output when the app starts.</p>
+<p>The downside of this method is that styles can’t be cached by the browser separately. Later, we’ll use the other method for a better production setup.</p>
+<h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><p>First install the loaders by running <code>npm install -D style-loader css-loader</code>.</p>
+<p>Then we need to modify <a href="https://github.com/samsch/basic-webpack-react/blob/f57ca65db1bb8462a9415a065a628b52163b34d0/webpack.config.js" target="_blank" rel="external">webpack.config.js</a>. Add the new loader rule to the <code>rules</code> property as shown below.<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">   module: &#123;</div><div class="line">     rules: [</div><div class="line">       &#123;</div><div class="line">         test : /\.jsx?/,</div><div class="line">         include: path.resolve(__dirname, 'src/'),</div><div class="line">         use: ['babel-loader'],</div><div class="line">       &#125;,</div><div class="line"><span class="addition">+      &#123;</span></div><div class="line"><span class="addition">+        test: /\.css$/,</span></div><div class="line"><span class="addition">+        use: [ 'style-loader', 'css-loader' ]</span></div><div class="line"><span class="addition">+      &#125;,</span></div><div class="line">     ],</div><div class="line">   &#125;,</div></pre></td></tr></table></figure></p>
+<p>That’s it! Now you can run <code>npm start</code>, and it will act exactly as before, but it’s ready to import css files.</p>
+<h1 id="Add-some-test-styles"><a href="#Add-some-test-styles" class="headerlink" title="Add some test styles"></a>Add some test styles</h1><p>Let’s add <code>import &#39;./style.css&#39;</code> to the top of <code>src/foo.js</code>.<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="addition">+import './style.css';</span></div><div class="line"><span class="addition">+</span></div><div class="line"> import React from 'react';</div><div class="line"> import ReactDOM from 'react-dom';</div><div class="line"> </div><div class="line"> const foo = function() &#123;</div></pre></td></tr></table></figure></p>
+<p>The running Webpack process throws and error because style.css isn’t found. So let’s add <code>src/style.css</code>:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">h1</span> &#123;</div><div class="line">  <span class="attribute">border-bottom</span>: solid <span class="number">2px</span> gray;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Now Webpack compiles, and the page should refresh with a border applied to the h1 tag.</p>
+<p>Let’s add an imported style. Make <code>src/paragraph.css</code>:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">p</span> &#123;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#ddd</span>;</div><div class="line">  <span class="attribute">padding</span>: <span class="number">1rem</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>And add an import line to <code>src/style.css</code>:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="addition">+@import "paragraph.css";</span></div><div class="line"><span class="addition">+</span></div><div class="line"> h1 &#123;</div><div class="line">   border-bottom: solid 2px gray;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Note that we can use “paragraph.css” here, rather than “./paragraph.css” which Webpack would normally need for relative files. To import a file from an npm package, you can use a <code>~</code> prefix, like <code>~some-css-package/dist/style.css</code>.</p>
+</blockquote>
+<p>Now we have css styles imported from our modules, and css import bundling!</p>
+<h1 id="Separate-style-sheets"><a href="#Separate-style-sheets" class="headerlink" title="Separate style sheets"></a>Separate style sheets</h1><p>The above system actually works pretty well for smaller projects and development. But for larger projects and production, we often want separate stylesheets for caching.</p>
+<p>To pull our styles into a new file, we use <code>extract-text-webpack-plugin</code>, so install that with <code>npm i -D extract-text-webpack-plugin</code>, and remove <code>style-loader</code> with <code>npm remove style-loader</code>. We need to make a couple changes in <code>webpack.config.js</code>.</p>
+<p>At the top of the file:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> const path = require('path');</div><div class="line"><span class="addition">+const ExtractTextPlugin = require("extract-text-webpack-plugin");</span></div><div class="line"> </div><div class="line"> module.exports = &#123;</div><div class="line">   entry: ['babel-polyfill', './src/main.js'],</div></pre></td></tr></table></figure></p>
+<p>And near the end of the file:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">       &#123;</div><div class="line">         test : /\.jsx?/,</div><div class="line">         include: path.resolve(__dirname, 'src/'),</div><div class="line">         use: ['babel-loader'],</div><div class="line">       &#125;,</div><div class="line">       &#123;</div><div class="line">         test: /\.css$/,</div><div class="line"><span class="deletion">-        use: [ 'style-loader', 'css-loader' ]</span></div><div class="line"><span class="addition">+        use: ExtractTextPlugin.extract(&#123;</span></div><div class="line"><span class="addition">+          use: 'css-loader',</span></div><div class="line"><span class="addition">+        &#125;),</span></div><div class="line">       &#125;,</div><div class="line">     ],</div><div class="line">   &#125;,</div><div class="line"><span class="addition">+  plugins: [</span></div><div class="line"><span class="addition">+    new ExtractTextPlugin(&#123;</span></div><div class="line"><span class="addition">+      filename: 'style.css',</span></div><div class="line"><span class="addition">+      allChunks: true,</span></div><div class="line"><span class="addition">+    &#125;),</span></div><div class="line"><span class="addition">+  ],</span></div><div class="line"> &#125;;</div></pre></td></tr></table></figure></p>
+<p>Now if we re-run <code>npm start</code>, we don’t have our styles anymore! This is because the styles output into a new file, which isn’t automatically loaded. So we add a stylesheet link in <code>public/index.html</code>:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   &lt;meta http-equiv="X-UA-Compatible" content="ie=edge"&gt;</div><div class="line">   &lt;title&gt;Webpack bundle test page&lt;/title&gt;</div><div class="line"><span class="addition">+  &lt;link rel="stylesheet" href="/style.css"&gt;</span></div><div class="line">   &lt;script src="/bundle.js" defer&gt;&lt;/script&gt;</div><div class="line"> &lt;/head&gt;</div></pre></td></tr></table></figure></p>
+<p>Refresh the page and your styles are back. If you check the network requests tab in your browser, you can see the stylesheet was loaded in separately.</p>
+<p>This is now a mostly production-ready stylesheet management system. </p>
+<blockquote>
+<p>The main pain-point for this configuration now is that files always have the same name, which means that you would need to do external versioning to bust the browser file cache. Fixing this is possible with a Webpack plugin, but it’s a bit out of scope for this guide.</p>
+</blockquote>
+<p>The final results can be seen as a <a href="https://github.com/samsch/basic-webpack-react/tree/css-loader-extract-text-plugin" target="_blank" rel="external">branch of the base repo</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="cj54loguy0009rsdm73cfnb2g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css-loader/">css-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-getting-started-with-react" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/21/getting-started-with-react/" class="article-date">
@@ -122,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cj1sez0ql0000w8dmwzx623h8" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cj54loguu0008rsdmlyrfk4qs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -200,7 +274,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj1i9fxpi00072cdm9vk76jao" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj54loguq0005rsdmm8430ubr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -302,7 +376,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj1i9fxpf00052cdmzwpqbnor" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj54logut0007rsdmt5ktabhr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -366,7 +440,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj1i9fxpa00022cdmyyhg4zkj" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj54logup0004rsdmb0po0bli" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -439,7 +513,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj1i9fxpe00042cdm65af15af" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj54loguc0000rsdm0y1bimk2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -465,7 +539,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a>
+      <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
     </div>
   </div>
 
@@ -474,7 +548,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -485,6 +559,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+          </li>
         
           <li>
             <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
@@ -500,10 +578,6 @@
         
           <li>
             <a href="/2016/09/19/blog/">Getting a blog started</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
           </li>
         
       </ul>
