@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samuelscheiderich.com/"/>
-  <updated>2017-07-15T01:17:15.025Z</updated>
+  <updated>2017-08-29T13:49:06.113Z</updated>
   <id>http://samuelscheiderich.com/</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>State Terminology</title>
+    <link href="http://samuelscheiderich.com/2017/08/29/state-terminology/"/>
+    <id>http://samuelscheiderich.com/2017/08/29/state-terminology/</id>
+    <published>2017-08-29T13:20:37.000Z</published>
+    <updated>2017-08-29T13:49:06.113Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I
+    
+    </summary>
+    
+    
+      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+    
+      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="state" scheme="http://samuelscheiderich.com/tags/state/"/>
+    
+      <category term="patterns" scheme="http://samuelscheiderich.com/tags/patterns/"/>
+    
+  </entry>
   
   <entry>
     <title>How to Add css-loader to Webpack</title>

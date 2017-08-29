@@ -62,6 +62,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-state-terminology" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/29/state-terminology/" class="article-date">
+  <time datetime="2017-08-29T13:20:37.000Z" itemprop="datePublished">2017-08-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/29/state-terminology/">State Terminology</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I can break “state” into at least five different meanings, all of which are used in documentation, IRC chats, forums posts, and elsewhere.</p>
+<h3 id="General-state"><a href="#General-state" class="headerlink" title="General state"></a>General state</h3><p>The general idea of “state”, is the remembered events, data, and user interactions of the application. It is the part of an application which can change. For a longer definition, check out <a href="https://en.wikipedia.org/wiki/State_(computer_science" target="_blank" rel="external">State (computer science)</a>) on Wikipedia.</p>
+<h3 id="Application-state"><a href="#Application-state" class="headerlink" title="Application state"></a>Application state</h3><p>A subset of the general state in an app is the “application state”. This is data relevant to the actual functionality of the application. It may have properties including form data, current user info, and lists of data.</p>
+<h3 id="View-state"><a href="#View-state" class="headerlink" title="View state"></a>View state</h3><p>Another subset of the general state is “view state”. This is data which is used in the user interface to improve or change the user experience. This state is never relevant to the application, such that it is possible to have the exact same application functionality without any view state<sup><a href="#view-state-removed">1</a></sup>. Included types of information in the view state may be whether a dropdown is open, the current page, or a selected theme.</p>
+<h3 id="Component-state"><a href="#Component-state" class="headerlink" title="Component state"></a>Component state</h3><p>This is where some confusion usually starts to set in. Many users (including blog, documentation, forum post, and real-time chat authors) also use “state” to refer to the built-in state handling functionality in <code>React.Component</code> (and <code>React.PureComponent</code>) classes. This functionality is not itself actual “state”, but is actually a type of “store”. “Component state” is just a tool, and it allows you to store any type of state.</p>
+<h3 id="state-e-g-“Redux-state”"><a href="#state-e-g-“Redux-state”" class="headerlink" title="\ state (e.g., “Redux state”)"></a>\<store\> state (e.g., “Redux state”)</store\></h3><p>In contrast to using “state” to refer to “component state”, it’s also used to refer specifically to state stored in other types of state stores. Currently, a popular state store is Redux, but this also applies to any external store (Mobx, Backbone, other Flux implementations). Sometimes, users will use “application state” to refer to state stored outside of React “component state”.</p>
+<h2 id="The-Right-Way"><a href="#The-Right-Way" class="headerlink" title="The Right Way"></a>The Right Way</h2><p>Of course, The Right Way doesn’t exist. Nobody wants to explicitly type “application state” or “component state” all the time, even though that would allow much less ambiguity.</p>
+<p>When communicating with someone, I recommend verifying what they mean when they say “state” if it might be ambiguous, and being explicit at least once in a while yourself to help others understand you.</p>
+<blockquote>
+<p><a name="view-state-removed">1.</a> Generally this is true, but in most circumstances having a stateless user interface would require vast changes to an application or website, including moving everything into a single page and replacing dropdowns with different types of UIs (radio buttons, checkbox lists, etc). Even then, trying to remove some state such as mouse and scroll position would make it very difficult to maintain the same application functionality. To have a <strong>perfectly</strong> stateless UI for a stateful app would be very difficult or impossible.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2017/08/29/state-terminology/" data-id="cj6xngci50008i7dmjemlpz6c" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/patterns/">patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state/">state</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-how-to-add-css-loader-to-webpack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/07/14/how-to-add-css-loader-to-webpack/" class="article-date">
@@ -124,7 +173,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="cj54loguy0009rsdm73cfnb2g" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="cj6xngci9000ci7dmlg9631ch" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css-loader/">css-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -196,7 +245,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cj54loguu0008rsdmlyrfk4qs" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cj6xngci8000ai7dmwl13hupz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -274,7 +323,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj54loguq0005rsdmm8430ubr" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj6xngci70009i7dmqpb73ny6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -376,7 +425,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj54logut0007rsdmt5ktabhr" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj6xngchz0002i7dm0fk5duuw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -440,7 +489,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj54logup0004rsdmb0po0bli" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cj6xngci40006i7dmnsoozd9o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -513,7 +562,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj54loguc0000rsdm0y1bimk2" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cj6xngci30005i7dmmjzswa3s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -539,7 +588,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 15px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
     </div>
   </div>
 
@@ -548,7 +597,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -559,6 +608,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/08/29/state-terminology/">State Terminology</a>
+          </li>
         
           <li>
             <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
@@ -574,10 +627,6 @@
         
           <li>
             <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
-          </li>
-        
-          <li>
-            <a href="/2016/09/19/blog/">Getting a blog started</a>
           </li>
         
       </ul>
