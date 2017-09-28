@@ -5,17 +5,18 @@
   
   <title>Getting Started with Webpack | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice,">
-<meta name="keywords" content="React,Webpack,developer experience,js">
+  <meta name="description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all browsers currently support a module system directly, so to allow this practice, we">
+<meta name="keywords" content="developer experience,React,js,Webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Getting Started with Webpack">
 <meta property="og:url" content="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/index.html">
 <meta property="og:site_name" content="Samuel Scheiderich">
-<meta property="og:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice,">
-<meta property="og:updated_time" content="2017-07-31T20:46:59.515Z">
+<meta property="og:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all browsers currently support a module system directly, so to allow this practice, we">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-09-28T18:58:02.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Getting Started with Webpack">
-<meta name="twitter:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice,">
+<meta name="twitter:description" content="Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all browsers currently support a module system directly, so to allow this practice, we">
   
     <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
   
@@ -87,7 +88,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently support any module systems directly, so to support this practice, we use a tool called a bundler, which parse modules and creates a single file containing the full source.</p>
+        <p>Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all <a href="http://caniuse.com/#feat=es6-module" target="_blank" rel="external">browsers currently support a module system</a> directly, so to allow this practice, we use a tool called a bundler, which parses modules and creates a single file containing the full source.</p>
 <p>There are a couple options for bundlers, but the popularity contest is largely being won by Webpack. There is some notoriety around Webpack, mostly due to the ability to create monstrous configurations for complex builds. However, Webpack itself is fairly straightforward, and this post will walk through the basic setup and configuration.</p>
 <blockquote>
 <p>In a hurry? The final product of this guide can be found in my <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders repository</a>.</p>
@@ -118,7 +119,7 @@
 <h3 id="Profit"><a href="#Profit" class="headerlink" title="Profit!"></a>Profit!</h3><p>That’s it! That’s all there is to running Webpack in it’s most basic form. You can change your <code>package.json</code> file to include the Weback command option so that you can just run <code>npm run webpack</code>. Change the line <code>&quot;webpack&quot;: &quot;webpack&quot;,</code> to be <code>&quot;webpack&quot;: &quot;webpack src/main.js public/bundle.js&quot;,</code>.</p>
 <h2 id="Actually…"><a href="#Actually…" class="headerlink" title="Actually…"></a>Actually…</h2><p>However, this isn’t the standard way to use Webpack. There are a couple missing features which we usually want. You can actually do most of this from the command line, but the recommended path is to use a Webpack config file.</p>
 <h3 id="Basic-config-driven-Webpack"><a href="#Basic-config-driven-Webpack" class="headerlink" title="Basic config-driven Webpack"></a>Basic config-driven Webpack</h3><p>If you changed your <code>package.json</code> file to include the paths in the Webpack script command, revert that change so that it’s just:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "webpack": "webpack"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
-<p>Now create a <code>webpack.config.js</code> file in the project root, with these contents:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Now create a <code>webpack.config.js</code> file in the project root, with these contents:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/main.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'bundle.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <p>This is the bare basics to do the same thing as the command line. While it is a bit more verbose, it also is fairly clear.</p>
 <p>Now you can run <code>npm run webpack</code>, and it will automatically find the config file (we used the default name) and build the bundle.</p>
 <h3 id="Setup-basic-development-and-production-modes"><a href="#Setup-basic-development-and-production-modes" class="headerlink" title="Setup basic development and production modes"></a>Setup basic development and production modes</h3><p>Webpack comes with some built-in development and production tool which can be enabled with command line options. Edit scripts in <code>package.json</code> again to be like:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
@@ -136,7 +137,7 @@
 <h3 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h3><p>Webpack-dev-server does two things: It acts as a static file server (by default), and it watches and bundles your source with some added code which will refresh your browser page when the source changes and the bundle is rebuilt.</p>
 <p>Install webpack-dev-server with <code>npm install webpack-dev-server</code>.</p>
 <p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server -d --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
-<p>If we had an <code>index.html</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">entry</span>: <span class="string">'./src/main.js'</span>,</div><div class="line">  <span class="attr">output</span>: &#123;</div><div class="line">    <span class="attr">filename</span>: <span class="string">'bundle.js'</span>,</div><div class="line">    <span class="attr">path</span>: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">devServer</span>: &#123;</div><div class="line">    <span class="attr">contentBase</span>: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    <span class="attr">https</span>: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>If we had an <code>index.html</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/main.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'bundle.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  devServer: &#123;</div><div class="line">    contentBase: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    https: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>The https setting is optional. These days HTTPS is strongly preferred for <em>all</em> websites. This option will set the dev server to automatically create a self-signed cert, and open the page via with https. You can also set a cert, key, and ca file. Check the <a href="https://webpack.js.org/configuration/dev-server/#devserver-https" target="_blank" rel="external">devServer documentation for instructions</a>.</p>
 </blockquote>
@@ -155,7 +156,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj6xngchz0002i7dm0fk5duuw" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cj84toli80005txat6b0k939s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -166,19 +167,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/09/19/blog/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/14/getting-started-with-webpack-part-2/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Getting a blog started
+          Getting Started with Webpack - Part 2
         
       </div>
     </a>
   
   
-    <a href="/2017/04/14/getting-started-with-webpack-part-2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/09/19/blog/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Getting Started with Webpack - Part 2</div>
+      <div class="article-nav-title">Getting a blog started</div>
     </a>
   
 </nav>

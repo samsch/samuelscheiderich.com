@@ -6,12 +6,13 @@
   <title>Getting Started with Webpack - Part 2 | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="In Part 1, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshi">
-<meta name="keywords" content="React,Webpack,developer experience,js">
+<meta name="keywords" content="developer experience,React,js,Webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Getting Started with Webpack - Part 2">
 <meta property="og:url" content="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/index.html">
 <meta property="og:site_name" content="Samuel Scheiderich">
 <meta property="og:description" content="In Part 1, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshi">
+<meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2017-04-14T19:55:38.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Getting Started with Webpack - Part 2">
@@ -96,7 +97,7 @@
 <h2 id="Adding-Babel"><a href="#Adding-Babel" class="headerlink" title="Adding Babel"></a>Adding Babel</h2><p>Our first step is to add and configure Babel. Babel is a Javascript and near-Javascript compiler. The Webpack loader is called babel-loader, and depends on babel-core as a peer dependency. Install both with <code>npm install -D babel-core babel-loader</code>.</p>
 <p>Next we need to setup a babelrc file in the project root. This file configures the Babel plugins we need.</p>
 <p>To setup this file, I used <a href="https://github.com/brigand" target="_blank" rel="external">@brigand</a>‘s <a href="https://brigand.github.io/config-wizard/?babelrc" target="_blank" rel="external">config-wizard</a>, with options “Play it safe”, “None/Other”, [“IE11”, “iOS”, “Chrome”, “Firefox”]. This instructs us to install babel-preset-env with <code>npm install -D babel-preset-env</code>, and gives us our file content for <code>.babelrc</code>:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"presets"</span>: [</div><div class="line">    [</div><div class="line">      <span class="string">"env"</span>,</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"targets"</span>: &#123;</div><div class="line">          <span class="attr">"browsers"</span>: [</div><div class="line">            <span class="string">"ie 11"</span>,</div><div class="line">            <span class="string">"last 2 Chrome versions"</span>,</div><div class="line">            <span class="string">"last 2 Firefox versions"</span>,</div><div class="line">            <span class="string">"last 2 iOS versions"</span></div><div class="line">          ]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Now we need to add babel-loader to <code>webpack.config.js</code>. We’re adding a <code>modules</code> property with some options:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>: &#123;</div><div class="line">  <span class="attr">rules</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">test</span> : <span class="regexp">/\.js/</span>,</div><div class="line">      <span class="attr">include</span>: path.resolve(__dirname, <span class="string">'src/'</span>),</div><div class="line">      <span class="attr">use</span>: [<span class="string">'babel-loader'</span>],</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now we need to add babel-loader to <code>webpack.config.js</code>. We’re adding a <code>modules</code> property with some options:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>: &#123;</div><div class="line">  rules: [</div><div class="line">    &#123;</div><div class="line">      test : <span class="regexp">/\.js/</span>,</div><div class="line">      include: path.resolve(__dirname, <span class="string">'src/'</span>),</div><div class="line">      use: [<span class="string">'babel-loader'</span>],</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p><a href="https://gist.github.com/samsch/15a058bd059b1bfe57d2400003348736" target="_blank" rel="external">View diff of file change</a></p>
 </blockquote>
@@ -116,7 +117,7 @@
 <blockquote>
 <p><a href="https://gist.github.com/samsch/54abd031b6ca088abe652371c8dd8754" target="_blank" rel="external">webpack config diff</a></p>
 </blockquote>
-<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></div><div class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>This was rendered with React.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
 <p>Since we’re importing React and ReactDOM, we also need to install them, so run <code>npm install -D react react-dom</code>.</p>
 <p>Now we can run <code>npm start</code>, and we should see our “Hello, world!” and the rendered by React message.</p>
 <h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>We have a fully functional Webpack and Babel workflow now, which supports modern Javascript and React. The final product can be found in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
@@ -131,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj6xngci70009i7dmqpb73ny6" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cj84toli90006txatmoqe2q7h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -142,19 +143,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/04/08/getting-started-with-webpack/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/21/getting-started-with-react/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Getting Started with Webpack
+          Getting Started with React
         
       </div>
     </a>
   
   
-    <a href="/2017/04/21/getting-started-with-react/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/04/08/getting-started-with-webpack/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Getting Started with React</div>
+      <div class="article-nav-title">Getting Started with Webpack</div>
     </a>
   
 </nav>

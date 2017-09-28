@@ -31,11 +31,11 @@
     
       <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
-    
       <category term="state" scheme="http://samuelscheiderich.com/tags/state/"/>
     
       <category term="patterns" scheme="http://samuelscheiderich.com/tags/patterns/"/>
+    
+      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
     
   </entry>
   
@@ -77,13 +77,13 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
-    
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
-    
       <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
+      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+    
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
   </entry>
   
@@ -101,13 +101,13 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
-    
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
-    
       <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
+      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+    
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
   </entry>
   
@@ -116,22 +116,22 @@
     <link href="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/"/>
     <id>http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/</id>
     <published>2017-04-08T14:49:29.000Z</published>
-    <updated>2017-07-31T20:46:59.515Z</updated>
+    <updated>2017-09-28T18:58:02.869Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, browsers don’t currently sup
+      &lt;p&gt;Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all &lt;a href=&quot;http://cani
     
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
-    
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
-    
       <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
+      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+    
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
   </entry>
   
@@ -176,13 +176,13 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
-    
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
-    
       <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
+      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+    
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
   </entry>
   
