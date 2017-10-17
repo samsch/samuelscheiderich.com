@@ -1,2 +1,0 @@
-#!/bin/bash
-rsync -avz --del public/ ss:/srv/samuelscheiderich.com/public/
