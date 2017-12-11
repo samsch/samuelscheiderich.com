@@ -9,7 +9,7 @@ tags:
 
 ![circuit on breadboard](/assets/sci-fi-prop-project/real-board-vertical.jpg)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tnfEZ7pGT8Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+<div style="text-align: center"><iframe width="560" height="315" src="https://www.youtube.com/embed/tnfEZ7pGT8Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe></div>
 
 ## What is it?
 I wanted to build a "laser gun" module to install in a Nerf blaster shell. The module would connect to the trigger to fire, and have motion/gesture sensing for additional functionality (such as reloading).
@@ -45,7 +45,7 @@ Speaker
 
 ![Layout of circuit](/assets/sci-fi-prop-project/schemeit-project.png)
 
-## Software
+## Software 
 
 The software I used is the latest version of the Arduino IDE for Linux, VSCode, and the libraries for the Pololu Mini IMU.
 
