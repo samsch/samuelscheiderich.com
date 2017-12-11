@@ -9,6 +9,8 @@ tags:
 
 ![circuit on breadboard](/assets/sci-fi-prop-project/real-board-vertical.jpg)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tnfEZ7pGT8Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+
 ## What is it?
 I wanted to build a "laser gun" module to install in a Nerf blaster shell. The module would connect to the trigger to fire, and have motion/gesture sensing for additional functionality (such as reloading).
 
