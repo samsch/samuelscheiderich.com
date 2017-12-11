@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samuelscheiderich.com/"/>
-  <updated>2017-08-29T14:19:21.569Z</updated>
+  <updated>2017-12-11T16:29:36.697Z</updated>
   <id>http://samuelscheiderich.com/</id>
   
   <author>
@@ -14,6 +14,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sci-fi Prop Project</title>
+    <link href="http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/"/>
+    <id>http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/</id>
+    <published>2017-12-11T13:47:48.000Z</published>
+    <updated>2017-12-11T16:29:36.697Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/assets/sci-fi-prop-project/real-board-vertical.jpg&quot; alt=&quot;circuit on breadboard&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;What-is-it&quot;&gt;&lt;a href=&quot;#What-is-it&quot;
+    
+    </summary>
+    
+    
+      <category term="arduino" scheme="http://samuelscheiderich.com/tags/arduino/"/>
+    
+      <category term="cos-play" scheme="http://samuelscheiderich.com/tags/cos-play/"/>
+    
+      <category term="sound" scheme="http://samuelscheiderich.com/tags/sound/"/>
+    
+  </entry>
   
   <entry>
     <title>State Terminology</title>
