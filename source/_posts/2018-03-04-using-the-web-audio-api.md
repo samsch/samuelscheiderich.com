@@ -9,6 +9,8 @@ Have you ever wanted to make some noise in your browser? I wanted to generate so
 
 What I found is the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API). I'm going to show how to play basic sounds, and lay the groundwork for building more advanced sound generators.
 
+> All examples can be directly pasted into [jsfiddle](https://jsfiddle.net/) and run. The first couple are just JavaScript, but the others use a short bit of HTML. I'm running these in Firefox, but Chrome and Edge should also work fine. Webkit-based browsers may not work, and IE has no support.
+
 The WebAudio API is built around a "node" system. It somewhat parallels how you would connect sound modules or effects pedals together in real life.
 
 The base object you need to work with is the [AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext), created with `new AudioContext()` (or `new webkitAudioContext()` for Webkit-based browsers). This context object has factory methods to create the other nodes you use.
@@ -57,9 +59,11 @@ Now, instead of connecting the oscillator to the output directly, we connect it 
 Lets make a button that plays a sound!
 
 ```html
+<!-- HTML -->
 <button id="play-sound">Play Sound</button>
 ```
 ```js
+// JavaScript
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const volume = audioContext.createGain();
 volume.connect(audioContext.destination);
