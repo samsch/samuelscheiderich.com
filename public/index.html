@@ -63,6 +63,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-using-the-web-audio-api" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/04/using-the-web-audio-api/" class="article-date">
+  <time datetime="2018-03-04T16:00:29.000Z" itemprop="datePublished">2018-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Have you ever wanted to make some noise in your browser? I wanted to generate some sound effects, and it made me curious about what tools are available in the browser.</p>
+<p>What I found is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="external">Web Audio API</a>. I’m going to show how to play basic sounds, and lay the groundwork for building more advanced sound generators.</p>
+<p>The WebAudio API is built around a “node” system. It somewhat parallels how you would connect sound modules or effects pedals together in real life.</p>
+<p>The base object you need to work with is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext" target="_blank" rel="external">AudioContext</a>, created with <code>new AudioContext()</code> (or <code>new webkitAudioContext()</code> for Webkit-based browsers). This context object has factory methods to create the other nodes you use.</p>
+<h2 id="Basic-sound-output"><a href="#Basic-sound-output" class="headerlink" title="Basic sound output"></a>Basic sound output</h2><p>Here’s how you output a simple tone (<strong>Warning</strong>, this is rather loud if run directly):<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">oscillator.connect(audioContext.destination);</div><div class="line">oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">oscillator.start();</div><div class="line"><span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">	oscillator.stop();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>We already learned about the audioContext, and the rest is fairly straightforward as well. The <code>audioContext.createOscillator()</code> creates an <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode" target="_blank" rel="external">OscillatorNode</a> instance, which generates a tone. OscillatorNodes has <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioParam" target="_blank" rel="external">AudioParam</a> properties to control frequency (directly, and via a “detune” value, which seems to be more suitable for note-based music generation) and wave-shape.</p>
+<p>OscillatorNode implement <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode" target="_blank" rel="external">AudioNode</a>, which is the base class. AudioNodes use the AudioParam interface for properties, which gives controls like <code>setValueAtTime()</code> used above. So an oscillator has a <code>frequency</code> property which has the AudioParam properties and methods for reading and writing. You can’t write to the frequency property directly (you can-ish, because it’s JavaScript, but it won’t “work”), instead you read from <code>oscillator.frequency.value</code>, and you can either write to the <code>value</code> property or use the time-based methods such as <code>.setValueAtTime()</code>. Generally, using the time-based methods is better, because they will overwrite any value written to the value property directly.</p>
+<p>To use the output of an AudioNode, you call the <code>.connect()</code> method and pass the target, which can be another AudioNode, an AudioParam (for dynamic input), or <code>audioContext.destination</code> which represents the browser’s sound output (speakers, headphones). We connect our oscillator to audioContext.destination so we can hear the output.</p>
+<p>We call <code>.setValueAtTime()</code> with <code>440</code> and <code>audioContext.currentTime</code>, which says we want a frequency of 440hz, and we want that to be applied <em>now</em>. To sets value in the future, you add time in seconds to the currentTime value.</p>
+<p>To start the oscillator sound output we call <code>.start()</code>. After a 1 second we stop the output with <code>.stop()</code>. These are not start/pause controls like you might expect. Once you call <code>.stop()</code>, an OscillatorNode can not be re-started. For repeatedly doing something, you either need to use multiple oscillators, or use a single oscillator and disconnect it’s output or set the output volume to zero using a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GainNode" target="_blank" rel="external">GainNode</a> before the destination.</p>
+<h2 id="Fixing-the-volume-problem"><a href="#Fixing-the-volume-problem" class="headerlink" title="Fixing the volume problem"></a>Fixing the volume problem</h2><p>By default, the oscillator output is rather loud. Lets fix that by adding a GainNode.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"><span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">oscillator.connect(volume);</div><div class="line">oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">oscillator.start();</div><div class="line"><span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">	oscillator.stop();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>Now, instead of connecting the oscillator to the output directly, we connect it to a GainNode which then connects to the destination. The GainNode has a gain AudioParam which takes a float value and multiplies the amplitude. So a value of 1 would be no change, .5 would be half, and 2 would be double. .2 (or 20%) makes for a fairly reasonable volume.</p>
+<h2 id="Doing-something-more-interesting"><a href="#Doing-something-more-interesting" class="headerlink" title="Doing something more interesting"></a>Doing something more interesting</h2><p>Lets make a button that plays a sound!</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"play-sound"</span>&gt;</span>Play Sound<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"></div><div class="line"><span class="keyword">const</span> button = <span class="built_in">document</span>.getElementById(<span class="string">'play-sound'</span>);</div><div class="line"></div><div class="line">button.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">  oscillator.connect(volume);</div><div class="line">  oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">  oscillator.start();</div><div class="line">  <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    oscillator.stop();</div><div class="line">    oscillator.disconnect();</div><div class="line">  &#125;, <span class="number">500</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Our button click handler creates a new oscillator, connects it, sets the frequency, starts it, and then stops and disconnects it after 500ms.</p>
+<p>This is the basis for how you play sounds on a trigger. Just create your oscillator, play it, and destroy it. Notice that if you click the button again before the sound stops, it does create a new oscillator and plays them both, which you can usually hear as a louder sound.</p>
+<h2 id="Exciting-sounds"><a href="#Exciting-sounds" class="headerlink" title="Exciting sounds"></a>Exciting sounds</h2><p>So far, we’ve only made boring single-frequency sounds. Lets do something a bit more interesting. If we just wanted to change the pitch played on the button press, that would be as simple as changing “440” to the desired frequency. This could be set from a dynamic input as well.</p>
+<p>More interesting would be to play a series of sounds. Lets make a varying wave-form.</p>
+<p>The html will be the same as above, with this JavaScript:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"></div><div class="line"><span class="keyword">const</span> button = <span class="built_in">document</span>.getElementById(<span class="string">'play-sound'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> frequencyList = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</div><div class="line">	frequencyList.push(<span class="built_in">Math</span>.sin(i * <span class="built_in">Math</span>.PI / <span class="number">100</span>) * <span class="number">100</span> + <span class="number">400</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">button.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">  oscillator.connect(volume);</div><div class="line">  frequencyList.forEach(<span class="function">(<span class="params">frequency, time</span>) =&gt;</span> &#123;</div><div class="line">  	oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + time*<span class="number">.001</span>);</div><div class="line">  &#125;);</div><div class="line">  oscillator.start();</div><div class="line">  <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    oscillator.stop();</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Instead of just setting a frequency and calling it done, we run over an array of 1000 frequency values, setting them at intervals of 1ms so that we get a (to human perception) smooth variation of pitch. Any AudioParams can be set like this, so you can create arrays of frequency and volume (gain) values to play over time.</p>
+<h2 id="More"><a href="#More" class="headerlink" title="More!"></a>More!</h2><p>Naturally, this is just the tip of the iceberg. Besides gain and oscillators, you can do other types of filtering and effects, including reverberation, delays, and distortion; you can use microphone input and uploaded audio files; and you can even do visualizations of the waveform output. A good place to start for more in-depth study is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="external">MDN Web Audio API Guide</a>. Especially look through the types of AudioNodes listed in <em>Related pages for Web Audio API</em>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samuelscheiderich.com/2018/03/04/using-the-web-audio-api/" data-id="cjed5h68p000e29at0a8amo70" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web-API/">Web API</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-sci-fi-prop-project" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/11/sci-fi-prop-project/" class="article-date">
@@ -143,7 +203,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/" data-id="cjb2f441v000fj9ato2e88hsr" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/" data-id="cjed5h68o000c29atlx0abg07" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arduino/">arduino</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cos-play/">cos-play</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sound/">sound</a></li></ul>
@@ -192,7 +252,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/08/29/state-terminology/" data-id="cjb2f441u000ej9atwr0inhjv" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/08/29/state-terminology/" data-id="cjed5h68n000b29athytt200v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/patterns/">patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state/">state</a></li></ul>
@@ -266,7 +326,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="cjb2f441u000cj9atfm6wwyun" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="cjed5h68m000929atko0pibqj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css-loader/">css-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -338,7 +398,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cjb2f441t000bj9att12dxcx1" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/" data-id="cjed5h68l000829at8boivah9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -401,7 +461,7 @@
 <blockquote>
 <p><a href="https://gist.github.com/samsch/54abd031b6ca088abe652371c8dd8754" target="_blank" rel="external">webpack config diff</a></p>
 </blockquote>
-<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!&lt;/h1&gt;</div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
 <p>Since we’re importing React and ReactDOM, we also need to install them, so run <code>npm install -D react react-dom</code>.</p>
 <p>Now we can run <code>npm start</code>, and we should see our “Hello, world!” and the rendered by React message.</p>
 <h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>We have a fully functional Webpack and Babel workflow now, which supports modern Javascript and React. The final product can be found in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
@@ -416,7 +476,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjb2f441s0009j9at6is2q5of" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjed5h68j000629atipzu8l4t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -518,7 +578,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cjb2f441r0008j9at6bicwzgi" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" data-id="cjed5h68s000h29atxw8pu2v3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -582,7 +642,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cjb2f441q0006j9atti94wbzt" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/09/19/blog/" data-id="cjed5h68i000529atj8vbne2u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -655,7 +715,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cjb2f441p0005j9at74use9po" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/" data-id="cjed5h68q000f29atfolu7l6b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -681,7 +741,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+      <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 13.33px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 16.67px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
     </div>
   </div>
 
@@ -690,7 +750,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -701,6 +761,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
         
           <li>
             <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
@@ -718,10 +782,6 @@
             <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
           </li>
         
-          <li>
-            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -734,7 +794,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 Samuel Scheiderich<br>
+      &copy; 2018 Samuel Scheiderich<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

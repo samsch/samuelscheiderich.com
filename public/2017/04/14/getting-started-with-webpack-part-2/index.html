@@ -6,7 +6,7 @@
   <title>Getting Started with Webpack - Part 2 | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="In Part 1, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshi">
-<meta name="keywords" content="developer experience,React,js,Webpack">
+<meta name="keywords" content="React,js,developer experience,Webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Getting Started with Webpack - Part 2">
 <meta property="og:url" content="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/index.html">
@@ -117,7 +117,7 @@
 <blockquote>
 <p><a href="https://gist.github.com/samsch/54abd031b6ca088abe652371c8dd8754" target="_blank" rel="external">webpack config diff</a></p>
 </blockquote>
-<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!&lt;/h1&gt;</div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
 <p>Since we’re importing React and ReactDOM, we also need to install them, so run <code>npm install -D react react-dom</code>.</p>
 <p>Now we can run <code>npm start</code>, and we should see our “Hello, world!” and the rendered by React message.</p>
 <h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>We have a fully functional Webpack and Babel workflow now, which supports modern Javascript and React. The final product can be found in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
@@ -132,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjb2f441s0009j9at6is2q5of" class="article-share-link">Share</a>
+      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjed5h68j000629atipzu8l4t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
@@ -176,7 +176,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Webpack/" style="font-size: 15px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 20px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+      <a href="/tags/React/" style="font-size: 16.67px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 13.33px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 16.67px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
     </div>
   </div>
 
@@ -185,7 +185,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -196,6 +196,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
         
           <li>
             <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
@@ -213,10 +217,6 @@
             <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
           </li>
         
-          <li>
-            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -229,7 +229,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 Samuel Scheiderich<br>
+      &copy; 2018 Samuel Scheiderich<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

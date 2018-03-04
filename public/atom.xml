@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samuelscheiderich.com/"/>
-  <updated>2017-12-11T16:52:58.526Z</updated>
+  <updated>2018-03-04T18:48:37.825Z</updated>
   <id>http://samuelscheiderich.com/</id>
   
   <author>
@@ -14,6 +14,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Using the Web Audio API</title>
+    <link href="http://samuelscheiderich.com/2018/03/04/using-the-web-audio-api/"/>
+    <id>http://samuelscheiderich.com/2018/03/04/using-the-web-audio-api/</id>
+    <published>2018-03-04T16:00:29.000Z</published>
+    <updated>2018-03-04T18:48:37.825Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Have you ever wanted to make some noise in your browser? I wanted to generate some sound effects, and it made me curious about what tools
+    
+    </summary>
+    
+    
+      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="Web API" scheme="http://samuelscheiderich.com/tags/Web-API/"/>
+    
+  </entry>
   
   <entry>
     <title>Sci-fi Prop Project</title>
@@ -100,11 +120,11 @@
     </summary>
     
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
-    
       <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
     
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
       <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
@@ -124,11 +144,11 @@
     </summary>
     
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
-    
       <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
     
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
       <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
@@ -148,11 +168,11 @@
     </summary>
     
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
-    
       <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
     
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
       <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
@@ -199,11 +219,11 @@
     </summary>
     
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
-    
       <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
     
       <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+    
+      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
     
       <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
     
