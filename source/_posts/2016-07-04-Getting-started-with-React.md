@@ -11,7 +11,7 @@ tags:
 
 Since originally written, Webpack released version 2. There are some changes to the configuration, and we no longer need to setup the define plugin ourselves for production mode.
 
-I've updated the guide, but I'm leaving this version here for historical purposes. All new projects should follow along with the new [Getting Started with React](https://samuelscheiderich.com/2017/04/21/getting-started-with-react/).
+I've updated the guide, but I'm leaving this version here for historical purposes. All new projects should follow along with the new [Getting Started with React](https://samsch.org/2017/04/21/getting-started-with-react/).
 
 The original Githup repo is also updated for the new guide. You can view the final result as it was for this version of the guide in the [git history](https://github.com/samsch/basic-react/tree/034c6eb9df309afd03806978c1326545ef64bc0d).
 

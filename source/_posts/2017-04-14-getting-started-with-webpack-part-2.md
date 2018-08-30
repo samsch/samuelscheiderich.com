@@ -7,7 +7,7 @@ tags:
 - developer experience
 - js
 ---
-In [Part 1](https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/), we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.
+In [Part 1](https://samsch.org/2017/04/08/getting-started-with-webpack/), we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.
 
 Our next step is to have our build system compile modern Javascript (ES2015, ES2016, ES2017) into code which can be run in current browsers (ES5). We also need to add in polyfills for some of the additional non-syntax language features.
 

@@ -1,4 +1,4 @@
-# samuelscheiderich.com
+# samsch.org
 Personal website and public pages.
 
 Deployment is expected to be handled by a gitignored `deploy` executable file/script.

@@ -214,6 +214,6 @@ The final product is available to clone in [basic-webpack-no-loaders](https://gi
 
 What we have now is a production ready Javascript build system. To make it your own, you can replace, change, and remove the files in `src/`, just make sure that the `entry` property in `webpack.config.js` points to your entry file (some common files are `src/main.js`, `src/index.js`, and `lib/index.js`).
 
-The most common extra configuration for Webpack is to include babel-loader with preset to compile modern Javascript to ES5 Javascript for browser compatibility. That will be explored in the [next post](https://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/).
+The most common extra configuration for Webpack is to include babel-loader with preset to compile modern Javascript to ES5 Javascript for browser compatibility. That will be explored in the [next post](https://samsch.org/2017/04/14/getting-started-with-webpack-part-2/).
 
 Happy coding!
