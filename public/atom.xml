@@ -4,9 +4,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://samuelscheiderich.com/"/>
+  <link href="http://samsch.org/"/>
   <updated>2018-03-04T19:48:51.450Z</updated>
-  <id>http://samuelscheiderich.com/</id>
+  <id>http://samsch.org/</id>
   
   <author>
     <name>Samuel Scheiderich</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>Using the Web Audio API</title>
-    <link href="http://samuelscheiderich.com/2018/03/04/using-the-web-audio-api/"/>
-    <id>http://samuelscheiderich.com/2018/03/04/using-the-web-audio-api/</id>
+    <link href="http://samsch.org/2018/03/04/using-the-web-audio-api/"/>
+    <id>http://samsch.org/2018/03/04/using-the-web-audio-api/</id>
     <published>2018-03-04T16:00:29.000Z</published>
     <updated>2018-03-04T19:48:51.450Z</updated>
     
@@ -29,16 +29,16 @@
     </summary>
     
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
-      <category term="Web API" scheme="http://samuelscheiderich.com/tags/Web-API/"/>
+      <category term="Web API" scheme="http://samsch.org/tags/Web-API/"/>
     
   </entry>
   
   <entry>
     <title>Sci-fi Prop Project</title>
-    <link href="http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/"/>
-    <id>http://samuelscheiderich.com/2017/12/11/sci-fi-prop-project/</id>
+    <link href="http://samsch.org/2017/12/11/sci-fi-prop-project/"/>
+    <id>http://samsch.org/2017/12/11/sci-fi-prop-project/</id>
     <published>2017-12-11T13:47:48.000Z</published>
     <updated>2017-12-11T16:52:58.526Z</updated>
     
@@ -50,18 +50,18 @@
     </summary>
     
     
-      <category term="arduino" scheme="http://samuelscheiderich.com/tags/arduino/"/>
+      <category term="arduino" scheme="http://samsch.org/tags/arduino/"/>
     
-      <category term="cos-play" scheme="http://samuelscheiderich.com/tags/cos-play/"/>
+      <category term="cos-play" scheme="http://samsch.org/tags/cos-play/"/>
     
-      <category term="sound" scheme="http://samuelscheiderich.com/tags/sound/"/>
+      <category term="sound" scheme="http://samsch.org/tags/sound/"/>
     
   </entry>
   
   <entry>
     <title>State Terminology</title>
-    <link href="http://samuelscheiderich.com/2017/08/29/state-terminology/"/>
-    <id>http://samuelscheiderich.com/2017/08/29/state-terminology/</id>
+    <link href="http://samsch.org/2017/08/29/state-terminology/"/>
+    <id>http://samsch.org/2017/08/29/state-terminology/</id>
     <published>2017-08-29T13:20:37.000Z</published>
     <updated>2017-08-29T14:19:21.569Z</updated>
     
@@ -72,20 +72,20 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
     
-      <category term="state" scheme="http://samuelscheiderich.com/tags/state/"/>
+      <category term="state" scheme="http://samsch.org/tags/state/"/>
     
-      <category term="patterns" scheme="http://samuelscheiderich.com/tags/patterns/"/>
+      <category term="patterns" scheme="http://samsch.org/tags/patterns/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
   </entry>
   
   <entry>
     <title>How to Add css-loader to Webpack</title>
-    <link href="http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/"/>
-    <id>http://samuelscheiderich.com/2017/07/14/how-to-add-css-loader-to-webpack/</id>
+    <link href="http://samsch.org/2017/07/14/how-to-add-css-loader-to-webpack/"/>
+    <id>http://samsch.org/2017/07/14/how-to-add-css-loader-to-webpack/</id>
     <published>2017-07-15T01:16:00.000Z</published>
     <updated>2017-07-15T01:17:15.025Z</updated>
     
@@ -96,20 +96,20 @@
     </summary>
     
     
-      <category term="webpack" scheme="http://samuelscheiderich.com/tags/webpack/"/>
+      <category term="webpack" scheme="http://samsch.org/tags/webpack/"/>
     
-      <category term="react" scheme="http://samuelscheiderich.com/tags/react/"/>
+      <category term="react" scheme="http://samsch.org/tags/react/"/>
     
-      <category term="css" scheme="http://samuelscheiderich.com/tags/css/"/>
+      <category term="css" scheme="http://samsch.org/tags/css/"/>
     
-      <category term="css-loader" scheme="http://samuelscheiderich.com/tags/css-loader/"/>
+      <category term="css-loader" scheme="http://samsch.org/tags/css-loader/"/>
     
   </entry>
   
   <entry>
     <title>Getting Started with React</title>
-    <link href="http://samuelscheiderich.com/2017/04/21/getting-started-with-react/"/>
-    <id>http://samuelscheiderich.com/2017/04/21/getting-started-with-react/</id>
+    <link href="http://samsch.org/2017/04/21/getting-started-with-react/"/>
+    <id>http://samsch.org/2017/04/21/getting-started-with-react/</id>
     <published>2017-04-21T22:36:00.000Z</published>
     <updated>2017-04-21T22:40:42.265Z</updated>
     
@@ -120,44 +120,44 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
+      <category term="Webpack" scheme="http://samsch.org/tags/Webpack/"/>
     
   </entry>
   
   <entry>
     <title>Getting Started with Webpack - Part 2</title>
-    <link href="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/"/>
-    <id>http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/</id>
+    <link href="http://samsch.org/2017/04/14/getting-started-with-webpack-part-2/"/>
+    <id>http://samsch.org/2017/04/14/getting-started-with-webpack-part-2/</id>
     <published>2017-04-14T14:45:02.000Z</published>
     <updated>2017-04-14T19:55:38.626Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;In &lt;a href=&quot;https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/&quot;&gt;Part 1&lt;/a&gt;, we setup basic production ready functiona
+      &lt;p&gt;In &lt;a href=&quot;https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Part 1&lt;/a&gt;, we setup b
     
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
+      <category term="Webpack" scheme="http://samsch.org/tags/Webpack/"/>
     
   </entry>
   
   <entry>
     <title>Getting Started with Webpack</title>
-    <link href="http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/"/>
-    <id>http://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/</id>
+    <link href="http://samsch.org/2017/04/08/getting-started-with-webpack/"/>
+    <id>http://samsch.org/2017/04/08/getting-started-with-webpack/</id>
     <published>2017-04-08T14:49:29.000Z</published>
     <updated>2017-09-28T18:58:02.869Z</updated>
     
@@ -168,20 +168,20 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
+      <category term="Webpack" scheme="http://samsch.org/tags/Webpack/"/>
     
   </entry>
   
   <entry>
     <title>Getting a blog started</title>
-    <link href="http://samuelscheiderich.com/2016/09/19/blog/"/>
-    <id>http://samuelscheiderich.com/2016/09/19/blog/</id>
+    <link href="http://samsch.org/2016/09/19/blog/"/>
+    <id>http://samsch.org/2016/09/19/blog/</id>
     <published>2016-09-19T23:58:27.000Z</published>
     <updated>2016-09-20T02:29:27.279Z</updated>
     
@@ -193,22 +193,22 @@
     </summary>
     
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
     
-      <category term="deployment" scheme="http://samuelscheiderich.com/tags/deployment/"/>
+      <category term="deployment" scheme="http://samsch.org/tags/deployment/"/>
     
-      <category term="node" scheme="http://samuelscheiderich.com/tags/node/"/>
+      <category term="node" scheme="http://samsch.org/tags/node/"/>
     
-      <category term="hexo" scheme="http://samuelscheiderich.com/tags/hexo/"/>
+      <category term="hexo" scheme="http://samsch.org/tags/hexo/"/>
     
-      <category term="ghost" scheme="http://samuelscheiderich.com/tags/ghost/"/>
+      <category term="ghost" scheme="http://samsch.org/tags/ghost/"/>
     
   </entry>
   
   <entry>
     <title>Getting Started with React (Webpack v1)</title>
-    <link href="http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/"/>
-    <id>http://samuelscheiderich.com/2016/07/04/Getting-started-with-React/</id>
+    <link href="http://samsch.org/2016/07/04/Getting-started-with-React/"/>
+    <id>http://samsch.org/2016/07/04/Getting-started-with-React/</id>
     <published>2016-07-04T19:10:16.000Z</published>
     <updated>2017-04-21T22:40:32.513Z</updated>
     
@@ -219,13 +219,13 @@
     </summary>
     
     
-      <category term="React" scheme="http://samuelscheiderich.com/tags/React/"/>
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
     
-      <category term="js" scheme="http://samuelscheiderich.com/tags/js/"/>
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
     
-      <category term="developer experience" scheme="http://samuelscheiderich.com/tags/developer-experience/"/>
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
     
-      <category term="Webpack" scheme="http://samuelscheiderich.com/tags/Webpack/"/>
+      <category term="Webpack" scheme="http://samsch.org/tags/Webpack/"/>
     
   </entry>
   

@@ -6,10 +6,10 @@
   <title>Getting Started with Webpack - Part 2 | Samuel Scheiderich</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="In Part 1, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshi">
-<meta name="keywords" content="React,js,developer experience,Webpack">
+<meta name="keywords" content="developer experience,React,js,Webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Getting Started with Webpack - Part 2">
-<meta property="og:url" content="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/index.html">
+<meta property="og:url" content="http://samsch.org/2017/04/14/getting-started-with-webpack-part-2/index.html">
 <meta property="og:site_name" content="Samuel Scheiderich">
 <meta property="og:description" content="In Part 1, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshi">
 <meta property="og:locale" content="en">
@@ -28,6 +28,18 @@
   
   <link rel="stylesheet" href="/css/style.css">
   
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120025686-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120025686-1');
+</script>
+
+<!-- End Google Analytics -->
+
 
 </head>
 
@@ -59,7 +71,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samuelscheiderich.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samsch.org"></form>
       </div>
     </div>
   </div>
@@ -88,7 +100,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>In <a href="https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/">Part 1</a>, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.</p>
+        <p>In <a href="https://samuelscheiderich.com/2017/04/08/getting-started-with-webpack/" target="_blank" rel="external">Part 1</a>, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.</p>
 <p>Our next step is to have our build system compile modern Javascript (ES2015, ES2016, ES2017) into code which can be run in current browsers (ES5). We also need to add in polyfills for some of the additional non-syntax language features.</p>
 <p>We also will enable JSX compilation for use with React.</p>
 <h2 id="Loaders-and-our-starting-point"><a href="#Loaders-and-our-starting-point" class="headerlink" title="Loaders and our starting point"></a>Loaders and our starting point</h2><p>Webpack has a couple ways to extend its functionality. There is a <a href="https://webpack.js.org/plugins/" target="_blank" rel="external">plugin system</a>, which used for tools such as UglifyJS for code minification, and there is the <a href="https://webpack.js.org/loaders/" target="_blank" rel="external">loader system</a>. Loaders allow you to pre-process files before they are added to the bundle.</p>
@@ -132,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://samuelscheiderich.com/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjed5h68j000629atipzu8l4t" class="article-share-link">Share</a>
+      <a data-url="http://samsch.org/2017/04/14/getting-started-with-webpack-part-2/" data-id="cjlgvl58q0006m8at5u3gvuiw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
