@@ -13,11 +13,9 @@ If you write JavaScript code you should be using a module system. For the browse
 
 > Bundler: A tool which compiles a module-based codebase into a single (or a few) large file to be linked from your HTML.
 
-The industry standard tool for bundling is Webpack. In the past, Webpack had a bad rep for being difficult to configure because it's documentation was lacking, and because new users were often shown bloated examples including features they might never use.
+The industry standard tool for bundling is Webpack. In the past, Webpack had a bad rep for being difficult to configure because it's documentation was lacking, and because new users were often shown bloated examples including features they might never use. Since then, the documentation has dramatically improved. In this guide, we'll focus on what you need to get started!
 
-This guide will walk through the basic setup, and progress through a production-ready configuration.
-
-> The [Webpack documentation](https://webpack.js.org/concepts/) is really quite good, but it can be hard to filter to just what you need. This guide is meant to be the minimal parts you really need.
+> The [Webpack documentation](https://webpack.js.org/concepts/) is really quite good, but it can be hard to filter to just what you need. This guide is meant to be the minimal parts you really need for development and production.
 
 # Prerequisites
 
@@ -35,7 +33,9 @@ First, create a project folder (such as `myproject`). In the project folder open
 
 > From here on out, all command line snippets will assume you are currently in the project folder root.
 
-Add Webpack to your development dependencies: `npm i -D webpack webpack-cli`.
+Add Webpack to your development dependencies: `npm install --save-dev webpack webpack-cli`.
+
+> From here on in this guide, we'll use the shorthand `npm` commands like `npm i` (`npm install`) and `npm i -D` (`install --save-dev`).
 
 Create a folder in your project called `src`.
 
@@ -73,7 +73,28 @@ Webpack has some defaults which allow you to do very basic bundling without any 
 
 > *Entrypoints* are files you directly link to with script tags. Webpack can bundle multiple entrypoints in a single build, and can share common dependencies between them if configured to do so. Each entrypoint will have it own output bundle file.
 
-We can just run `npx webpack` and it will bundle our files into `dist/main.js`. You can even run `node main.js` to see that it works! If you setup a static file server to serve the files in `dist/`, you could have an html script src link to this file to run it in the browser.
+We can just run `npx webpack` and it will bundle our files into `dist/main.js`. While not necessary for Webpack, we'll create an `index.html` file and start a static server.
+
+Add `dist/index.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  Check the console! (F12 to open dev tools)
+  <script src="/main.js"></script>
+</body>
+</html>
+```
+
+You can start a basic file server with `npx http-server ./dist`, and view the page in your browser at http://localhost:8080. (Open the browser console to view the output.)
+
+> You can do this in a separate console so you don't need to stop and restart it to run Webpack. `npx` will re-download `http-server` every time, to avoid this slowdown when running it, you can install it to the project with `npm i -D http-server`, or install it globally `npm i -g http-server`. After that, running `npx http-server ./dist` will use the previously installed module.
 
 ## Build modes
 
@@ -148,6 +169,10 @@ To do this, change your `"dev"` script in `package.json` to:
 
 When you run this, instead of just building and exiting, Webpack continues to run, and any time you make a change and save a file that is being bundled, the bundle will get rebuilt.
 
+If you are still running `http-server` (or another static file server from `dist/`), you will need to refresh the page after you save your files.
+
+> You can setup [LiveReload plugin](https://www.npmjs.com/package/webpack-livereload-plugin) which can refresh the page for you when your bundle is rebuilt. You should make sure you only do this for development. [Setting up development-only Webpack config]().
+
 ## Dev Server (use webpack-dev-server)
 
 If you don't have a local file server to serve `dist/` with, you can use webpack-dev-server, which combines Webpack with a small file server that has useful development features.
@@ -175,26 +200,9 @@ Replace your `"dev"` script in `package.json` with:
     "dev": "webpack-dev-server --mode development --open",
 ```
 
-Now when you run `npm run dev`, webpack-dev-server will start a file server with the contents of `dist/`, Webpack will run, and automatically run again any time a file that is bundled is saved.
+> If you were still running `http-server`, you can stop that process since webpack-dev-server now includes that functionality.
 
-You can manually add an `index.html` file with these contents to the `dist/` folder:
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  Check the console! (F12 to open dev tools)
-  <script src="/main.js"></script>
-</body>
-</html>
-```
-
-If you load/refresh the page with that file in `dist/`, and look in the browser console, you can see the log output from our test files.
+Now when you run `npm run dev`, webpack-dev-server will start a file server with the contents of `dist/`, Webpack will run, and automatically run again any time a file that is bundled is saved. Additionally, webpack-dev-server includes some extra code which causes the browser to refresh any time the code rebuilds. With the `--open` option included, it will also open your browser to show the index.html file.
 
 > [webpack-dev-server configuration options](https://webpack.js.org/configuration/dev-server/) include a proxy option so that all requests which don't match a bundle file are sent to another server.
 
@@ -292,3 +300,4 @@ From the basic configuration created here, we can expand to support a lot of hel
 - Importing stylesheets and other static assets, to be included in the output folder.
 - Transforming non-JS code into JS (such as JSX, Typescript, Flow, and JavaScript proposal features).
 - Create a map (manifest) of output files for programmatic consumption.
+- Development only configuration options.
