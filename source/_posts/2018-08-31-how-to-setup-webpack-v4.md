@@ -92,9 +92,11 @@ Add `dist/index.html`
 </html>
 ```
 
-You can start a basic file server with `npx http-server ./dist`, and view the page in your browser at http://localhost:8080. (Open the browser console to view the output.)
-
-> You can do this in a separate console so you don't need to stop and restart it to run Webpack. `npx` will re-download `http-server` every time, to avoid this slowdown when running it, you can install it to the project with `npm i -D http-server`, or install it globally `npm i -g http-server`. After that, running `npx http-server ./dist` will use the previously installed module.
+> You can start a basic file server with `npx live-server ./dist` or `npx http-server -c-1 ./dist`, or setup your own server to serve the files in `dist/`. (Open the browser console to view the output.)
+>
+> [live-server](https://www.npmjs.com/package/live-server) automatically reloads the page for any file changes, while [http-server](https://www.npmjs.com/package/http-server) does not. We use `-c-1` with `http-server` to disable it's aggressive caching. Both of these servers are only suitable for development and testing, and should not be used in production.
+>
+> Run the server in a separate console so you don't need to stop and restart it to run Webpack. `npx` will re-download `live-server` or `http-server` every time, so to avoid this slowdown when running it, you can install it to the project with `npm i -D <package>`, or install it globally `npm i -g <package>`. After that, `npx` will use the previously installed module.
 
 ## Build modes
 
@@ -169,7 +171,7 @@ To do this, change your `"dev"` script in `package.json` to:
 
 When you run this, instead of just building and exiting, Webpack continues to run, and any time you make a change and save a file that is being bundled, the bundle will get rebuilt.
 
-If you are still running `http-server` (or another static file server from `dist/`), you will need to refresh the page after you save your files.
+If your static server doesn't automatically refresh the page when files change (such as `http-server`), you will need to refresh the page after you save your files.
 
 > You can setup [LiveReload plugin](https://www.npmjs.com/package/webpack-livereload-plugin) which can refresh the page for you when your bundle is rebuilt. You should make sure you only do this for development. [Setting up development-only Webpack config]().
 
@@ -200,7 +202,7 @@ Replace your `"dev"` script in `package.json` with:
     "dev": "webpack-dev-server --mode development --open",
 ```
 
-> If you were still running `http-server`, you can stop that process since webpack-dev-server now includes that functionality.
+> If you are still running a static server like `http-server` or `live-server`, you can stop that process since webpack-dev-server includes that functionality.
 
 Now when you run `npm run dev`, webpack-dev-server will start a file server with the contents of `dist/`, Webpack will run, and automatically run again any time a file that is bundled is saved. Additionally, webpack-dev-server includes some extra code which causes the browser to refresh any time the code rebuilds. With the `--open` option included, it will also open your browser to show the index.html file.
 
