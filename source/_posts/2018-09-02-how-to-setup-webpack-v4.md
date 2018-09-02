@@ -1,6 +1,6 @@
 ---
 title: How to Setup Webpack v4
-date: 2018-08-31 18:56:37
+date: 2018-09-02 00:00:00
 tags:
 - React
 - Webpack
@@ -303,3 +303,5 @@ From the basic configuration created here, we can expand to support a lot of hel
 - Transforming non-JS code into JS (such as JSX, Typescript, Flow, and JavaScript proposal features).
 - Create a map (manifest) of output files for programmatic consumption.
 - Development only configuration options.
+
+To explore these topics and more, head to the [Getting started with Webpack landing page](https://github.com/samsch/webpack-guide/blob/master/README.md).
