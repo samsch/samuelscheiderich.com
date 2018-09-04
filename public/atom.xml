@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samsch.org/"/>
-  <updated>2018-03-04T19:48:51.450Z</updated>
+  <updated>2018-09-04T19:57:10.271Z</updated>
   <id>http://samsch.org/</id>
   
   <author>
@@ -14,6 +14,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to Setup Webpack v4</title>
+    <link href="http://samsch.org/2018/09/04/how-to-setup-webpack-v4/"/>
+    <id>http://samsch.org/2018/09/04/how-to-setup-webpack-v4/</id>
+    <published>2018-09-04T04:00:00.000Z</published>
+    <updated>2018-09-04T19:57:10.271Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;These docs are written for Webpack version 4, and Babel version 7.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;If you write JavaScript code you sho
+    
+    </summary>
+    
+    
+      <category term="developer experience" scheme="http://samsch.org/tags/developer-experience/"/>
+    
+      <category term="React" scheme="http://samsch.org/tags/React/"/>
+    
+      <category term="js" scheme="http://samsch.org/tags/js/"/>
+    
+      <category term="Webpack" scheme="http://samsch.org/tags/Webpack/"/>
+    
+  </entry>
   
   <entry>
     <title>Using the Web Audio API</title>

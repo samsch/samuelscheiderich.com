@@ -1,6 +1,6 @@
 ---
 title: How to Setup Webpack v4
-date: 2018-09-02 00:00:00
+date: 2018-09-04 00:00:00
 tags:
 - React
 - Webpack
@@ -35,7 +35,7 @@ First, create a project folder (such as `myproject`). In the project folder open
 
 Add Webpack to your development dependencies: `npm install --save-dev webpack webpack-cli`.
 
-> From here on in this guide, we'll use the shorthand `npm` commands like `npm i` (`npm install`) and `npm i -D` (`install --save-dev`).
+> From here on in this guide, we'll use the shorthand `npm` commands like `npm i` (for `npm install`) and `npm i -D` (for `install --save-dev`).
 
 Create a folder in your project called `src`.
 
@@ -304,4 +304,4 @@ From the basic configuration created here, we can expand to support a lot of hel
 - Create a map (manifest) of output files for programmatic consumption.
 - Development only configuration options.
 
-To explore these topics and more, head to the [Getting started with Webpack landing page](https://github.com/samsch/webpack-guide/blob/master/README.md).
+To explore these topics and more, head to the [Getting started with Webpack landing page](https://github.com/samsch/webpack-guide/).
