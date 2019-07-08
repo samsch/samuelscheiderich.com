@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samsch.org/"/>
-  <updated>2018-09-04T19:57:10.271Z</updated>
+  <updated>2019-07-08T21:50:25.287Z</updated>
   <id>http://samsch.org/</id>
   
   <author>
@@ -14,6 +14,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Does Using React Negatively Affect SEO?</title>
+    <link href="http://samsch.org/2019/07/08/does-using-react-negatively-affect-seo/"/>
+    <id>http://samsch.org/2019/07/08/does-using-react-negatively-affect-seo/</id>
+    <published>2019-07-08T21:45:04.000Z</published>
+    <updated>2019-07-08T21:50:25.287Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://gist.github.com/samsch/c97e955782e5a2eeb726cf44d450cd6f&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Original gist&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The eff
+    
+    </summary>
+    
+    
+      <category term="react" scheme="http://samsch.org/tags/react/"/>
+    
+      <category term="seo" scheme="http://samsch.org/tags/seo/"/>
+    
+      <category term="ssr" scheme="http://samsch.org/tags/ssr/"/>
+    
+  </entry>
   
   <entry>
     <title>How to Setup Webpack v4</title>
