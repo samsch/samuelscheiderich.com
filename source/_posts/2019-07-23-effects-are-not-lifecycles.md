@@ -2,7 +2,7 @@
 title: Effects are not lifecycles
 date: 2019-07-23 16:58:11
 tags:
-  - react
+  - React
   - hooks
   - lifecycles
 ---

@@ -2,7 +2,7 @@
 title: Does Using React Negatively Affect SEO?
 date: 2019-07-08 17:45:04
 tags:
-  - react
+  - React
   - seo
   - ssr
 ---

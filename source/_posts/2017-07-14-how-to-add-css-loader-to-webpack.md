@@ -3,7 +3,7 @@ title: How to Add css-loader to Webpack
 date: 2017-07-14 21:16:00
 tags:
   - webpack
-  - react
+  - React
   - css
   - css-loader
 ---
