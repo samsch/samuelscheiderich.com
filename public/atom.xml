@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://samsch.org/"/>
-  <updated>2019-07-08T21:50:25.287Z</updated>
+  <updated>2019-07-23T23:13:02.159Z</updated>
   <id>http://samsch.org/</id>
   
   <author>
@@ -14,6 +14,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Effects are not lifecycles</title>
+    <link href="http://samsch.org/2019/07/23/effects-are-not-lifecycles/"/>
+    <id>http://samsch.org/2019/07/23/effects-are-not-lifecycles/</id>
+    <published>2019-07-23T20:58:11.000Z</published>
+    <updated>2019-07-23T23:13:02.159Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;You can’t write lifecycles with useEffect.&lt;/p&gt;
+&lt;p&gt;With React hooks being widely regarded as “better” than using classes in the React comm
+    
+    </summary>
+    
+    
+      <category term="react" scheme="http://samsch.org/tags/react/"/>
+    
+      <category term="hooks" scheme="http://samsch.org/tags/hooks/"/>
+    
+      <category term="lifecycles" scheme="http://samsch.org/tags/lifecycles/"/>
+    
+  </entry>
   
   <entry>
     <title>Does Using React Negatively Affect SEO?</title>
