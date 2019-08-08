@@ -49,7 +49,7 @@ useEffect(() => {
 ```
 This code *works*. It's the most naive approach given our concept of what we *want*, but it works perfectly fine.
 
-> Arguably, there are more naive approaches, but we're making the assuming here that we already know *how* hooks work, so we aren't taking into consideration putting the `useEffect()` inside the condition, since that is a known error.
+> Arguably, there are more naive approaches, but we're making the assumption here that we already know *how* hooks work, so we aren't taking into consideration putting the `useEffect()` inside the condition, since that is a known error.
 
 Let's compare that to what the code looks like if you emulate `componentDidMount` using `[]` as a second argument.
 ```jsx
