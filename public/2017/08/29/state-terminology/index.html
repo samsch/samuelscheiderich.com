@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>State Terminology | Samuel Scheiderich</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I can break “state” into at least five different meanings, all o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="State Terminology">
+<meta property="og:url" content="http://samsch.org/2017/08/29/state-terminology/index.html">
+<meta property="og:site_name" content="Samuel Scheiderich">
+<meta property="og:description" content="What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I can break “state” into at least five different meanings, all o">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-08-29T13:20:37.000Z">
+<meta property="article:modified_time" content="2017-08-29T14:19:21.569Z">
+<meta property="article:author" content="Samuel Scheiderich">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="state">
+<meta property="article:tag" content="patterns">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Samuel Scheiderich</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/Samuel-Scheiderich">About me</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samsch.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-state-terminology" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/29/state-terminology/" class="article-date">
+  <time datetime="2017-08-29T13:20:37.000Z" itemprop="datePublished">2017-08-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      State Terminology
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I can break “state” into at least five different meanings, all of which are used in documentation, IRC chats, forums posts, and elsewhere.</p>
+<h3 id="General-state"><a href="#General-state" class="headerlink" title="General state"></a>General state</h3><p>The general idea of “state”, is the remembered events, data, and user interactions of the application. It is the part of an application which can change. For a longer definition, check out <a href="https://en.wikipedia.org/wiki/State_%28computer_science%29" target="_blank" rel="external">State (computer science)</a> on Wikipedia.</p>
+<h3 id="Application-state"><a href="#Application-state" class="headerlink" title="Application state"></a>Application state</h3><p>A subset of the general state in an app is the “application state”. This is data relevant to the actual functionality of the application. It may have properties including form data, current user info, and lists of data.</p>
+<h3 id="View-state"><a href="#View-state" class="headerlink" title="View state"></a>View state</h3><p>Another subset of the general state is “view state”. This is data which is used in the user interface to improve or change the user experience. This state is never relevant to the application, such that it is possible to have the exact same application functionality without any view state<sup><a href="#view-state-removed">1</a></sup>. Included types of information in the view state may be whether a dropdown is open, the current page, or a selected theme.</p>
+<h3 id="Component-state"><a href="#Component-state" class="headerlink" title="Component state"></a>Component state</h3><p>This is where some confusion usually starts to set in. Many users (including blog, documentation, forum post, and real-time chat authors) also use “state” to refer to the built-in state handling functionality in <code>React.Component</code> (and <code>React.PureComponent</code>) classes. This functionality is not itself actual “state”, but is actually a type of “store”. “Component state” is just a tool, and it allows you to store any type of state.</p>
+<h3 id="state-e-g-“Redux-state”"><a href="#state-e-g-“Redux-state”" class="headerlink" title="\ state (e.g., “Redux state”)"></a>\<store\> state (e.g., “Redux state”)</store\></h3><p>In contrast to using “state” to refer to “component state”, it’s also used to refer specifically to state stored in other types of state stores. Currently, a popular state store is Redux, but this also applies to any external store (Mobx, Backbone, other Flux implementations). Sometimes, users will use “application state” to refer to state stored outside of React “component state”.</p>
+<h2 id="The-Right-Way"><a href="#The-Right-Way" class="headerlink" title="The Right Way"></a>The Right Way</h2><p>Of course, The Right Way doesn’t exist. Nobody wants to explicitly type “application state” or “component state” all the time, even though that would allow much less ambiguity.</p>
+<p>When communicating with someone, I recommend verifying what they mean when they say “state” if it might be ambiguous, and being explicit at least once in a while yourself to help others understand you.</p>
+<blockquote>
+<p><a name="view-state-removed">1.</a> Generally this is true, but in most circumstances having a stateless user interface would require vast changes to an application or website, including moving everything into a single page and replacing dropdowns with different types of UIs (radio buttons, checkbox lists, etc). Even then, trying to remove some state such as mouse and scroll position would make it very difficult to maintain the same application functionality. To have a <strong>perfectly</strong> stateless UI for a stateful app would be very difficult or impossible.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/08/29/state-terminology/" data-id="ckixl4zw0000ejku33ekv4rjc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/patterns/" rel="tag">patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state/" rel="tag">state</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/11/sci-fi-prop-project/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Sci-fi Prop Project
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/14/how-to-add-css-loader-to-webpack/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">How to Add css-loader to Webpack</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 12.5px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 15px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hooks/" style="font-size: 10px;">hooks</a> <a href="/tags/js/" style="font-size: 17.5px;">js</a> <a href="/tags/lifecycles/" style="font-size: 10px;">lifecycles</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/ssr/" style="font-size: 10px;">ssr</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/23/effects-are-not-lifecycles/">Effects are not lifecycles</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/does-using-react-negatively-affect-seo/">Does Using React Negatively Affect SEO?</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/04/how-to-setup-webpack-v4/">How to Setup Webpack v4</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/state-terminology/">State Terminology</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/19/blog/">Getting a blog started</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Samuel Scheiderich<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/Samuel-Scheiderich" class="mobile-nav-link">About me</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

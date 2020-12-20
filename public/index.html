@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Samuel Scheiderich</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Samuel Scheiderich">
+<meta property="og:url" content="http://samsch.org/index.html">
+<meta property="og:site_name" content="Samuel Scheiderich">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Samuel Scheiderich">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Samuel Scheiderich</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/Samuel-Scheiderich">About me</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samsch.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-effects-are-not-lifecycles" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/23/effects-are-not-lifecycles/" class="article-date">
+  <time datetime="2019-07-23T20:58:11.000Z" itemprop="datePublished">2019-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/23/effects-are-not-lifecycles/">Effects are not lifecycles</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>You can’t write lifecycles with useEffect.</p>
+<p>With React hooks being widely regarded as “better” than using classes in the React community, both for new users and for experienced developers, there’s a wide pattern of developer migration to learn the new tools.</p>
+<p>Most of these developers are bringing with them the concepts they’ve gotten used to with React classes and even from non-React frameworks or tools. Some of these are easy to directly transfer across: It’s not terribly hard to pick up <code>useState</code> if you are used to class state, and <code>useRef</code> is fairly straight forward for many as well, once they get the basic concept of how hooks hold on to state.</p>
+<h2 id="Lifecycles-are-“when”-you-do-things"><a href="#Lifecycles-are-“when”-you-do-things" class="headerlink" title="Lifecycles are “when” you do things"></a>Lifecycles are “when” you do things</h2><p>React class component authors are used to writing functionality in lifecycles, and lifecycles don’t exist with hooks. You can <em>emulate</em> them if you’re careful, maybe using some <code>useRef</code> instances to reference changing props because of closures. But emulating lifecycles is a bad idea, and the reason why is this: Effects are a higher-level abstraction than lifecycles.</p>
+<p>When you use a lifecycle like componentDidMount, or componentDidUpdate (let alone the older deprecated lifecycles which ran at different stages), you must think in terms of <em>when</em> something should happen. “I want the data loaded when the component mounts.” “I want to load data if when the component updates with a new X prop.” This idea of “when” is procedural thinking. The “when” concept isn’t actually important, but because the tool for completing these tasks is lifecycles, you need to map the “what” that you want to do, to the “when” of a specific lifecycle.</p>
+<p>Well I’m here to tell you to forget all of that. Seriously, forget the concept of “when” entirely. You don’t care <em>when</em> something happens. You really don’t. You think you might for this specific thing? You don’t.</p>
+<h2 id="Effects-are-“what”-not-“when”"><a href="#Effects-are-“what”-not-“when”" class="headerlink" title="Effects are “what”, not “when”"></a>Effects are “what”, not “when”</h2><p>React is a strict model. It’s part of why it’s so powerful and flexible. The model says “given X state, the view should be viewFunction(X)”. For a long time, we had to break this model for anything that wasn’t direct view output. Instead of “given X state, do effectFunction(X)”, we had to break down <em>when</em> we wanted those things to happen, and sort them into lifecycle methods.</p>
+<p>With <code>useEffect</code>, you say “given X state, do effectFunction(x)”. What’s important now is just <em>what</em> your state is, and <em>what</em> you should do given that state. “When” doesn’t matter anymore. With lifecycles, you would do async loads of your data in componentDidMount. You did it at mount, because you know it’s not previously been done then. But do you <em>actually</em> care about it being at mount? Isn’t what really matters that you load the data <em>if it hasn’t already been loaded?</em> So we just boiled it down to the important part: If our data is not yet loaded, then load the data.</p>
+<p>That concept is how <code>useEffect</code> works. We don’t care that the component is mounting, we just write in our useEffect that we want the data to be loaded if it hasn’t been already. What’s more, from a high level, we don’t usually even care if it loads the data multiple times, just that the data gets loaded.</p>
+<h2 id="What-it-looks-like-in-code"><a href="#What-it-looks-like-in-code" class="headerlink" title="What it looks like in code"></a>What it looks like in code</h2><p>Now we’ve boiled down the <em>what</em> that we want to do. “When data isn’t loaded, load the data.”</p>
+<p>The naive approach looks like this:</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> [isLoaded, setLoaded] = useState(<span class="literal">false</span>);</div><div class="line"><span class="keyword">const</span> [data, setData] = useState(<span class="literal">null</span>);</div><div class="line"></div><div class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">if</span> (isLoaded === <span class="literal">false</span>) &#123;</div><div class="line">    loadData().then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</div><div class="line">      setData(data);</div><div class="line">      setLoaded(<span class="literal">true</span>);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>This code <em>works</em>. It’s the most naive approach given our concept of what we <em>want</em>, but it works perfectly fine.</p>
+<blockquote>
+<p>Arguably, there are more naive approaches, but we’re making the assumption here that we already know <em>how</em> hooks work, so we aren’t taking into consideration putting the <code>useEffect()</code> inside the condition, since that is a known error.</p>
+</blockquote>
+<p>Let’s compare that to what the code looks like if you emulate <code>componentDidMount</code> using <code>[]</code> as a second argument.<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> [data, setData] = useState(<span class="literal">null</span>);</div><div class="line"></div><div class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  loadData().then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</div><div class="line">    setData(data);</div><div class="line">    setLoaded(<span class="literal">true</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;, []);</div></pre></td></tr></table></figure></p>
+<p>At first glance, there is less code involved, which you might argue is a good thing. But this code doesn’t describe the situation as well. We have <em>implicit</em> state. It <em>looks</em> like <code>loadData()</code> should run every time, because there is no <em>semantic</em> code which says it won’t. In other words, we aren’t <em>describing</em> what the code is actually supposed to do. If you remove the <code>[]</code>, then this code looks almost identical, but simply doesn’t work properly (it always loads data, instead of only if we need it). What’s more, we very likely need the loading state in render anyway, and while you can assume that <code>null</code> data means it’s not loaded, you are breaking single responsibility principle by overloading the meaning of a variable.</p>
+<p>This is a very common stumbling block that people trip over when learning hooks, because they try to emulate lifecycles.</p>
+<h2 id="Optimizing"><a href="#Optimizing" class="headerlink" title="Optimizing"></a>Optimizing</h2><p>Now, for practical purposes, we <em>don’t</em> actually want the <code>loadData</code> function called more than once. If you follow the simplest application of what belongs in the <code>useEffect</code> dependencies argument (every outside reference), this is automatically fixed:<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> [isLoaded, setLoaded] = useState(<span class="literal">false</span>);</div><div class="line"><span class="keyword">const</span> [data, setData] = useState(<span class="literal">null</span>);</div><div class="line"></div><div class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">if</span> (isLoaded === <span class="literal">false</span>) &#123;</div><div class="line">    loadData().then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</div><div class="line">      setData(data);</div><div class="line">      setLoaded(<span class="literal">true</span>);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">&#125;, [isLoaded, loadData, setData, setLoaded]);</div></pre></td></tr></table></figure></p>
+<p>The two setters won’t change, but they are semantically deps of the function, and maybe down the road they get replaced by something that might change. We’ll assume for now that <code>loadData</code> won’t change (if it did, it will only trigger a new call <em>if</em> <code>isLoaded</code> is still <code>false</code>). Our key dependency here is <code>isLoaded</code>. In the first pass, React automatically runs the effect, and <code>isLoaded</code> is false, so <code>loadData()</code> is called. If the component renders again while <code>isLoaded</code> is still false, the deps won’t have changed, so the effect won’t run again.</p>
+<p>Once <code>loadData()</code> resolves, <code>isLoaded</code> is set true. The effect runs again, but this time the condition is false, so <code>loadData()</code> isn’t called.</p>
+<p>What’s important to take away from this is that the dependency argument <em>didn’t change</em> our functionality at all, it just reduced unnecessary calls to a function.</p>
+<h2 id="But-what-about-things-that-shouldn’t-be-loaded-more-than-once"><a href="#But-what-about-things-that-shouldn’t-be-loaded-more-than-once" class="headerlink" title="But what about things that shouldn’t be loaded more than once!"></a>But what about things that <em>shouldn’t</em> be loaded more than once!</h2><p>Ah, right. Maybe it’s making a call which changes something somewhere else. It should <em>only</em> be called once when needed.</p>
+<p>This means our “what” changed. It’s no longer “if not loaded, load data”, it’s now: “if not loaded, <em>and not already loading</em>, load data.” Because our “what” changed, our semantic code should change too.</p>
+<p>We could simply add an <code>isLoading</code> state, but then we could have something confusing happen like <code>isLoading</code> and <code>isLoaded</code> both true! Since these state should be <em>exclusive</em>, that means they are also <em>related</em>. And more than related, they are actually the <em>same</em> state field (the data status), just different values.</p>
+<p>So now we change our state code to reflect our new “what”:<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> [dataStatus, setDataStatus] = useState(<span class="string">'empty'</span>);</div><div class="line"><span class="keyword">const</span> [data, setData] = useState(<span class="literal">null</span>);</div><div class="line"></div><div class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">if</span> (dataStatus === <span class="string">'empty'</span>) &#123;</div><div class="line">    loadData().then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</div><div class="line">      setData(data);</div><div class="line">      setDataStatus(<span class="string">'available'</span>);</div><div class="line">    &#125;);</div><div class="line">    setDataStatus(<span class="string">'loading'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Now we have code which <em>only</em> calls <code>loadData()</code> when we need it and it isn’t already loading, AND it doesn’t use the dependency argument of <code>useEffect</code>.</p>
+<p>Additionally, the different parts of our state are all explicitly included here.</p>
+<h2 id="Tell-me-what-to-do"><a href="#Tell-me-what-to-do" class="headerlink" title="Tell me what to do!"></a>Tell me what to do!</h2><p>So, forget about lifecycles, mounting, updates, and generally “when” thing happen. Just completely put it out of your head.</p>
+<p>Think about <em>what</em> you need to do, and <em>what</em> the states are that should cause those things to happen.</p>
+<p>Model those states explicitly in your code, and model the effects run based on those states.</p>
+<p>Your code should <em>always</em> work without using the second argument to <code>useEffect</code>. If you <em>need</em>, the second argument, you are probably incorrectly coding your functionality.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2019/07/23/effects-are-not-lifecycles/" data-id="ckixl4zw3000ljku3celreiul" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hooks/" rel="tag">hooks</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lifecycles/" rel="tag">lifecycles</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-does-using-react-negatively-affect-seo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/08/does-using-react-negatively-affect-seo/" class="article-date">
+  <time datetime="2019-07-08T21:45:04.000Z" itemprop="datePublished">2019-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/08/does-using-react-negatively-affect-seo/">Does Using React Negatively Affect SEO?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://gist.github.com/samsch/c97e955782e5a2eeb726cf44d450cd6f" target="_blank" rel="external">Original gist</a></p>
+<p>The effect on SEO related to React comes from doing client-side rendering only. So this isn’t React specific, any client-side-only view will suffer from this. But yes, SEO explicitly suffers for non-Google search engines which don’t run the JavaScript for a page. Basically, your page is effectively blank. Google does run JavaScript, but their algorithm is intentionally quite complex and takes into account many factors, some of which (like initial render performance) can be affected by using only client-side rendering.</p>
+<p>In reality, most sites where SEO matters for the pages probably should not be rendered on the client, or at least not on the client only. The web is designed around servers generating html, and unless you have a strong reason not to, it’s better to fall in with that paradigm by default.</p>
+<p>So then, there are two ways React can still be valuable, even when rendering on the server. The simpler way is to just use React as a server side templating language. I’ve been doing this on a current project, and it works quite nicely. JSX is handled on Node by compiling your server code with the Babel cli. Now, certain frequently-used features for front end that are normally handled by Webpack don’t have great support and can be much more of a pain to setup (css-modules, file/image imports), but if you just treat React like any other templating language (e.g., Pug), it’s not really any worse, and I prefer it personally.</p>
+<p>The other option is using hydrated React SSR. Frequently this is just referred to as “React SSR” or even just “SSR”, but I try to explicitly saying “hydrated” here because “SSR” simply stands for Server Side Rendering, which nominally describes basically anything that isn’t client-side rendered.</p>
+<p>Hydrated SSR means you share React components on the server and client, render on the server for the first request, the client code runs and “hydrates” it (the client renders a second time, ensuring it matches what the server rendered and attaching event listeners), and then client routing and rendering take over from there.</p>
+<p>Hydrated SSR sounds great, but realize you get nearly all the downsides and only some of the upsides of doing both client and server rendering. It makes the codebase more complex and heavier. If you aren’t using a Node (JavaScript) backend, then it adds significant complexity. And while it does improve SEO for non-Google crawlers, it doesn’t necessarily improve the performance, and can hurt Time to Interactive. If your site isn’t at least minimally usable without JavaScript on the client at all, it’s not doing much for you. And to make it usable without JavaScript, you need to do more work on the server side for handling forms and such.</p>
+<p>So, the progressions of what usually makes sense to use, starting with lower complexity web sites, and progressing to high-interactivity web apps:</p>
+<table>
+<thead>
+<tr>
+<th>web site/app type</th>
+<th>examples</th>
+<th>likely best way to implement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple static websites</td>
+<td>“postcard” sites, marketting landing pages</td>
+<td>Just generate static html. Static site generators are great tools, and there are quite a few to fit tastes.</td>
+</tr>
+<tr>
+<td>Simple dynamic content websites</td>
+<td>blogs, forums, some ecommerce</td>
+<td>Render html on the server using a templating language, do minor UI enhancements with JS on the client.</td>
+</tr>
+<tr>
+<td>Dynamic content with complex interactions</td>
+<td>Social media, some ecommerce</td>
+<td>Render html on the server where possible, replace functionality on the client with JS (React can be a useful tool).</td>
+</tr>
+<tr>
+<td>Highly interactive content</td>
+<td>Maps, chatrooms, games, some admin interfaces, dashboards</td>
+<td>Render base html on the server, maybe static if no extra data is needed, render significant parts of the UI on the client (React is great for this).</td>
+</tr>
+</tbody>
+</table>
+<p>If you look at the progression here, you’ll notice that the likely importance of SEO generally goes from high to low as you move down the table. This works out, since the html generated by the server for the earlier entries will be more SEO friendly.</p>
+<p>Where hydrated React SSR comes in is when you <em>need</em> SEO for dynamic, interactive content in the lower parts of the table. A notable example of a large scale website where they feel the complexity trade-offs are necessary for SEO and accessibility is Airbnb (which is also largely (or fully?) designed to function without client-side JavaScript).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2019/07/08/does-using-react-negatively-affect-seo/" data-id="ckixl4zw2000jjku3j9abcyap" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/seo/" rel="tag">seo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssr/" rel="tag">ssr</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-setup-webpack-v4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/04/how-to-setup-webpack-v4/" class="article-date">
+  <time datetime="2018-09-04T04:00:00.000Z" itemprop="datePublished">2018-09-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/04/how-to-setup-webpack-v4/">How to Setup Webpack v4</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>These docs are written for Webpack version 4, and Babel version 7.</p>
+</blockquote>
+<p>If you write JavaScript code you should be using a module system. For the browser, this means bundling, since built-in module support isn’t yet ready to be used in production.</p>
+<blockquote>
+<p>Bundler: A tool which compiles a module-based codebase into a single (or a few) large file to be linked from your HTML.</p>
+</blockquote>
+<p>The industry standard tool for bundling is Webpack. In the past, Webpack had a bad rep for being difficult to configure because it’s documentation was lacking, and because new users were often shown bloated examples including features they might never use. Since then, the documentation has dramatically improved. In this guide, we’ll focus on what you need to get started!</p>
+<blockquote>
+<p>The <a href="https://webpack.js.org/concepts/" target="_blank" rel="external">Webpack documentation</a> is really quite good, but it can be hard to filter to just what you need. This guide is meant to be the minimal parts you really need for development and production.</p>
+</blockquote>
+<h1 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h1><p>Primarily, you need to have Node.js installed. This guide assumes you are using current Node v10+ and npm 6+.</p>
+<p>For Linux and MacOS, the easiest way to install and work with Node is using nvm. Instructions for installing are on the <a href="https://github.com/creationix/nvm#installation" target="_blank" rel="external">nvm project page</a>.</p>
+<blockquote>
+<p>If using Windows, you can download an installer from the <a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js website</a>.</p>
+<p>The instructions are the same for Webpack in Windows, except you might use backslashes instead of slashes for paths on the command line. For example, <code>webpack src/main.js public/bundle.js</code> might be <code>webpack src\main.js public\bundle.js</code> in Windows.</p>
+</blockquote>
+<h1 id="Create-a-project"><a href="#Create-a-project" class="headerlink" title="Create a project"></a>Create a project</h1><p>First, create a project folder (such as <code>myproject</code>). In the project folder open a terminal and run <code>npm init</code>, and answer the questions. (You can also run <code>npm init -y</code> to skip all the questions and use defaults.)</p>
+<blockquote>
+<p>From here on out, all command line snippets will assume you are currently in the project folder root.</p>
+</blockquote>
+<p>Add Webpack to your development dependencies: <code>npm install --save-dev webpack webpack-cli</code>.</p>
+<blockquote>
+<p>From here on in this guide, we’ll use the shorthand <code>npm</code> commands like <code>npm i</code> (for <code>npm install</code>) and <code>npm i -D</code> (for <code>install --save-dev</code>).</p>
+</blockquote>
+<p>Create a folder in your project called <code>src</code>.</p>
+<p>Inside <code>src/</code>, add two JavaScript files:</p>
+<p><code>src/index.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Running in index.js!'</span>);</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure></p>
+<p><code>src/foo.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> camelCase <span class="keyword">from</span> <span class="string">'camelcase'</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(camelCase(<span class="string">'Running in foo.js!'</span>));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>And do <code>npm i camelcase</code>.</p>
+<blockquote>
+<p>The <code>camelcase</code> module is being used here as an example to show that you can import and bundle npm modules.</p>
+<p>There are things missing that you should have in a “real” project, like linting. Feel free to add them, but they are out of scope for this article to cover.</p>
+</blockquote>
+<h1 id="Bundling"><a href="#Bundling" class="headerlink" title="Bundling"></a>Bundling</h1><p>Webpack has some defaults which allow you to do very basic bundling without any configuration. It will try to use <code>src/index.js</code> as an <em>entrypoint</em>, and it will output the bundle(s) to <code>dist/</code>.</p>
+<blockquote>
+<p><em>Entrypoints</em> are files you directly link to with script tags. Webpack can bundle multiple entrypoints in a single build, and can share common dependencies between them if configured to do so. Each entrypoint will have it own output bundle file.</p>
+</blockquote>
+<p>We can just run <code>npx webpack</code> and it will bundle our files into <code>dist/main.js</code>. While not necessary for Webpack, we’ll create an <code>index.html</code> file and start a static server.</p>
+<p>Add <code>dist/index.html</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">  Check the console! (F12 to open dev tools)</div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/main.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>You can start a basic file server with <code>npx live-server ./dist</code> or <code>npx http-server -c-1 ./dist</code>, or setup your own server to serve the files in <code>dist/</code>. (Open the browser console to view the output.)</p>
+<p><a href="https://www.npmjs.com/package/live-server" target="_blank" rel="external">live-server</a> automatically reloads the page for any file changes, while <a href="https://www.npmjs.com/package/http-server" target="_blank" rel="external">http-server</a> does not. We use <code>-c-1</code> with <code>http-server</code> to disable it’s aggressive caching. Both of these servers are only suitable for development and testing, and should not be used in production.</p>
+<p>Run the server in a separate console so you don’t need to stop and restart it to run Webpack. <code>npx</code> will re-download <code>live-server</code> or <code>http-server</code> every time, so to avoid this slowdown when running it, you can install it to the project with <code>npm i -D &lt;package&gt;</code>, or install it globally <code>npm i -g &lt;package&gt;</code>. After that, <code>npx</code> will use the previously installed module.</p>
+</blockquote>
+<h2 id="Build-modes"><a href="#Build-modes" class="headerlink" title="Build modes"></a>Build modes</h2><p>When you ran <code>npx webpack</code>, it printed a warning about missing the <code>mode</code> option. Let’s do it correctly by running <code>npx webpack --mode development</code>. Without a specific <code>mode</code> set, Webpack defaults to “production”, which mostly means that it <em>uglifies</em> the output.</p>
+<blockquote>
+<p><em>Uglifying</em> is basically minification, and it makes the file as small as possible by removing unnecessary whitespace and replacing variable names with shorter versions where safe. It can also remove static conditions like <code>if (false === false) { ... }</code>.</p>
+</blockquote>
+<p>After running in development mode, take a look at <code>dist/main.js</code>. There is a lot of code in this file! Webpack does include some overhead to properly handle modules, but there is also inline sourcemaps of the code, which can be used by the browser to show you the original code files when debugging.</p>
+<p>Finally, to build in production mode without a warning, run <code>npx webpack --mode production</code>. This will output the same code as <code>npx webpack</code>, but without the warning.</p>
+<h2 id="Using-npm-scripts"><a href="#Using-npm-scripts" class="headerlink" title="Using npm scripts"></a>Using npm scripts</h2><p>You can use Webpack with <code>npx</code> like we have so far, but you can make it simpler to keep the correct build modes straight by setting up npm scripts for each mode.</p>
+<p>In <code>package.json</code>, replace this:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>with this:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "dev": "webpack --mode development",</div><div class="line">  "build": "webpack --mode production",</div><div class="line">  "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now you can run <code>npm run dev</code> for development mode, and <code>npm run build</code> for production mode. This exact build command is quite suitable for real projects, but you will probably want some other features for development.</p>
+<h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><p>In most cases, you will end up needing to configure some options for Webpack. A lot of options can be provided as command line arguments, but the much cleaner standard approach is to use a Webpack config file.</p>
+<p>Webpack will automatically look for a file called <code>webpack.config.js</code> in the folder it is being run in (generally the project root), or you can tell it exactly the file to use with the <code>--config</code> command line argument.</p>
+<p>Create <code>webpack.config.js</code> with these contents:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/index.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'main.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>This is a regular Node.js module, using require() to load modules.</p>
+</blockquote>
+<p>This configuration says to use the same entrypoint and output location and name as the Webpack defaults. You can change these options now to be whatever you want. If your project needs to use <code>public</code> as the folder for static assets, then you could change <code>dist</code> to <code>public</code>, or even use a subfolder.</p>
+<blockquote>
+<p>There are many options for both <a href="https://webpack.js.org/configuration/entry-context/" target="_blank" rel="external">entry</a> and <a href="https://webpack.js.org/configuration/output/" target="_blank" rel="external">output</a> in the Webpack docs.</p>
+</blockquote>
+<h1 id="Automatically-building"><a href="#Automatically-building" class="headerlink" title="Automatically building"></a>Automatically building</h1><p>In most circumstances, you want to build automatically when you save a file in your project which is being bundled while developing. There are two ways to do this, and which one you want depends on how you want to serve your files in development.</p>
+<blockquote>
+<p>In Linux, the default file system max listener count is often too low to be able to watch the files in a project. This will cause an error like <code>Error: ENOSPC</code> in the console, which appears to suggest you are out of disk space. To fix this, you need to increase the max listener count with this command: <code>echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</code>. <a href="https://stackoverflow.com/questions/22475849/node-js-error-enospc" target="_blank" rel="external">More Info</a>.</p>
+</blockquote>
+<h2 id="Watch-mode-your-own-server"><a href="#Watch-mode-your-own-server" class="headerlink" title="Watch mode (your own server)"></a>Watch mode (your own server)</h2><p>If you already have a server setup and can have it serve the files in the <code>dist/</code> folder, then you can simply use Webpack’s built-in watch mode.</p>
+<p>To do this, change your <code>&quot;dev&quot;</code> script in <code>package.json</code> to:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">"dev": "webpack --mode development --watch",</div></pre></td></tr></table></figure></p>
+<p>When you run this, instead of just building and exiting, Webpack continues to run, and any time you make a change and save a file that is being bundled, the bundle will get rebuilt.</p>
+<p>If your static server doesn’t automatically refresh the page when files change (such as <code>http-server</code>), you will need to refresh the page after you save your files.</p>
+<blockquote>
+<p>You can setup <a href="https://www.npmjs.com/package/webpack-livereload-plugin" target="_blank" rel="external">LiveReload plugin</a> which can refresh the page for you when your bundle is rebuilt. You should make sure you only do this for development. <a href="">Setting up development-only Webpack config</a>.</p>
+</blockquote>
+<h2 id="Dev-Server-use-webpack-dev-server"><a href="#Dev-Server-use-webpack-dev-server" class="headerlink" title="Dev Server (use webpack-dev-server)"></a>Dev Server (use webpack-dev-server)</h2><p>If you don’t have a local file server to serve <code>dist/</code> with, you can use webpack-dev-server, which combines Webpack with a small file server that has useful development features.</p>
+<p>Install webpack-dev-server with <code>npm i -D webpack-dev-server</code>.</p>
+<p>Add a <code>devServer</code> property to your Webpack config as below:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/index.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'main.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</div><div class="line">  &#125;,</div><div class="line">  devServer: &#123;</div><div class="line">    contentBase: path.join(__dirname, <span class="string">'dist'</span>),</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Replace your <code>&quot;dev&quot;</code> script in <code>package.json</code> with:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">"dev": "webpack-dev-server --mode development --open",</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>If you are still running a static server like <code>http-server</code> or <code>live-server</code>, you can stop that process since webpack-dev-server includes that functionality.</p>
+</blockquote>
+<p>Now when you run <code>npm run dev</code>, webpack-dev-server will start a file server with the contents of <code>dist/</code>, Webpack will run, and automatically run again any time a file that is bundled is saved. Additionally, webpack-dev-server includes some extra code which causes the browser to refresh any time the code rebuilds. With the <code>--open</code> option included, it will also open your browser to show the index.html file.</p>
+<blockquote>
+<p><a href="https://webpack.js.org/configuration/dev-server/" target="_blank" rel="external">webpack-dev-server configuration options</a> include a proxy option so that all requests which don’t match a bundle file are sent to another server.</p>
+</blockquote>
+<h1 id="More-Webpack-config"><a href="#More-Webpack-config" class="headerlink" title="More Webpack config"></a>More Webpack config</h1><p>Webpack has two primary ways to extend it’s functionality. It supports a rich plugin ecosystem, which can provide features such as automatically injecting the paths to bundle into a generated html file, or displaying in-depth statistics about bundles. It also supports <em>loaders</em>, which are tools that run against imported files, and can run transforms on the code, or even move the original file to the output folder and make the imported value a path to that file.</p>
+<p>The number one use-case for loaders is to run <a href="https://babeljs.io" target="_blank" rel="external">Babel</a> transforms against your JavaScript code. Babel transforms can replace JSX code with JavaScript, remove Typescript type annotations, or most commonly: replace modern syntax with older syntax to support more browsers.</p>
+<p>In most cases, you will want to run Babel against your code with the <a href="https://babeljs.io/docs/en/babel-preset-env" target="_blank" rel="external">“env” preset</a>, which compiles current JavaScript to older JavaScript.</p>
+<h2 id="Setup-Babel-and-babel-loader"><a href="#Setup-Babel-and-babel-loader" class="headerlink" title="Setup Babel and babel-loader"></a>Setup Babel and babel-loader</h2><p>First, lets modify our entrypoint file to use a new syntax feature, so that we can see that it gets replaced.</p>
+<p>Change <code>src/index.js</code> to:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'@babel/polyfill'</span>;</div><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> obj1 = &#123; <span class="attr">a</span>: <span class="string">'1'</span> &#125;;</div><div class="line"><span class="keyword">const</span> obj2 = &#123; ...obj1, <span class="attr">b</span>: <span class="string">'1'</span> &#125;;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'obj2.a === obj2.b'</span>, obj2.a === obj2.b);</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>The <code>...</code> operator is part of ES2018, and needs to be compiled for Edge, and non-latest Safari.</p>
+</blockquote>
+<p>Install Babel and babel-loader with <code>npm i -D babel-loader @babel/core @babel/preset-env</code>. Then install Babel Polyfill with <code>npm i @babel/polyfill</code>.</p>
+<p>We need to add babel-loader into our Webpack config:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/index.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'main.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</div><div class="line">  &#125;,</div><div class="line">  <span class="built_in">module</span>: &#123;</div><div class="line">    rules: [</div><div class="line">      &#123;</div><div class="line">        test: <span class="regexp">/\.js$/</span>,</div><div class="line">        exclude: <span class="regexp">/node_modules/</span>,</div><div class="line">        use: &#123;</div><div class="line">          loader: <span class="string">'babel-loader'</span>,</div><div class="line">        &#125;,</div><div class="line">      &#125;,</div><div class="line">    ],</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Then we need to setup a Babel config in <code>babel.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  presets: [</div><div class="line">    [<span class="string">'@babel/preset-env'</span>, &#123;</div><div class="line">      useBuiltIns: <span class="string">'entry'</span>,</div><div class="line">      modules: <span class="literal">false</span>,</div><div class="line">      targets: [</div><div class="line">        <span class="string">'last 2 firefox versions'</span>,</div><div class="line">        <span class="string">'last 2 chrome versions'</span>,</div><div class="line">        <span class="string">'last 2 edge versions'</span>,</div><div class="line">        <span class="string">'last 2 ios versions'</span>,</div><div class="line">      ],</div><div class="line">    &#125;]</div><div class="line">  ],</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>This is an optimistic set of browsers, often you will need to support IE 11 as well.</p>
+</blockquote>
+<p>Now when you build your project, any modern syntax is compiled to code that all browsers in your support list can run. This is specifically only for files in your project that are not in <code>node_modules</code> (this is what the <code>exclude</code> line in the babel-loader config does).</p>
+<p>Syntax isn’t the only thing older browsers might not support though, so in addition to having Babel transform syntax, we also need to include Polyfills for newer standard library features. This is the <code>import &#39;@babel/polyfill&#39;;</code> in <code>index.js</code>. With the <code>useBuiltIns: &#39;entry&#39;</code> option in the babel env config, that single polyfill import is transformed to only import the polyfills needed for the browser support list.</p>
+<blockquote>
+<p>Currently there is an experimental option <code>useBuiltIns: &#39;usage&#39;</code> which will only include polyfills for features that you actually use. In the future this could become the best practice.</p>
+</blockquote>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>What we have so far is a reasonable set of tools for building JavaScript browser applications.</p>
+<p>With <code>npm run build</code> we transform a tree of source code modules from using modern JavaScript to being a single bundle file of broadly supported older JavaScript which we can include in our html.</p>
+<h1 id="Onward-and-Upward"><a href="#Onward-and-Upward" class="headerlink" title="Onward and Upward"></a>Onward and Upward</h1><p>Thus far, our build configuration is fairly simple, and is focused only on JavaScript and building a single application.</p>
+<p>From the basic configuration created here, we can expand to support a lot of helpful features:</p>
+<ul>
+<li>Code splitting (Separate a tree of your application).</li>
+<li>Importing stylesheets and other static assets, to be included in the output folder.</li>
+<li>Transforming non-JS code into JS (such as JSX, Typescript, Flow, and JavaScript proposal features).</li>
+<li>Create a map (manifest) of output files for programmatic consumption.</li>
+<li>Development only configuration options.</li>
+</ul>
+<p>To explore these topics and more, head to the <a href="https://github.com/samsch/webpack-guide/" target="_blank" rel="external">Getting started with Webpack landing page</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2018/09/04/how-to-setup-webpack-v4/" data-id="ckixl4zw2000ijku35o0ppouc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/" rel="tag">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-using-the-web-audio-api" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/04/using-the-web-audio-api/" class="article-date">
+  <time datetime="2018-03-04T16:00:29.000Z" itemprop="datePublished">2018-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Have you ever wanted to make some noise in your browser? I wanted to generate some sound effects, and it made me curious about what tools are available in the browser.</p>
+<p>What I found is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="external">Web Audio API</a>. I’m going to show how to play basic sounds, and lay the groundwork for building more advanced sound generators.</p>
+<blockquote>
+<p>All examples can be directly pasted into <a href="https://jsfiddle.net/" target="_blank" rel="external">jsfiddle</a> and run. The first couple are just JavaScript, but the others use a short bit of HTML. I’m running these in Firefox, but Chrome and Edge should also work fine. Webkit-based browsers may not work, and IE has no support.</p>
+</blockquote>
+<p>The WebAudio API is built around a “node” system. It somewhat parallels how you would connect sound modules or effects pedals together in real life.</p>
+<p>The base object you need to work with is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext" target="_blank" rel="external">AudioContext</a>, created with <code>new AudioContext()</code> (or <code>new webkitAudioContext()</code> for Webkit-based browsers). This context object has factory methods to create the other nodes you use.</p>
+<h2 id="Basic-sound-output"><a href="#Basic-sound-output" class="headerlink" title="Basic sound output"></a>Basic sound output</h2><p>Here’s how you output a simple tone (<strong>Warning</strong>, this is rather loud if run directly):<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">oscillator.connect(audioContext.destination);</div><div class="line">oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">oscillator.start();</div><div class="line"><span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">	oscillator.stop();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>We already learned about the audioContext, and the rest is fairly straightforward as well. The <code>audioContext.createOscillator()</code> creates an <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode" target="_blank" rel="external">OscillatorNode</a> instance, which generates a tone. OscillatorNodes has <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioParam" target="_blank" rel="external">AudioParam</a> properties to control frequency (directly, and via a “detune” value, which seems to be more suitable for note-based music generation) and wave-shape.</p>
+<p>OscillatorNode implement <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioNode" target="_blank" rel="external">AudioNode</a>, which is the base class. AudioNodes use the AudioParam interface for properties, which gives controls like <code>setValueAtTime()</code> used above. So an oscillator has a <code>frequency</code> property which has the AudioParam properties and methods for reading and writing. You can’t write to the frequency property directly (you can-ish, because it’s JavaScript, but it won’t “work”), instead you read from <code>oscillator.frequency.value</code>, and you can either write to the <code>value</code> property or use the time-based methods such as <code>.setValueAtTime()</code>. Generally, using the time-based methods is better, because they will overwrite any value written to the value property directly.</p>
+<p>To use the output of an AudioNode, you call the <code>.connect()</code> method and pass the target, which can be another AudioNode, an AudioParam (for dynamic input), or <code>audioContext.destination</code> which represents the browser’s sound output (speakers, headphones). We connect our oscillator to audioContext.destination so we can hear the output.</p>
+<p>We call <code>.setValueAtTime()</code> with <code>440</code> and <code>audioContext.currentTime</code>, which says we want a frequency of 440hz, and we want that to be applied <em>now</em>. To sets value in the future, you add time in seconds to the currentTime value.</p>
+<p>To start the oscillator sound output we call <code>.start()</code>. After a 1 second we stop the output with <code>.stop()</code>. These are not start/pause controls like you might expect. Once you call <code>.stop()</code>, an OscillatorNode can not be re-started. For repeatedly doing something, you either need to use multiple oscillators, or use a single oscillator and disconnect it’s output or set the output volume to zero using a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GainNode" target="_blank" rel="external">GainNode</a> before the destination.</p>
+<h2 id="Fixing-the-volume-problem"><a href="#Fixing-the-volume-problem" class="headerlink" title="Fixing the volume problem"></a>Fixing the volume problem</h2><p>By default, the oscillator output is rather loud. Lets fix that by adding a GainNode.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"><span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">oscillator.connect(volume);</div><div class="line">oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">oscillator.start();</div><div class="line"><span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">	oscillator.stop();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>Now, instead of connecting the oscillator to the output directly, we connect it to a GainNode which then connects to the destination. The GainNode has a gain AudioParam which takes a float value and multiplies the amplitude. So a value of 1 would be no change, .5 would be half, and 2 would be double. .2 (or 20%) makes for a fairly reasonable volume.</p>
+<h2 id="Doing-something-more-interesting"><a href="#Doing-something-more-interesting" class="headerlink" title="Doing something more interesting"></a>Doing something more interesting</h2><p>Lets make a button that plays a sound!</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- HTML --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"play-sound"</span>&gt;</span>Play Sound<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// JavaScript</span></div><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"></div><div class="line"><span class="keyword">const</span> button = <span class="built_in">document</span>.getElementById(<span class="string">'play-sound'</span>);</div><div class="line"></div><div class="line">button.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">  oscillator.connect(volume);</div><div class="line">  oscillator.frequency.setValueAtTime(<span class="number">440</span>, audioContext.currentTime);</div><div class="line">  oscillator.start();</div><div class="line">  <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    oscillator.stop();</div><div class="line">    oscillator.disconnect();</div><div class="line">  &#125;, <span class="number">500</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Our button click handler creates a new oscillator, connects it, sets the frequency, starts it, and then stops and disconnects it after 500ms.</p>
+<p>This is the basis for how you play sounds on a trigger. Just create your oscillator, play it, and destroy it. Notice that if you click the button again before the sound stops, it does create a new oscillator and plays them both, which you can usually hear as a louder sound.</p>
+<h2 id="Exciting-sounds"><a href="#Exciting-sounds" class="headerlink" title="Exciting sounds"></a>Exciting sounds</h2><p>So far, we’ve only made boring single-frequency sounds. Lets do something a bit more interesting. If we just wanted to change the pitch played on the button press, that would be as simple as changing “440” to the desired frequency. This could be set from a dynamic input as well.</p>
+<p>More interesting would be to play a series of sounds. Lets make a varying wave-form.</p>
+<p>The html will be the same as above, with this JavaScript:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> audioContext = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext)();</div><div class="line"><span class="keyword">const</span> volume = audioContext.createGain();</div><div class="line">volume.connect(audioContext.destination);</div><div class="line">volume.gain.setValueAtTime(<span class="number">.2</span>, audioContext.currentTime);</div><div class="line"></div><div class="line"><span class="keyword">const</span> button = <span class="built_in">document</span>.getElementById(<span class="string">'play-sound'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> frequencyList = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</div><div class="line">	frequencyList.push(<span class="built_in">Math</span>.sin(i * <span class="built_in">Math</span>.PI / <span class="number">100</span>) * <span class="number">100</span> + <span class="number">400</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">button.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> oscillator = audioContext.createOscillator();</div><div class="line">  oscillator.connect(volume);</div><div class="line">  frequencyList.forEach(<span class="function">(<span class="params">frequency, time</span>) =&gt;</span> &#123;</div><div class="line">  	oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + time*<span class="number">.001</span>);</div><div class="line">  &#125;);</div><div class="line">  oscillator.start();</div><div class="line">  <span class="built_in">window</span>.setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    oscillator.stop();</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Instead of just setting a frequency and calling it done, we run over an array of 1000 frequency values, setting them at intervals of 1ms so that we get a (to human perception) smooth variation of pitch. Any AudioParams can be set like this, so you can create arrays of frequency and volume (gain) values to play over time.</p>
+<h2 id="More"><a href="#More" class="headerlink" title="More!"></a>More!</h2><p>Naturally, this is just the tip of the iceberg. Besides gain and oscillators, you can do other types of filtering and effects, including reverberation, delays, and distortion; you can use microphone input and uploaded audio files; and you can even do visualizations of the waveform output. A good place to start for more in-depth study is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="external">MDN Web Audio API Guide</a>. Especially look through the types of AudioNodes listed in <em>Related pages for Web Audio API</em>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2018/03/04/using-the-web-audio-api/" data-id="ckixl4zw1000hjku3l7kj27pe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web-API/" rel="tag">Web API</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-sci-fi-prop-project" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/11/sci-fi-prop-project/" class="article-date">
+  <time datetime="2017-12-11T13:47:48.000Z" itemprop="datePublished">2017-12-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/sci-fi-prop-project/real-board-vertical.jpg" alt="circuit on breadboard"></p>
+<div style="text-align: center"><iframe width="560" height="315" src="https://www.youtube.com/embed/tnfEZ7pGT8Y" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe></div>
+
+<h2 id="What-is-it"><a href="#What-is-it" class="headerlink" title="What is it?"></a>What is it?</h2><p>I wanted to build a “laser gun” module to install in a Nerf blaster shell. The module would connect to the trigger to fire, and have motion/gesture sensing for additional functionality (such as reloading).</p>
+<h2 id="Development-hardware"><a href="#Development-hardware" class="headerlink" title="Development hardware"></a>Development hardware</h2><h3 id="BOM"><a href="#BOM" class="headerlink" title="BOM"></a>BOM</h3><h4 id="Important-parts"><a href="#Important-parts" class="headerlink" title="Important parts"></a>Important parts</h4><p>These are the pieces which actually make up the functionality.</p>
+<ul>
+<li>Arduino Nano - <em>or cheap clone</em></li>
+<li>Pololu Minu IMU - <em>v1, but any should work</em></li>
+<li>3x LEDs - <em>can be any desired types, or any other output driven by a high pin</em></li>
+<li>Speaker</li>
+<li>2x momentary switches</li>
+</ul>
+<h4 id="Passives-and-drivers"><a href="#Passives-and-drivers" class="headerlink" title="Passives and drivers"></a>Passives and drivers</h4><p>This is the stuff to support the above parts. Change as needed.</p>
+<p>LEDs</p>
+<ul>
+<li>3x 220 ohm resistor - <em>I tend to use 220ohm, since I have a lot and it’s about right for most LEDs</em></li>
+</ul>
+<p>Switches</p>
+<ul>
+<li>2x 10k ohm resistor - <em>for pull-ups</em></li>
+<li>2x .1uf capacity - <em>for debounce</em></li>
+</ul>
+<p>Speaker</p>
+<ul>
+<li>1x 10k ohm resistor - <em>for speaker driver pin</em></li>
+<li>PN2222 transitor - <em>speaker driver</em></li>
+</ul>
+<h3 id="Schematic"><a href="#Schematic" class="headerlink" title="Schematic"></a>Schematic</h3><p><img src="/assets/sci-fi-prop-project/schemeit-project.png" alt="Layout of circuit"></p>
+<h2 id="Software"><a href="#Software" class="headerlink" title="Software"></a>Software</h2><p>The software I used is the latest version of the Arduino IDE for Linux, VSCode, and the libraries for the Pololu Mini IMU.</p>
+<ul>
+<li><a href="https://www.arduino.cc/en/Main/Software" target="_blank" rel="external">Arduino IDE</a></li>
+<li><a href="https://code.visualstudio.com/" target="_blank" rel="external">VSCode</a></li>
+<li><a href="https://github.com/pololu/l3g-arduino" target="_blank" rel="external">l3g-arduino</a></li>
+<li><a href="https://github.com/pololu/lsm303-arduino" target="_blank" rel="external">lsm303-arduino</a></li>
+</ul>
+<p>To use VSCode, you must check the <em>External editor</em> option in the Arduino IDE preferences.</p>
+<h2 id="Program-V1"><a href="#Program-V1" class="headerlink" title="Program V1"></a>Program V1</h2><p>I started by running the library examples for the accelerometer/magnetometer and gyro chips on the IMU. From there, and extracted the necessary pieces to start building my own functionality.</p>
+<p>Some of the basic code for accelerometer and gyro access:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Wire.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;LSM303.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;L3G.h&gt;</span></span></div><div class="line"></div><div class="line">L3G gyro;</div><div class="line">LSM303 acc;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">  Wire.begin();</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!gyro.init()) &#123;</div><div class="line">    <span class="comment">// Failure message</span></div><div class="line">    <span class="comment">// Serial.println("Failed to autodetect gyro type!");</span></div><div class="line">    <span class="keyword">while</span> (<span class="number">1</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  gyro.enableDefault();</div><div class="line">  acc.init();</div><div class="line">  acc.enableDefault();</div><div class="line"></div><div class="line">  <span class="comment">// Disable magnetometer</span></div><div class="line">  acc.writeMagReg(<span class="number">0x02</span>, <span class="number">0b00000011</span>);</div><div class="line">  <span class="comment">// Change accelerometer scale to +-4g (default is +-2g)</span></div><div class="line">  acc.writeAccReg(<span class="number">0x23</span>, <span class="number">0b00010000</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// global gyro/acc values</span></div><div class="line"><span class="keyword">char</span> gx = <span class="number">0</span>;</div><div class="line"><span class="keyword">char</span> gy = <span class="number">0</span>;</div><div class="line"><span class="keyword">char</span> gz = <span class="number">0</span>;</div><div class="line"><span class="keyword">char</span> ax = <span class="number">0</span>;</div><div class="line"><span class="keyword">char</span> ay = <span class="number">0</span>;</div><div class="line"><span class="keyword">char</span> az = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</div><div class="line">  delay(<span class="number">50</span>);</div><div class="line"></div><div class="line">  gyro.read();</div><div class="line">  acc.read();</div><div class="line"></div><div class="line">  <span class="comment">// This project only needs low resolution, so divide by 255 for a signed 8bit value</span></div><div class="line">  gx = gyro.g.x / <span class="number">255</span>;</div><div class="line">  gy = gyro.g.y / <span class="number">255</span>;</div><div class="line">  gz = gyro.g.z / <span class="number">255</span>;</div><div class="line">  ax = acc.a.x / <span class="number">255</span>;</div><div class="line">  ay = acc.a.y / <span class="number">255</span>;</div><div class="line">  <span class="comment">// Invert the z scale so that it shows a positive value for "up"</span></div><div class="line">  az = -acc.a.z / <span class="number">255</span>;</div><div class="line"></div><div class="line">  <span class="comment">// Use values</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Some basic steps from here to the full program included adding the simple firing code, with a global ammo count; adding a state machine-like logic which allows the program to be in READY, NEED_RELOAD, RELOADING, and other states; adding helper functions to handle sound effects; and setting up a non-blocking pause.</p>
+<p><a href="https://gist.github.com/samsch/1174d95057e0ee701ebe1a534c929fd6" target="_blank" rel="external">The full version 1 source.</a></p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>After a short startup, the module plays tone, then moves to the READY state.</p>
+<p>While READY, you can press the trigger button to fire shots. You can also press the mode button to change between rapid-fire and single-fire modes. In single-fire mode (one short beep), each trigger pull only fires once (semi-automatic) with a longer laser sound. In rapid-fire mode (two short beeps), the modules fire continuous short laser sounds while the trigger is pressed.</p>
+<p>Once out of ammo, the module switches to NEED_RELOAD. From here, you can still change modes, but attempting to fire simply makes and out of ammo sound. To reload, you rotate in the positive direction along the Y axis to 90deg (from vertical). Once there the module goes into RELOADING.</p>
+<p>In RELOADING, the modules makes a short two beep reloading sound, then starts ticking up the ammo count. You can interrupt the reload by rotating the module away from 90deg to the side. The ammo count will continue to rise until either MAX_AMMO is achieved, or the reload is interrupted. Once either of these happens, the module returns to READY state (or NEED_RELOAD if interrupted before any ammo is added).</p>
+<h3 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h3><ul>
+<li>The reloading state has a fairly wide (around 25-30deg from center) tolerance for the “90deg” position. This allows for much easier use than a smaller threshold, and allows the module to be jostled more, which can be important for something like a blaster prop.</li>
+<li>The reloading state can only be entered from NEED_RELOAD, which itself can only be entered by emptying the ammo count. So while you can do a partial reload from empty, you can’t reload until you run out of ammo.<ul>
+<li>I’m not sure if I consider this a feature or a bug yet, so it may change.</li>
+</ul>
+</li>
+<li>The orientation of the Y axis depends on how the modules is mounted. At the moment, I’m assuming it would be such that reloading requires rotating the blaster along it’s “barrel”, with the top moving to the right side as you look down the blaster.</li>
+<li>The sound effects are very basic. More complex sounds can be created, but the <code>tone()</code> method provided by the Arduino library is rather basic on it’s own. It is limited to producing a single-frequency square wave.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/12/11/sci-fi-prop-project/" data-id="ckixl4zw1000fjku3do7efm9p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arduino/" rel="tag">arduino</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cos-play/" rel="tag">cos-play</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sound/" rel="tag">sound</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-state-terminology" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/29/state-terminology/" class="article-date">
+  <time datetime="2017-08-29T13:20:37.000Z" itemprop="datePublished">2017-08-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/29/state-terminology/">State Terminology</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>What does someone mean when they say “state” in React contexts? Glad you asked! Unfortunately, it’s not something with a simple answer. I can break “state” into at least five different meanings, all of which are used in documentation, IRC chats, forums posts, and elsewhere.</p>
+<h3 id="General-state"><a href="#General-state" class="headerlink" title="General state"></a>General state</h3><p>The general idea of “state”, is the remembered events, data, and user interactions of the application. It is the part of an application which can change. For a longer definition, check out <a href="https://en.wikipedia.org/wiki/State_%28computer_science%29" target="_blank" rel="external">State (computer science)</a> on Wikipedia.</p>
+<h3 id="Application-state"><a href="#Application-state" class="headerlink" title="Application state"></a>Application state</h3><p>A subset of the general state in an app is the “application state”. This is data relevant to the actual functionality of the application. It may have properties including form data, current user info, and lists of data.</p>
+<h3 id="View-state"><a href="#View-state" class="headerlink" title="View state"></a>View state</h3><p>Another subset of the general state is “view state”. This is data which is used in the user interface to improve or change the user experience. This state is never relevant to the application, such that it is possible to have the exact same application functionality without any view state<sup><a href="#view-state-removed">1</a></sup>. Included types of information in the view state may be whether a dropdown is open, the current page, or a selected theme.</p>
+<h3 id="Component-state"><a href="#Component-state" class="headerlink" title="Component state"></a>Component state</h3><p>This is where some confusion usually starts to set in. Many users (including blog, documentation, forum post, and real-time chat authors) also use “state” to refer to the built-in state handling functionality in <code>React.Component</code> (and <code>React.PureComponent</code>) classes. This functionality is not itself actual “state”, but is actually a type of “store”. “Component state” is just a tool, and it allows you to store any type of state.</p>
+<h3 id="state-e-g-“Redux-state”"><a href="#state-e-g-“Redux-state”" class="headerlink" title="\ state (e.g., “Redux state”)"></a>\<store\> state (e.g., “Redux state”)</store\></h3><p>In contrast to using “state” to refer to “component state”, it’s also used to refer specifically to state stored in other types of state stores. Currently, a popular state store is Redux, but this also applies to any external store (Mobx, Backbone, other Flux implementations). Sometimes, users will use “application state” to refer to state stored outside of React “component state”.</p>
+<h2 id="The-Right-Way"><a href="#The-Right-Way" class="headerlink" title="The Right Way"></a>The Right Way</h2><p>Of course, The Right Way doesn’t exist. Nobody wants to explicitly type “application state” or “component state” all the time, even though that would allow much less ambiguity.</p>
+<p>When communicating with someone, I recommend verifying what they mean when they say “state” if it might be ambiguous, and being explicit at least once in a while yourself to help others understand you.</p>
+<blockquote>
+<p><a name="view-state-removed">1.</a> Generally this is true, but in most circumstances having a stateless user interface would require vast changes to an application or website, including moving everything into a single page and replacing dropdowns with different types of UIs (radio buttons, checkbox lists, etc). Even then, trying to remove some state such as mouse and scroll position would make it very difficult to maintain the same application functionality. To have a <strong>perfectly</strong> stateless UI for a stateful app would be very difficult or impossible.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/08/29/state-terminology/" data-id="ckixl4zw0000ejku33ekv4rjc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/patterns/" rel="tag">patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state/" rel="tag">state</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-add-css-loader-to-webpack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/14/how-to-add-css-loader-to-webpack/" class="article-date">
+  <time datetime="2017-07-15T01:16:00.000Z" itemprop="datePublished">2017-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>One of the benefits of using Webpack is that is allows you to load non-JavaScript files using the standard JavaScript import statements. Specifically, this is regularly used to load stylesheets on a per-module basis.</p>
+<blockquote>
+<p>The final results can be found in a <a href="https://github.com/samsch/basic-webpack-react/tree/css-loader-extract-text-plugin" target="_blank" rel="external">branch from the base repo</a>.</p>
+</blockquote>
+<h1 id="What-we-need-to-get-started"><a href="#What-we-need-to-get-started" class="headerlink" title="What we need to get started"></a>What we need to get started</h1><p>Our baseline is a working Webpack project. A good starting point is my <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react tutorial results</a>. Run <code>git clone https://github.com/samsch/basic-webpack-react.git</code>, <code>cd basic-webpack-react</code>, and <code>npm install</code>.</p>
+<h1 id="Loaders-for-styles"><a href="#Loaders-for-styles" class="headerlink" title="Loaders for styles"></a>Loaders for styles</h1><p>Loading css in a useful way requires either two Webpack loaders, or a loader and a plugin. The easier setup to get started with is using <code>style-loader</code> and <code>css-loader</code>.</p>
+<ul>
+<li><a href="https://webpack.js.org/loaders/style-loader/" target="_blank" rel="external">style-loader</a> takes an imported css file, and makes it output as a <code>&lt;style&gt;</code> element with the css from the file.</li>
+<li><a href="https://webpack.js.org/loaders/css-loader/" target="_blank" rel="external">css-loader</a> parses a css file for <code>@import</code>, <code>url()</code>, and translates those into something Webpack can understand to import.</li>
+</ul>
+<p>With these, you can have imports in your JavaScript modules like:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'./style.css'</span>;</div></pre></td></tr></table></figure></p>
+<p>Webpack will take that stylesheet – and anything it <code>@import</code>s – and include JavaScript in your bundle to put it in <code>&lt;style&gt;</code> tags in the output when the app starts.</p>
+<p>The downside of this method is that styles can’t be cached by the browser separately. Later, we’ll use the other method for a better production setup.</p>
+<h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><p>First install the loaders by running <code>npm install -D style-loader css-loader</code>.</p>
+<p>Then we need to modify <a href="https://github.com/samsch/basic-webpack-react/blob/f57ca65db1bb8462a9415a065a628b52163b34d0/webpack.config.js" target="_blank" rel="external">webpack.config.js</a>. Add the new loader rule to the <code>rules</code> property as shown below.<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">   module: &#123;</div><div class="line">     rules: [</div><div class="line">       &#123;</div><div class="line">         test : /\.jsx?/,</div><div class="line">         include: path.resolve(__dirname, 'src/'),</div><div class="line">         use: ['babel-loader'],</div><div class="line">       &#125;,</div><div class="line"><span class="addition">+      &#123;</span></div><div class="line"><span class="addition">+        test: /\.css$/,</span></div><div class="line"><span class="addition">+        use: [ 'style-loader', 'css-loader' ]</span></div><div class="line"><span class="addition">+      &#125;,</span></div><div class="line">     ],</div><div class="line">   &#125;,</div></pre></td></tr></table></figure></p>
+<p>That’s it! Now you can run <code>npm start</code>, and it will act exactly as before, but it’s ready to import css files.</p>
+<h1 id="Add-some-test-styles"><a href="#Add-some-test-styles" class="headerlink" title="Add some test styles"></a>Add some test styles</h1><p>Let’s add <code>import &#39;./style.css&#39;</code> to the top of <code>src/foo.js</code>.<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="addition">+import './style.css';</span></div><div class="line"><span class="addition">+</span></div><div class="line"> import React from 'react';</div><div class="line"> import ReactDOM from 'react-dom';</div><div class="line"> </div><div class="line"> const foo = function() &#123;</div></pre></td></tr></table></figure></p>
+<p>The running Webpack process throws and error because style.css isn’t found. So let’s add <code>src/style.css</code>:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">h1</span> &#123;</div><div class="line">  <span class="attribute">border-bottom</span>: solid <span class="number">2px</span> gray;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Now Webpack compiles, and the page should refresh with a border applied to the h1 tag.</p>
+<p>Let’s add an imported style. Make <code>src/paragraph.css</code>:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">p</span> &#123;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#ddd</span>;</div><div class="line">  <span class="attribute">padding</span>: <span class="number">1rem</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>And add an import line to <code>src/style.css</code>:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="addition">+@import "paragraph.css";</span></div><div class="line"><span class="addition">+</span></div><div class="line"> h1 &#123;</div><div class="line">   border-bottom: solid 2px gray;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Note that we can use “paragraph.css” here, rather than “./paragraph.css” which Webpack would normally need for relative files. To import a file from an npm package, you can use a <code>~</code> prefix, like <code>~some-css-package/dist/style.css</code>.</p>
+</blockquote>
+<p>Now we have css styles imported from our modules, and css import bundling!</p>
+<h1 id="Separate-style-sheets"><a href="#Separate-style-sheets" class="headerlink" title="Separate style sheets"></a>Separate style sheets</h1><p>The above system actually works pretty well for smaller projects and development. But for larger projects and production, we often want separate stylesheets for caching.</p>
+<p>To pull our styles into a new file, we use <code>extract-text-webpack-plugin</code>, so install that with <code>npm i -D extract-text-webpack-plugin</code>, and remove <code>style-loader</code> with <code>npm remove style-loader</code>. We need to make a couple changes in <code>webpack.config.js</code>.</p>
+<p>At the top of the file:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> const path = require('path');</div><div class="line"><span class="addition">+const ExtractTextPlugin = require("extract-text-webpack-plugin");</span></div><div class="line"> </div><div class="line"> module.exports = &#123;</div><div class="line">   entry: ['babel-polyfill', './src/main.js'],</div></pre></td></tr></table></figure></p>
+<p>And near the end of the file:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">       &#123;</div><div class="line">         test : /\.jsx?/,</div><div class="line">         include: path.resolve(__dirname, 'src/'),</div><div class="line">         use: ['babel-loader'],</div><div class="line">       &#125;,</div><div class="line">       &#123;</div><div class="line">         test: /\.css$/,</div><div class="line"><span class="deletion">-        use: [ 'style-loader', 'css-loader' ]</span></div><div class="line"><span class="addition">+        use: ExtractTextPlugin.extract(&#123;</span></div><div class="line"><span class="addition">+          use: 'css-loader',</span></div><div class="line"><span class="addition">+        &#125;),</span></div><div class="line">       &#125;,</div><div class="line">     ],</div><div class="line">   &#125;,</div><div class="line"><span class="addition">+  plugins: [</span></div><div class="line"><span class="addition">+    new ExtractTextPlugin(&#123;</span></div><div class="line"><span class="addition">+      filename: 'style.css',</span></div><div class="line"><span class="addition">+      allChunks: true,</span></div><div class="line"><span class="addition">+    &#125;),</span></div><div class="line"><span class="addition">+  ],</span></div><div class="line"> &#125;;</div></pre></td></tr></table></figure></p>
+<p>Now if we re-run <code>npm start</code>, we don’t have our styles anymore! This is because the styles output into a new file, which isn’t automatically loaded. So we add a stylesheet link in <code>public/index.html</code>:<br><figure class="highlight diff"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   &lt;meta http-equiv="X-UA-Compatible" content="ie=edge"&gt;</div><div class="line">   &lt;title&gt;Webpack bundle test page&lt;/title&gt;</div><div class="line"><span class="addition">+  &lt;link rel="stylesheet" href="/style.css"&gt;</span></div><div class="line">   &lt;script src="/bundle.js" defer&gt;&lt;/script&gt;</div><div class="line"> &lt;/head&gt;</div></pre></td></tr></table></figure></p>
+<p>Refresh the page and your styles are back. If you check the network requests tab in your browser, you can see the stylesheet was loaded in separately.</p>
+<p>This is now a mostly production-ready stylesheet management system. </p>
+<blockquote>
+<p>The main pain-point for this configuration now is that files always have the same name, which means that you would need to do external versioning to bust the browser file cache. Fixing this is possible with a Webpack plugin, but it’s a bit out of scope for this guide.</p>
+</blockquote>
+<p>The final results can be seen as a <a href="https://github.com/samsch/basic-webpack-react/tree/css-loader-extract-text-plugin" target="_blank" rel="external">branch of the base repo</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/07/14/how-to-add-css-loader-to-webpack/" data-id="ckixl4zvz000cjku398kve0cd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css-loader/" rel="tag">css-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-getting-started-with-react" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/21/getting-started-with-react/" class="article-date">
+  <time datetime="2017-04-21T22:36:00.000Z" itemprop="datePublished">2017-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This will be the fast course to get a productive React development flow going. The only real prerequisite (besides a working computer and internet connection) is having a recent version of Node.js installed (as written, this is version 7.9.0, and LTS 6.10.2).</p>
+<p>What this guide does not do is teach you Javascript or React. This just gets the environment in place.</p>
+<h2 id="Let’s-go"><a href="#Let’s-go" class="headerlink" title="Let’s go!"></a>Let’s go!</h2><p>First thing to do is create your new project folder (I’ll be using <code>react-project</code> in this guide), and run <code>npm init</code>. The requested information doesn’t directly impact what we are going to be doing, so use whatever values you want.</p>
+<p>We need an html page to attach our app to, so create a <code>public/</code> folder, and inside, create <code>index.html</code>. Paste this content into it:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Basic React App<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"bundle.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>If you are looking at this and saying, “man, that’s a pretty sparse web page”, well, you’re right. For a “real” app, you are going to want to put your extra meta tags in, maybe Google Analytics, a link to your favicon, and whatever else you need. We’ll get to the content next.</p>
+<h3 id="Application-source"><a href="#Application-source" class="headerlink" title="Application source"></a>Application source</h3><p>Create a <code>src/</code> folder in the root of your project. All of your project specific source will be in this folder. For now, just create a <code>main.js</code> file in <code>src/</code>, and copy these contents into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM  <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line">ReactDOM.render(</div><div class="line">    &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>So now your project folder should look like this:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- react-project</div><div class="line"> |- package.json</div><div class="line"> |- src/</div><div class="line"> | |- main.js</div><div class="line"> |- public/</div><div class="line">   |- index.html</div></pre></td></tr></table></figure></p>
+<p>Well, we can see from above that we need at least a few dependencies from npm installed, so lets get started on those.</p>
+<p>Run <code>npm install --save react react-dom</code>.</p>
+<p>The <code>react</code> package is the ReactJS library, and <code>react-dom</code> is a sister library which lets you render a React virtual DOM to the real DOM.</p>
+<p>That actually covers the entire source of the application. Now all we need to do is build it.</p>
+<h3 id="Setting-up-Webpack"><a href="#Setting-up-Webpack" class="headerlink" title="Setting up Webpack"></a>Setting up Webpack</h3><p>So, we primarily need two tools for building a React application: Webpack, and Babel.</p>
+<p>Babel is a Javascript compiler (sometimes called a transpiler). It takes JSX and modern (ES2015, ES2016, and beyond) Javascript syntax, and compiles it to ES5 Javascript, which allows your modern code to run in older browsers.</p>
+<blockquote>
+<p>The compiled code potentially can work with even IE8 (with some extra effort). However, IE9 is the oldest browser which “normally” works. In 2017, IE11 and Android Browser are the targets of primary concern.</p>
+</blockquote>
+<p>Webpack is a module bundler. You give it an entry point file which uses ES Modules or CommonJS (which is the same syntax that Node uses for its modules), and it finds and “bundles” all the required files into a single file, which you can then include in your web page.</p>
+<p>So, lets install Webpack and Babel. Run <code>npm install --save-dev webpack babel-core babel-loader babel-polyfill</code>. Wait, what is babel-loader? Webpack plugins which change the bundled code are called loaders. babel-loader is then the Webpack plugin which allows Babel to be run against the files to be bundled. And babel-polyfill? That’s to fill in additions to Javascript in ES2015+ that do not require new syntax, such as methods like <code>Object.includes</code> and objects like <code>Promise</code>.</p>
+<p>“That’s it right? now we just run <code>webpack</code> and we’re done, right?” Not quite.</p>
+<p>Our next step is to configure webpack. Technically, we could forgo configuring, and just use command line arguments to the Webpack cli interface. That would look something like <code>webpack src/main.js public/bundle.js --module-bind &#39;js=babel&#39;</code>. However, using a configuration file is much more expressive, gives you more options, and is easier to maintain. So create <code>webpack.config.js</code> in the root of your project, and copy this into it:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="string">'public'</span>);</div><div class="line"><span class="keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="string">'src/'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">    entry: [<span class="string">'babel-polyfill'</span>, APP_DIR + <span class="string">'/main.js'</span>],</div><div class="line">    output: &#123;</div><div class="line">        path: BUILD_DIR,</div><div class="line">        filename: <span class="string">'bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="built_in">module</span> : &#123;</div><div class="line">        rules : [</div><div class="line">            &#123;</div><div class="line">                test : <span class="regexp">/\.jsx?/</span>,</div><div class="line">                include : APP_DIR,</div><div class="line">                use : <span class="string">'babel-loader'</span>,</div><div class="line">            &#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = config;</div></pre></td></tr></table></figure></p>
+<p>Wow, that’s a lot of configuration for a simple app! Let’s take a closer look though. The first two lines are just requiring Webpack and the Node “path” module, and the next two lines are just setting some constants.</p>
+<p>After that we have the actual configuration for Webpack. One nice point to note is that Webpack’s configuration file is a Javascript file, not JSON like many others are (allowing comments, trailing commas, etc). In our configuration we set the <code>entry</code> property, which is the file that Webpack starts at (more on that in a moment); the <code>output</code>, which is where Webpack saves the compiled code; and the <code>module</code> property.</p>
+<p>The <code>entry</code> configuration can take a string, array, or object. If you use a string, it should point at the single file that starts your application. If you use an array, Webpack will concatenate the files. Using an object allows you to have multiple entry points, which is for building multiple separate apps. In our case, we need our main.js file and babel-polyfill (which is loaded first).</p>
+<p>Our <code>module</code> property has a <code>rules</code> property, which is an array of the defined loaders. For now, we are just defining babel-loader. <code>test</code> is a regex to match against file extensions. I’m using a pattern which matches <code>.js</code> and <code>.jsx</code> files. You could also choose to set it to only compile files with the JSX extension, by using <code>/\.jsx/</code>, or if you decide not to use .jsx at all, just use <code>/\.js/</code> to .js files. The <code>include</code> property tells Webpack that you only want to compile files in a specific folder. This is because you should never need to compile files from <code>node_modules</code>, since libraries should already be compiled with Babel (if they needed to be). This only stops Webpack from running Babel on files outside of APP_DIR, it doesn’t stop Webpack from bundling those files into the output. The <code>use</code> property defines our loader, which is Babel.</p>
+<p>The last line is simply exporting the configuration. By default, when Webpack runs, it uses <code>webpack.config.js</code> if it exists.</p>
+<p>And that’s it for our Webpack configuration. Now we just need to add our command to package.json:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  ...</div><div class="line">  "scripts": &#123;</div><div class="line">    ...</div><div class="line">    "dev": "webpack -d --watch",</div><div class="line">    "build": "webpack -p"</div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>We add two npm scripts, “dev” and “build”. “dev” will run Webpack with “-d –watch”, which sets webpack in debug mode (more verbose, and outputs code maps for the browser), and in watch mode, which means it continuously runs, re-compiling whenever a bundled file changes. “build” runs Webpack with “-p”, which enables production mode. In production mode, the output is uglified (using Uglify), and any instances of <code>process.env.NODE_ENV</code> are replaced with <code>&quot;production&quot;</code>. That last part is important because it allows Uglify to remove React’s internal debugging tools (which lets it run faster).</p>
+<h3 id="Setup-Babel"><a href="#Setup-Babel" class="headerlink" title="Setup Babel"></a>Setup Babel</h3><p>Ok, we’re almost there. We have everything in place except for a little bit of Babel configuration. This one is easy. Create <code>.babelrc</code> in your project root, and copy this into it:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"presets"</span> : [<span class="string">"latest"</span>, <span class="string">"react"</span>]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>What this does is tell Babel to compile ES2015+ and JSX to ES5 Javascript. These presets don’t come with Babel, so install them with <code>npm install --save-dev babel-preset-latest babel-preset-react</code>.</p>
+<p>This is the simple approach to the Babel config. For a more explicit configuration (such as for targeting ES2015 compatible browsers), check out @brigand’s <a href="https://brigand.github.io/config-wizard/?babelrc" target="_blank" rel="external">config-wizard</a>.</p>
+<h3 id="Run"><a href="#Run" class="headerlink" title="Run!"></a>Run!</h3><p>That pretty much covers it. And now you know why the React workflow is notorious for being difficult to setup. While it’s not actually that complex, there are many steps to the process, at least the first time through.</p>
+<p>So, finally, to start your development environment, run <code>npm run dev</code>. You should see some output from Webpack, and two more files should appear in <code>public/</code>: <code>bundle.js</code> and <code>bundle.js.map</code>.</p>
+<p>Now you just need a server to get these files into your browser. My go-to mini-server is <code>http-server</code>, available with npm. I install very few npm packages globally, but this is one. Install it with <code>npm install -g http-server</code>, then run it from your project root with <code>http-server public</code>. Now you should be able to visit <code>localhost:8080</code> in your browser, and see the web app you just created!</p>
+<h2 id="Just-give-me-the-final-product-already"><a href="#Just-give-me-the-final-product-already" class="headerlink" title="Just give me the final product already"></a>Just give me the final product already</h2><p><a href="https://github.com/samsch/basic-react" target="_blank" rel="external">Here it is, the whole thing wrapped up in a Github Repository.</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/04/21/getting-started-with-react/" data-id="ckixl4zvz000bjku32ar0th46" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/" rel="tag">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-getting-started-with-webpack-part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/14/getting-started-with-webpack-part-2/" class="article-date">
+  <time datetime="2017-04-14T14:45:02.000Z" itemprop="datePublished">2017-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>In <a href="https://samsch.org/2017/04/08/getting-started-with-webpack/">Part 1</a>, we setup basic production ready functionality in Webpack. We can organize our code into modules, build them into a single file bundle, and have the build process run automatically, refreshing our project in a webpage.</p>
+<p>Our next step is to have our build system compile modern Javascript (ES2015, ES2016, ES2017) into code which can be run in current browsers (ES5). We also need to add in polyfills for some of the additional non-syntax language features.</p>
+<p>We also will enable JSX compilation for use with React.</p>
+<h2 id="Loaders-and-our-starting-point"><a href="#Loaders-and-our-starting-point" class="headerlink" title="Loaders and our starting point"></a>Loaders and our starting point</h2><p>Webpack has a couple ways to extend its functionality. There is a <a href="https://webpack.js.org/plugins/" target="_blank" rel="external">plugin system</a>, which used for tools such as UglifyJS for code minification, and there is the <a href="https://webpack.js.org/loaders/" target="_blank" rel="external">loader system</a>. Loaders allow you to pre-process files before they are added to the bundle.</p>
+<p>We will use the final product of Part 1 as our starting point. You can clone the <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders</a> repo to follow along, or if you followed Part 1, the project you ended up with.</p>
+<h2 id="Final-result"><a href="#Final-result" class="headerlink" title="Final result"></a>Final result</h2><p>If you don’t want to build the whole thing, or want to look ahead, the final result is in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
+<h2 id="Adding-Babel"><a href="#Adding-Babel" class="headerlink" title="Adding Babel"></a>Adding Babel</h2><p>Our first step is to add and configure Babel. Babel is a Javascript and near-Javascript compiler. The Webpack loader is called babel-loader, and depends on babel-core as a peer dependency. Install both with <code>npm install -D babel-core babel-loader</code>.</p>
+<p>Next we need to setup a babelrc file in the project root. This file configures the Babel plugins we need.</p>
+<p>To setup this file, I used <a href="https://github.com/brigand" target="_blank" rel="external">@brigand</a>‘s <a href="https://brigand.github.io/config-wizard/?babelrc" target="_blank" rel="external">config-wizard</a>, with options “Play it safe”, “None/Other”, [“IE11”, “iOS”, “Chrome”, “Firefox”]. This instructs us to install babel-preset-env with <code>npm install -D babel-preset-env</code>, and gives us our file content for <code>.babelrc</code>:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"presets"</span>: [</div><div class="line">    [</div><div class="line">      <span class="string">"env"</span>,</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"targets"</span>: &#123;</div><div class="line">          <span class="attr">"browsers"</span>: [</div><div class="line">            <span class="string">"ie 11"</span>,</div><div class="line">            <span class="string">"last 2 Chrome versions"</span>,</div><div class="line">            <span class="string">"last 2 Firefox versions"</span>,</div><div class="line">            <span class="string">"last 2 iOS versions"</span></div><div class="line">          ]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Now we need to add babel-loader to <code>webpack.config.js</code>. We’re adding a <code>modules</code> property with some options:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>: &#123;</div><div class="line">  rules: [</div><div class="line">    &#123;</div><div class="line">      test : <span class="regexp">/\.js/</span>,</div><div class="line">      include: path.resolve(__dirname, <span class="string">'src/'</span>),</div><div class="line">      use: [<span class="string">'babel-loader'</span>],</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/15a058bd059b1bfe57d2400003348736" target="_blank" rel="external">View diff of file change</a></p>
+</blockquote>
+<p>With these changes, we can now use the same commands as before (<code>npm start</code>, <code>npm run dev</code>, <code>npm run build</code>), and it will work just the same, except that now if we use ES2015/16/17 code, it will be compiled to ES5 Javascript.</p>
+<h3 id="Polyfills"><a href="#Polyfills" class="headerlink" title="Polyfills"></a>Polyfills</h3><p>Now we need to add the Babel polyfill (which is actually core-js and regenerator). Install it with <code>npm install -D babel-polyfill</code>. There are a couple ways to include polyfills in your code. The simplest is to just add <code>import &#39;babel-polyfill&#39;;</code> to the top of your entry file (<code>src/main.js</code>). A slightly cleaner approach is to include them via webpack config, which also makes the polyfills part of the build, rather than part of your code. We need to change the <code>entry</code> property in <code>webpack.config.js</code> to be <code>entry: [&#39;babel-polyfill&#39;, &#39;./src/main.js&#39;],</code>.</p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/0df1433b029dda87d73f092cf119d837" target="_blank" rel="external">webpack.config.js diff</a></p>
+</blockquote>
+<h2 id="Test-modern-to-ES5-compilation"><a href="#Test-modern-to-ES5-compilation" class="headerlink" title="Test modern to ES5 compilation"></a>Test modern to ES5 compilation</h2><p>Let’s show that our code is being compiled properly. Change <code>srv/main.js</code> to be:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line">foo();</div><div class="line"></div><div class="line"><span class="keyword">const</span> j = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Babel compilation is working!'</span>);</div><div class="line"></div><div class="line">j();</div></pre></td></tr></table></figure></p>
+<p>If we compile with <code>npm run build</code>, and search in the (minified) <code>public/bundle.js</code> for “Babel compilation is working!”, we find <code>function(){console.log(&quot;Babel compilation is working!&quot;)}</code>, which is using the <code>function</code> keyword rather than using an arrow function like our source.</p>
+<h2 id="React…-and-more"><a href="#React…-and-more" class="headerlink" title="React… and more!"></a>React… and more!</h2><p>What we have now gives us great modern Javascript workflow, while supporting common browsers. Our next step takes us to features outside of Javascript. To work with React, most developers use JSX, which is an HTML-like language that compiles to Javascript. To add JSX support, all we need to do is install babel-preset-react, add it to <code>.babelrc</code>, and possibly make a minor change to our webpack config.</p>
+<p>First add babel-preset-react with <code>npm install -D babel-preset-react</code>. Then change <code>.babelrc</code> to be:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"presets"</span>: [</div><div class="line">    [</div><div class="line">      <span class="string">"env"</span>,</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"targets"</span>: &#123;</div><div class="line">          <span class="attr">"browsers"</span>: [</div><div class="line">            <span class="string">"last 2 Chrome versions"</span>,</div><div class="line">            <span class="string">"last 2 Firefox versions"</span>,</div><div class="line">            <span class="string">"last 2 iOS versions"</span>,</div><div class="line">            <span class="string">"ie 11"</span></div><div class="line">          ]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ],</div><div class="line">    <span class="string">"react"</span></div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Generated with config-wizard similar to before, this time replacing “None/Other” with “React”.</p>
+</blockquote>
+<p>With just those changes, we can now compile JSX in our js files. Some developers prefer to use a different file extension for React components though: <code>.jsx</code>. We can support this by making a small change to our <code>test</code> line in <code>webpack.config.js</code>. Replace <code>test : /\.js/,</code> with <code>test : /\.jsx?/,</code>. Now Wepack will use babel-loader for <code>.js</code> and <code>.jsx</code> files.</p>
+<blockquote>
+<p><a href="https://gist.github.com/samsch/54abd031b6ca088abe652371c8dd8754" target="_blank" rel="external">webpack config diff</a></p>
+</blockquote>
+<h2 id="Test-React-compilation"><a href="#Test-React-compilation" class="headerlink" title="Test React compilation"></a>Test React compilation</h2><p>To see that we can now compile JSX, lets change <code>src/foo.js</code> to run some React code:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;p&gt;This was rendered <span class="keyword">with</span> React.&lt;<span class="regexp">/p&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Since we’re importing React and ReactDOM, we also need to install them, so run <code>npm install -D react react-dom</code>.</p>
+<p>Now we can run <code>npm start</code>, and we should see our “Hello, world!” and the rendered by React message.</p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>We have a fully functional Webpack and Babel workflow now, which supports modern Javascript and React. The final product can be found in <a href="https://github.com/samsch/basic-webpack-react" target="_blank" rel="external">basic-webpack-react</a>.</p>
+<p>For moving beyond what’s here, there are many Webpack loaders, and more features which can’t be covered in a basic guide. Some popular topics:</p>
+<ul>
+<li><a href="https://webpack.js.org/loaders/#styling" target="_blank" rel="external">Loading styles</a></li>
+<li><a href="https://webpack.js.org/guides/code-splitting-import/" target="_blank" rel="external">Code splitting</a></li>
+<li><a href="https://webpack.js.org/guides/hmr-react/" target="_blank" rel="external">Hot modules replacement (HMR)</a></li>
+</ul>
+<p>Happy coding!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/04/14/getting-started-with-webpack-part-2/" data-id="ckixl4zvy0009jku3q40jj1ek" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/" rel="tag">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-getting-started-with-webpack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/08/getting-started-with-webpack/" class="article-date">
+  <time datetime="2017-04-08T14:49:29.000Z" itemprop="datePublished">2017-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Modern Javascript best practice is to use either ES modules or CommonJS modules for front end code. However, not all <a href="http://caniuse.com/#feat=es6-module" target="_blank" rel="external">browsers currently support a module system</a> directly, so to allow this practice, we use a tool called a bundler, which parses modules and creates a single file containing the full source.</p>
+<p>There are a couple options for bundlers, but the popularity contest is largely being won by Webpack. There is some notoriety around Webpack, mostly due to the ability to create monstrous configurations for complex builds. However, Webpack itself is fairly straightforward, and this post will walk through the basic setup and configuration.</p>
+<blockquote>
+<p>In a hurry? The final product of this guide can be found in my <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders repository</a>.</p>
+</blockquote>
+<h2 id="Webpack-basics"><a href="#Webpack-basics" class="headerlink" title="Webpack basics"></a>Webpack basics</h2><p>The simplest usage of Webpack is very easy. Let’s get a basic project started.</p>
+<blockquote>
+<p>Don’t forget to reference the <a href="https://webpack.js.org/configuration/" target="_blank" rel="external">Webpack documentation</a> for more details, and to explore the options that Webpack provides!</p>
+</blockquote>
+<h3 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h3><p>You need to have Node.js installed.</p>
+<p>For Linux and MacOS, the easiest way to install and work with Node is using nvm. Instructions for installing are on the <a href="https://github.com/creationix/nvm#installation" target="_blank" rel="external">nvm project page</a>.</p>
+<blockquote>
+<p>If using Windows, you can download an installer from the <a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js website</a>.</p>
+<p>The instructions are the same for Webpack in Windows, except you may need to use backslashes instead of slashes for paths on the command line. For example, <code>webpack src/main.js public/bundle.js</code> might need to be <code>webpack src\main.js public\bundle.js</code> in Windows.</p>
+<p>You can of course use Yarn instead of npm for all the command below. Just remember to use <code>yarn add -D &lt;package&gt;</code> instead of <code>npm install -D &lt;package&gt;</code>.</p>
+</blockquote>
+<h3 id="Create-a-new-project"><a href="#Create-a-new-project" class="headerlink" title="Create a new project"></a>Create a new project</h3><p>Make a new folder for your project (I’m using <code>basic-webpack</code>). Then open this folder in a terminal.</p>
+<p>Run <code>npm init</code>. It will prompt you for project details, but you can just hit enter for each option to use the default. In a real project, you would probably want to fill in actual details.</p>
+<p>Next run <code>npm install -D webpack</code>. This will install Webpack as a development dependency.</p>
+<h3 id="Add-source-code"><a href="#Add-source-code" class="headerlink" title="Add source code"></a>Add source code</h3><p>Let’s add some source code modules that we want to bundle!</p>
+<p>Create a <code>src/</code> folder in your project, and then create a <code>src/foo.js</code> file. Add the following to the file:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Ran foo()!'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Then create a <code>src/main.js</code> file, with this content:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> foo <span class="keyword">from</span> <span class="string">'./foo'</span>;</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure></p>
+<p>Now we can see that main.js is reliant on foo.js. Now we need to create a <em>bundle</em>, which is a single file with all the code in it, neatly packaged to be used in the browser.</p>
+<h3 id="Use-Webpack"><a href="#Use-Webpack" class="headerlink" title="Use Webpack"></a>Use Webpack</h3><p>The simplest way to use Webpack is from the command line. Webpack, like most runnable npm modules, can be installed globally so that you could just run <code>webpack &lt;options&gt;</code> directly. However, the best practice is to install locally to the project. So then to run Webpack, we either need to use <code>./node_modules/.bin/webpack</code> OR we can setup an <strong>npm script</strong>. We will be doing the latter.</p>
+<p>In your <code>package.json</code> file (which was created by <code>npm init</code> above), add a line under the <strong>scripts</strong> property like this:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "webpack": "webpack"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now we can run Webpack with <code>npm run webpack -- &lt;options&gt;</code>.</p>
+<p>Webpack runs on the command line with the form <code>webpack &lt;entry&gt; &lt;output&gt;</code>. We want to output our bundle to <code>public/</code>, and <code>src/main.js</code> is our <em>entry</em> file.</p>
+<p>Run <code>npm run webpack -- src/main.js public/bundle.js</code>. (It will create the <code>public/</code> folder automatically if it doesn’t exist.)</p>
+<h3 id="Profit"><a href="#Profit" class="headerlink" title="Profit!"></a>Profit!</h3><p>That’s it! That’s all there is to running Webpack in it’s most basic form. You can change your <code>package.json</code> file to include the Weback command option so that you can just run <code>npm run webpack</code>. Change the line <code>&quot;webpack&quot;: &quot;webpack&quot;,</code> to be <code>&quot;webpack&quot;: &quot;webpack src/main.js public/bundle.js&quot;,</code>.</p>
+<h2 id="Actually…"><a href="#Actually…" class="headerlink" title="Actually…"></a>Actually…</h2><p>However, this isn’t the standard way to use Webpack. There are a couple missing features which we usually want. You can actually do most of this from the command line, but the recommended path is to use a Webpack config file.</p>
+<h3 id="Basic-config-driven-Webpack"><a href="#Basic-config-driven-Webpack" class="headerlink" title="Basic config-driven Webpack"></a>Basic config-driven Webpack</h3><p>If you changed your <code>package.json</code> file to include the paths in the Webpack script command, revert that change so that it’s just:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "webpack": "webpack"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now create a <code>webpack.config.js</code> file in the project root, with these contents:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/main.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'bundle.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>This is the bare basics to do the same thing as the command line. While it is a bit more verbose, it also is fairly clear.</p>
+<p>Now you can run <code>npm run webpack</code>, and it will automatically find the config file (we used the default name) and build the bundle.</p>
+<h3 id="Setup-basic-development-and-production-modes"><a href="#Setup-basic-development-and-production-modes" class="headerlink" title="Setup basic development and production modes"></a>Setup basic development and production modes</h3><p>Webpack comes with some built-in development and production tool which can be enabled with command line options. Edit scripts in <code>package.json</code> again to be like:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>Now we can do a production build with <code>npm run build</code>. For development, we can run <code>npm run dev</code>, and it will re-compile any time a file changes which will affect the bundle.</p>
+<p>The <code>-d</code> and <code>-p</code> are shortcut options. <code>-d</code> enables sourcemaps and turns on debug mode for <em>loaders</em> (more on loaders later). <code>-p</code> sets the <code>NODE_ENV</code> environment variable to “production” and replaces usages of process.env.NODE_ENV with ‘“production”‘ in your code. <code>-p</code> also turns on UglifyJSPlugin, which does minification and dead-code removal. With these two combined, code such as the following will be removed in production builds:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(process.env.NODE_ENV !== <span class="string">"production"</span>) &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Debug mode!'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>The sourcemaps are not generated as a separate file by default. You can choose a different sourcemap output with a setting in the webpack config file. <a href="https://webpack.js.org/configuration/devtool/" target="_blank" rel="external">Webpack devtool documentation</a>.</p>
+<h2 id="Using-the-bundle-and-automation"><a href="#Using-the-bundle-and-automation" class="headerlink" title="Using the bundle, and automation!"></a>Using the bundle, and automation!</h2><p>What we have now is all you need to bundle Javascript files in development and production. All that needed is a server to serve the Javascript bundle, and a page that includes it.</p>
+<p>In the <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders repo</a>, you can run <code>checkout basic-production-ready</code> to see the code as it should be if you followed along.</p>
+<p>A quick look at what we have:</p>
+<ul>
+<li>We can put ES module and CommonJS module source files in <code>src/</code>, and also include modules from <code>node_modules/</code> installed with npm or Yarn.</li>
+<li>We can do a development build on change with <code>npm run dev</code>, and we can create a production-ready bundle with <code>npm run build</code>.</li>
+</ul>
+<p>Our next step is to make the developer experience (DX) even better, by setting up webpack-dev-server.</p>
+<h3 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h3><p>Webpack-dev-server does two things: It acts as a static file server (by default), and it watches and bundles your source with some added code which will refresh your browser page when the source changes and the bundle is rebuilt.</p>
+<p>Install webpack-dev-server with <code>npm install webpack-dev-server</code>.</p>
+<p>Next add a start script to <code>package.json</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">  "start": "webpack-dev-server -d --open",</div><div class="line">  "dev": "webpack -d --watch",</div><div class="line">  "build": "webpack -p"</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>If we had an <code>index.html</code> file in our project root, and it used a script with a source that pointed to <code>/bundle.js</code>, then we could just run <code>npm start</code> and serve that. However, we don’t really want our app to serve from the project root, we want to serve from the <code>public/</code> folder. Let’s add a bit of configuration to <code>webpack.config.js</code>:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  entry: <span class="string">'./src/main.js'</span>,</div><div class="line">  output: &#123;</div><div class="line">    filename: <span class="string">'bundle.js'</span>,</div><div class="line">    path: path.resolve(__dirname, <span class="string">'public'</span>),</div><div class="line">  &#125;,</div><div class="line">  devServer: &#123;</div><div class="line">    contentBase: path.join(__dirname, <span class="string">"public"</span>),</div><div class="line">    https: <span class="literal">true</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>The https setting is optional. These days HTTPS is strongly preferred for <em>all</em> websites. This option will set the dev server to automatically create a self-signed cert, and open the page via with https. You can also set a cert, key, and ca file. Check the <a href="https://webpack.js.org/configuration/dev-server/#devserver-https" target="_blank" rel="external">devServer documentation for instructions</a>.</p>
+</blockquote>
+<p>Next create <code>public/index.html</code>, and put this content in it:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Webpack bundle test page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/bundle.js"</span> <span class="attr">defer</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">id</span>=<span class="string">"app-body"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Waiting for Javascript...<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>That’s all we need, but to give us a slightly better first look, lets update <code>src/foo.js</code> to modify the html:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Ran foo()!'</span>);</div><div class="line">  <span class="keyword">const</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>().toDateString();</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'app-body'</span>).innerHTML = <span class="string">`&lt;h1&gt;Hello, world!&lt;/h1&gt;&lt;p&gt;This is bundled Javascript! Today is: <span class="subst">$&#123;date&#125;</span>&lt;/p&gt;`</span>;</div><div class="line">  <span class="keyword">if</span>(process.env.NODE_ENV !== <span class="string">"production"</span>) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Debug mode!'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> foo;</div></pre></td></tr></table></figure></p>
+<p>Now with these changes, run <code>npm start</code>. This should open a new page in your browser with the above html.</p>
+<blockquote>
+<p>Since it will be using a self-signed cert, you will need to click through the “Advanced” option to allow it. In Chrome, you click “Proceed to <hostname> (unsafe)”, and in Firefox you click “Add Exception…” and I recommend unchecking the permanent option (since the cert won’t last very long anyway).</hostname></p>
+</blockquote>
+<p>Congratulations! You now have webpack-dev-server running! You can test it out by changing <code>src/main.js</code> or <code>src/foo.js</code>. When you save changes to either file, the webpage in your browser will refresh with the new bundle.</p>
+<p>The final product is available to clone in <a href="https://github.com/samsch/basic-webpack-no-loaders" target="_blank" rel="external">basic-webpack-no-loaders</a>.</p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><p>What we have now is a production ready Javascript build system. To make it your own, you can replace, change, and remove the files in <code>src/</code>, just make sure that the <code>entry</code> property in <code>webpack.config.js</code> points to your entry file (some common files are <code>src/main.js</code>, <code>src/index.js</code>, and <code>lib/index.js</code>).</p>
+<p>The most common extra configuration for Webpack is to include babel-loader with preset to compile modern Javascript to ES5 Javascript for browser compatibility. That will be explored in the <a href="https://samsch.org/2017/04/14/getting-started-with-webpack-part-2/">next post</a>.</p>
+<p>Happy coding!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2017/04/08/getting-started-with-webpack/" data-id="ckixl4zvx0008jku33um6qiia" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/" rel="tag">Webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 12.5px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 15px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hooks/" style="font-size: 10px;">hooks</a> <a href="/tags/js/" style="font-size: 17.5px;">js</a> <a href="/tags/lifecycles/" style="font-size: 10px;">lifecycles</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/ssr/" style="font-size: 10px;">ssr</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/23/effects-are-not-lifecycles/">Effects are not lifecycles</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/does-using-react-negatively-affect-seo/">Does Using React Negatively Affect SEO?</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/04/how-to-setup-webpack-v4/">How to Setup Webpack v4</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/state-terminology/">State Terminology</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/19/blog/">Getting a blog started</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Samuel Scheiderich<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/Samuel-Scheiderich" class="mobile-nav-link">About me</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

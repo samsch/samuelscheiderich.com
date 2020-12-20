@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Does Using React Negatively Affect SEO? | Samuel Scheiderich</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Original gist The effect on SEO related to React comes from doing client-side rendering only. So this isn’t React specific, any client-side-only view will suffer from this. But yes, SEO explicitly suf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Does Using React Negatively Affect SEO?">
+<meta property="og:url" content="http://samsch.org/2019/07/08/does-using-react-negatively-affect-seo/index.html">
+<meta property="og:site_name" content="Samuel Scheiderich">
+<meta property="og:description" content="Original gist The effect on SEO related to React comes from doing client-side rendering only. So this isn’t React specific, any client-side-only view will suffer from this. But yes, SEO explicitly suf">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-08T21:45:04.000Z">
+<meta property="article:modified_time" content="2019-07-24T18:17:15.404Z">
+<meta property="article:author" content="Samuel Scheiderich">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="seo">
+<meta property="article:tag" content="ssr">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Samuel Scheiderich</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/Samuel-Scheiderich">About me</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samsch.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-does-using-react-negatively-affect-seo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/08/does-using-react-negatively-affect-seo/" class="article-date">
+  <time datetime="2019-07-08T21:45:04.000Z" itemprop="datePublished">2019-07-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Does Using React Negatively Affect SEO?
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://gist.github.com/samsch/c97e955782e5a2eeb726cf44d450cd6f" target="_blank" rel="external">Original gist</a></p>
+<p>The effect on SEO related to React comes from doing client-side rendering only. So this isn’t React specific, any client-side-only view will suffer from this. But yes, SEO explicitly suffers for non-Google search engines which don’t run the JavaScript for a page. Basically, your page is effectively blank. Google does run JavaScript, but their algorithm is intentionally quite complex and takes into account many factors, some of which (like initial render performance) can be affected by using only client-side rendering.</p>
+<p>In reality, most sites where SEO matters for the pages probably should not be rendered on the client, or at least not on the client only. The web is designed around servers generating html, and unless you have a strong reason not to, it’s better to fall in with that paradigm by default.</p>
+<p>So then, there are two ways React can still be valuable, even when rendering on the server. The simpler way is to just use React as a server side templating language. I’ve been doing this on a current project, and it works quite nicely. JSX is handled on Node by compiling your server code with the Babel cli. Now, certain frequently-used features for front end that are normally handled by Webpack don’t have great support and can be much more of a pain to setup (css-modules, file/image imports), but if you just treat React like any other templating language (e.g., Pug), it’s not really any worse, and I prefer it personally.</p>
+<p>The other option is using hydrated React SSR. Frequently this is just referred to as “React SSR” or even just “SSR”, but I try to explicitly saying “hydrated” here because “SSR” simply stands for Server Side Rendering, which nominally describes basically anything that isn’t client-side rendered.</p>
+<p>Hydrated SSR means you share React components on the server and client, render on the server for the first request, the client code runs and “hydrates” it (the client renders a second time, ensuring it matches what the server rendered and attaching event listeners), and then client routing and rendering take over from there.</p>
+<p>Hydrated SSR sounds great, but realize you get nearly all the downsides and only some of the upsides of doing both client and server rendering. It makes the codebase more complex and heavier. If you aren’t using a Node (JavaScript) backend, then it adds significant complexity. And while it does improve SEO for non-Google crawlers, it doesn’t necessarily improve the performance, and can hurt Time to Interactive. If your site isn’t at least minimally usable without JavaScript on the client at all, it’s not doing much for you. And to make it usable without JavaScript, you need to do more work on the server side for handling forms and such.</p>
+<p>So, the progressions of what usually makes sense to use, starting with lower complexity web sites, and progressing to high-interactivity web apps:</p>
+<table>
+<thead>
+<tr>
+<th>web site/app type</th>
+<th>examples</th>
+<th>likely best way to implement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple static websites</td>
+<td>“postcard” sites, marketting landing pages</td>
+<td>Just generate static html. Static site generators are great tools, and there are quite a few to fit tastes.</td>
+</tr>
+<tr>
+<td>Simple dynamic content websites</td>
+<td>blogs, forums, some ecommerce</td>
+<td>Render html on the server using a templating language, do minor UI enhancements with JS on the client.</td>
+</tr>
+<tr>
+<td>Dynamic content with complex interactions</td>
+<td>Social media, some ecommerce</td>
+<td>Render html on the server where possible, replace functionality on the client with JS (React can be a useful tool).</td>
+</tr>
+<tr>
+<td>Highly interactive content</td>
+<td>Maps, chatrooms, games, some admin interfaces, dashboards</td>
+<td>Render base html on the server, maybe static if no extra data is needed, render significant parts of the UI on the client (React is great for this).</td>
+</tr>
+</tbody>
+</table>
+<p>If you look at the progression here, you’ll notice that the likely importance of SEO generally goes from high to low as you move down the table. This works out, since the html generated by the server for the earlier entries will be more SEO friendly.</p>
+<p>Where hydrated React SSR comes in is when you <em>need</em> SEO for dynamic, interactive content in the lower parts of the table. A notable example of a large scale website where they feel the complexity trade-offs are necessary for SEO and accessibility is Airbnb (which is also largely (or fully?) designed to function without client-side JavaScript).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2019/07/08/does-using-react-negatively-affect-seo/" data-id="ckixl4zw2000jjku3j9abcyap" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/seo/" rel="tag">seo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssr/" rel="tag">ssr</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/23/effects-are-not-lifecycles/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Effects are not lifecycles
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/04/how-to-setup-webpack-v4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">How to Setup Webpack v4</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 12.5px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 15px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hooks/" style="font-size: 10px;">hooks</a> <a href="/tags/js/" style="font-size: 17.5px;">js</a> <a href="/tags/lifecycles/" style="font-size: 10px;">lifecycles</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/ssr/" style="font-size: 10px;">ssr</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/23/effects-are-not-lifecycles/">Effects are not lifecycles</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/does-using-react-negatively-affect-seo/">Does Using React Negatively Affect SEO?</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/04/how-to-setup-webpack-v4/">How to Setup Webpack v4</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/state-terminology/">State Terminology</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/19/blog/">Getting a blog started</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Samuel Scheiderich<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/Samuel-Scheiderich" class="mobile-nav-link">About me</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

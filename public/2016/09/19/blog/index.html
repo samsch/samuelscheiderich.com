@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Getting a blog started | Samuel Scheiderich</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This could just as well be titled Trouble with blogging software. If you’re reading this, then at some point I had success. Let me tell you about some of the trials along the way. My first taste of se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Getting a blog started">
+<meta property="og:url" content="http://samsch.org/2016/09/19/blog/index.html">
+<meta property="og:site_name" content="Samuel Scheiderich">
+<meta property="og:description" content="This could just as well be titled Trouble with blogging software. If you’re reading this, then at some point I had success. Let me tell you about some of the trials along the way. My first taste of se">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-09-19T23:58:27.000Z">
+<meta property="article:modified_time" content="2016-09-20T02:29:27.279Z">
+<meta property="article:author" content="Samuel Scheiderich">
+<meta property="article:tag" content="developer experience">
+<meta property="article:tag" content="deployment">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="ghost">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Samuel Scheiderich" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Samuel Scheiderich</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/Samuel-Scheiderich">About me</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://samsch.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-blog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/19/blog/" class="article-date">
+  <time datetime="2016-09-19T23:58:27.000Z" itemprop="datePublished">2016-09-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Getting a blog started
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This could just as well be titled <em>Trouble with blogging software</em>.</p>
+<p>If you’re reading this, then at some point I had success. Let me tell you about some of the trials along the way.</p>
+<p>My first taste of server-side programming was in PHP. At the same time, I was taking a basic theming course for <a href="https://wordpress.org" target="_blank" rel="external">Wordpress</a>. So setting up a Wordpress (.org or .com) site would be easy, and I could probably be done with it in less than an hour if I didn’t get distracted by theming.</p>
+<h2 id="Wordpress"><a href="#Wordpress" class="headerlink" title="Wordpress"></a>Wordpress</h2><p>I have worked with PHP and Wordpress though, and know that I want to be part of the movement away from them (find me in IRC sometime as samsch (newer) or samssh (older)). So I struck out on the journey to find an alternative. There are many, and I’ve tried a few. I’m actually writing this in Markdown as part of a <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> blog right now.</p>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>So, if I’m writing this is Hexo, why would I not just use it for my blog? Hexo has a distinct lack of a comment system. Hexo is very nice, works well, is documented well, but, is still a <em>static</em> blog framework. So no login, no comments, no true CMS.</p>
+<h2 id="Ghost"><a href="#Ghost" class="headerlink" title="Ghost"></a>Ghost</h2><p>The next step of the journey was a run at <a href="https://ghost.org" target="_blank" rel="external">Ghost</a>. I didn’t make it very far without the first snag. Ghost doesn’t currently support Node latest. Ghost as of right now (2016-09-19) “supports LTS Node versions: ~<strong>0.10.0</strong> || ~<strong>0.12.0</strong> || ^<strong>4.2.0</strong>“. Node latest is 6.6.0, and Node 6 will become LTS (planned) next month. Otherwise Ghost has looked very good so far: It’s based on Node, has a deployment system built out, uses stable (if not quite modern) tools (Ember.js and Handlebars), and is fully open source, and run by a company touting 100% transparency. So, not supporting the latest version of Node isn’t a huge issue, but coupled with Ember and Handlebars being a bit dated, I’ve decided to try other options before coming back.</p>
+<h2 id="Random-blogs-I-didn’t-try"><a href="#Random-blogs-I-didn’t-try" class="headerlink" title="Random blogs I didn’t try"></a>Random blogs I didn’t try</h2><ul>
+<li>[softare]<ul>
+<li>[Reasons I skipped it]</li>
+</ul>
+</li>
+<li><a href="https://anchorcms.com/" target="_blank" rel="external">Anchor</a><ul>
+<li>PHP*, GPL</li>
+</ul>
+</li>
+<li><a href="https://getnikola.com/" target="_blank" rel="external">Nikola</a><ul>
+<li>Python*</li>
+</ul>
+</li>
+<li><a href="https://bolt.cm/" target="_blank" rel="external">Bolt</a><ul>
+<li>PHP</li>
+</ul>
+</li>
+</ul>
+<h2 id="Bolt"><a href="#Bolt" class="headerlink" title="Bolt"></a>Bolt</h2><p>If Bolt was Node or another language which I want to learn and code in, then I would try it right now. However, since I don’t actually want to setup a PHP server, I’m going to put this off for later. Bolt is driven by Silex/Symfony, which is (in my opinion) the best way to build a site in PHP. But right now I’m still holding out hope for a blogging software based either on Node, or a language that I have interest in learning.</p>
+<p>It’s now getting late, time to go with Hexo for a little longer…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://samsch.org/2016/09/19/blog/" data-id="ckixl4zvx0006jku39shksd9g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deployment/" rel="tag">deployment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ghost/" rel="tag">ghost</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/" rel="tag">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/08/getting-started-with-webpack/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Getting Started with Webpack
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/04/Getting-started-with-React/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Getting Started with React (Webpack v1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/Web-API/" style="font-size: 10px;">Web API</a> <a href="/tags/Webpack/" style="font-size: 12.5px;">Webpack</a> <a href="/tags/arduino/" style="font-size: 10px;">arduino</a> <a href="/tags/cos-play/" style="font-size: 10px;">cos-play</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-loader/" style="font-size: 10px;">css-loader</a> <a href="/tags/deployment/" style="font-size: 10px;">deployment</a> <a href="/tags/developer-experience/" style="font-size: 15px;">developer experience</a> <a href="/tags/ghost/" style="font-size: 10px;">ghost</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hooks/" style="font-size: 10px;">hooks</a> <a href="/tags/js/" style="font-size: 17.5px;">js</a> <a href="/tags/lifecycles/" style="font-size: 10px;">lifecycles</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/patterns/" style="font-size: 10px;">patterns</a> <a href="/tags/seo/" style="font-size: 10px;">seo</a> <a href="/tags/sound/" style="font-size: 10px;">sound</a> <a href="/tags/ssr/" style="font-size: 10px;">ssr</a> <a href="/tags/state/" style="font-size: 10px;">state</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/23/effects-are-not-lifecycles/">Effects are not lifecycles</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/08/does-using-react-negatively-affect-seo/">Does Using React Negatively Affect SEO?</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/04/how-to-setup-webpack-v4/">How to Setup Webpack v4</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/04/using-the-web-audio-api/">Using the Web Audio API</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/11/sci-fi-prop-project/">Sci-fi Prop Project</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/state-terminology/">State Terminology</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/14/how-to-add-css-loader-to-webpack/">How to Add css-loader to Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/21/getting-started-with-react/">Getting Started with React</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/14/getting-started-with-webpack-part-2/">Getting Started with Webpack - Part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/getting-started-with-webpack/">Getting Started with Webpack</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/19/blog/">Getting a blog started</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/04/Getting-started-with-React/">Getting Started with React (Webpack v1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Samuel Scheiderich<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/Samuel-Scheiderich" class="mobile-nav-link">About me</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>
